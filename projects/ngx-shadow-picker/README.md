@@ -1,24 +1,38 @@
-# NgGridstack
+![npm](https://img.shields.io/npm/v/ngx-shadow-picker) ![NPM](https://img.shields.io/npm/l/ngx-shadow-picker)
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.0.
+# NgxShadowPicker
 
-## Code scaffolding
+A shadow picker inspired by the Chromium devtools.  This is a slight reimagining and a port of the component [react-shadow-picker](https://www.npmjs.com/package/react-shadow-picker)
 
-Run `ng generate component component-name --project ng-gridstack` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ng-gridstack`.
-> Note: Don't forget to add `--project ng-gridstack` or else it will be added to the default project in your `angular.json` file. 
+## Development server
 
-## Build
+Run `yarn storybook` for a dev server. 
 
-Run `ng build ng-gridstack` to build the project. The build artifacts will be stored in the `dist/` directory.
+![Demo](./assets/demo.png)
 
-## Publishing
+[**Live Demo**](https://react-shadow-picker.now.sh)
 
-After building your library with `ng build ng-gridstack`, go to the dist folder `cd dist/ng-gridstack` and run `npm publish`.
+### Installation
 
-## Running unit tests
+```sh
+yarn add ngx-shadow-picker
+```
 
-Run `ng test ng-gridstack` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Usage
 
-## Further help
+The component can be used either in a Controlled or Uncontrolled way.
+If you pass the value back to the component, it will be controlled.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```typescript
+import { NgxShadowPickerModule } from "ngx-shadow-picker";
+
+```
+
+#### Styling
+
+Add scss style in your project
+
+```scss
+  @import '~ngx-shadow-picker/styles/shadow-picker';
+```
+
