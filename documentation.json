@@ -628,7 +628,7 @@
         },
         {
             "name": "OffsetFieldComponent",
-            "id": "component-OffsetFieldComponent-4586b814862660c5b067618ac388ab273ad02ab1e60b754c8c68b923c4381633269c411f27077157c94646b753f64919265dfe1b749b76b07c2d7a01bda61d8d",
+            "id": "component-OffsetFieldComponent-5ade6886b8e32caef2411352be302fb70f9b5c6c107957f4218549bc8cca9cae9de97626aa6957e35a625e5e33fa02380e6f321481b69b8a4cab7fac41714622",
             "file": "projects/ngx-shadow-picker/src/components/fields/offset-field.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -789,7 +789,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n} from '@angular/core';\r\n\r\nimport { ShadowOffset, ShadowOffsetUnit, ShadowPickerParams } from '../../types';\r\nimport { Offset } from '../inputs/offset-grid.component';\r\nimport { useOffsetUnit } from '../utils';\r\n\r\n@Component({\r\n    selector: 'offset-field',\r\n    template: `\r\n        <div class=\"sp-offset-field\">\r\n            <div class=\"sp-inputs\">\r\n                <div class=\"sp-row\">\r\n                    <label class=\"sp-label\">X Offset</label>\r\n                    <input-field\r\n                        style=\"flex: 1; display: flex;\"\r\n                        [value]=\"value?.x\"\r\n                        (onChange)=\"inputChange('x', $event)\"\r\n                    ></input-field>\r\n                </div>\r\n                <div class=\"sp-row\">\r\n                    <label class=\"sp-label\">Y Offset</label>\r\n                    <input-field\r\n                        style=\"flex: 1; display: flex;\"\r\n                        [value]=\"value?.y\"\r\n                        (onChange)=\"inputChange('y', $event)\"\r\n                    ></input-field>\r\n                </div>\r\n            </div>\r\n            <div class=\"sp-grid\">\r\n                <offset-grid [offset]=\"offsetUnit\" (onChange)=\"gridChange($event)\"></offset-grid>\r\n            </div>\r\n        </div>\r\n    `,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class OffsetFieldComponent implements OnChanges {\r\n    @Input() value!: ShadowPickerParams['offset'];\r\n    @Output() onChange = new EventEmitter<ShadowPickerParams['offset']>();\r\n\r\n    public offsetUnit: ShadowOffsetUnit = {\r\n        x: 0,\r\n        y: 0,\r\n        xUnit: 'px',\r\n        yUnit: 'px',\r\n    };\r\n\r\n    public gridChange({ x, y }: Offset): void {\r\n        const { xUnit, yUnit } = this.offsetUnit;\r\n        this.onChange.emit({ x: `${x}${xUnit}`, y: `${y}${yUnit}` });\r\n    }\r\n\r\n    public inputChange(axis: 'x' | 'y', val: string): void {\r\n        if (this.value) {\r\n            this.onChange.emit({\r\n                ...this.value,\r\n                [axis]: val,\r\n            });\r\n        }\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.offsetUnit = useOffsetUnit(changes.value.currentValue);\r\n        }\r\n    }\r\n}\r\n",
+            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n} from '@angular/core';\r\n\r\nimport { ShadowOffsetUnit, ShadowPickerParams } from '../../types';\r\nimport { Offset } from '../inputs/offset-grid.component';\r\nimport { useOffsetUnit } from '../utils';\r\n\r\n@Component({\r\n    selector: 'offset-field',\r\n    template: `\r\n        <div class=\"sp-offset-field\">\r\n            <div class=\"sp-inputs\">\r\n                <div class=\"sp-row\">\r\n                    <label class=\"sp-label\">X Offset</label>\r\n                    <input-field\r\n                        style=\"flex: 1; display: flex;\"\r\n                        [value]=\"value?.x\"\r\n                        (onChange)=\"inputChange('x', $event)\"\r\n                    ></input-field>\r\n                </div>\r\n                <div class=\"sp-row\">\r\n                    <label class=\"sp-label\">Y Offset</label>\r\n                    <input-field\r\n                        style=\"flex: 1; display: flex;\"\r\n                        [value]=\"value?.y\"\r\n                        (onChange)=\"inputChange('y', $event)\"\r\n                    ></input-field>\r\n                </div>\r\n            </div>\r\n            <div class=\"sp-grid\">\r\n                <offset-grid [offset]=\"offsetUnit\" (onChange)=\"gridChange($event)\"></offset-grid>\r\n            </div>\r\n        </div>\r\n    `,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class OffsetFieldComponent implements OnChanges {\r\n    @Input() value!: ShadowPickerParams['offset'];\r\n    @Output() onChange = new EventEmitter<ShadowPickerParams['offset']>();\r\n\r\n    public offsetUnit: ShadowOffsetUnit = {\r\n        x: 0,\r\n        y: 0,\r\n        xUnit: 'px',\r\n        yUnit: 'px',\r\n    };\r\n\r\n    public gridChange({ x, y }: Offset): void {\r\n        const { xUnit, yUnit } = this.offsetUnit;\r\n        this.onChange.emit({ x: `${x}${xUnit}`, y: `${y}${yUnit}` });\r\n    }\r\n\r\n    public inputChange(axis: 'x' | 'y', val: string): void {\r\n        if (this.value) {\r\n            this.onChange.emit({\r\n                ...this.value,\r\n                [axis]: val,\r\n            });\r\n        }\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.offsetUnit = useOffsetUnit(changes.value.currentValue);\r\n        }\r\n    }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -1097,7 +1097,7 @@
         },
         {
             "name": "ShadowPickerComponent",
-            "id": "component-ShadowPickerComponent-49335c0d535d6fcc328989031b89d8c316a35892132afe68dd2e79fd31c4762b1dfbf58e451e8e7450d57122de3d02b0c2aff085d64af77716807b5e8a64a88b",
+            "id": "component-ShadowPickerComponent-19f8d92cd684e43e7177d5b35f05841fb8c1f3e07299b50238126583de1d5ad2a9c773adaf9e713b53099adcb264f6660bc181d8a92144fab0c48bba1b39ee87",
             "file": "projects/ngx-shadow-picker/src/components/shadow-picker.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1152,25 +1152,25 @@
             ],
             "propertiesClass": [
                 {
-                    "name": "_state",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "ShadowPickerParams",
-                    "optional": true,
-                    "description": "",
-                    "line": 36,
-                    "modifierKind": [
-                        123
-                    ]
-                },
-                {
                     "name": "sample",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "string",
                     "optional": true,
                     "description": "",
-                    "line": 45,
+                    "line": 37,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "state",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ShadowPickerParams",
+                    "optional": true,
+                    "description": "",
+                    "line": 36,
                     "modifierKind": [
                         123
                     ]
@@ -1190,7 +1190,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 63,
+                    "line": 55,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1225,7 +1225,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 47,
+                    "line": 39,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1272,7 +1272,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 53,
+                    "line": 45,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1307,51 +1307,13 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n} from '@angular/core';\r\n\r\nimport { ShadowOffset, ShadowPickerParams, ShadowPosition } from '../types';\r\nimport { buildShadowString, parseShadowString } from './utils';\r\n\r\nconst defaultParams: ShadowPickerParams = {\r\n    blur: '0',\r\n    color: '#000000',\r\n    offset: {\r\n        y: '0',\r\n        x: '0',\r\n    },\r\n    position: 'outside',\r\n    spread: '0',\r\n};\r\n\r\n@Component({\r\n    selector: 'shadow-picker',\r\n    templateUrl: './shadow-picker.component.html',\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ShadowPickerComponent implements OnChanges {\r\n    @Input() value?: string;\r\n    @Input() showSample = false;\r\n    @Input() className = '';\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    public _state?: ShadowPickerParams;\r\n    public set state(value: ShadowPickerParams | undefined) {\r\n        debugger;\r\n        this._state = value;\r\n    }\r\n    get state(): ShadowPickerParams | undefined {\r\n        return this._state;\r\n    }\r\n\r\n    public sample?: string;\r\n\r\n    private setNewState(state: ShadowPickerParams, emit = true): void {\r\n        this.state = state;\r\n        this.sample = buildShadowString(this.state);\r\n        if (emit) this.onChange.emit(this.sample);\r\n    }\r\n\r\n    public updateState(\r\n        column: keyof ShadowPickerParams,\r\n        value: string | ShadowOffset | ShadowPosition | undefined,\r\n    ): void {\r\n        this.setNewState({\r\n            ...this.state,\r\n            [column]: value,\r\n        });\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.setNewState(\r\n                parseShadowString(changes.value.currentValue) || { ...defaultParams },\r\n                false,\r\n            );\r\n        }\r\n    }\r\n}\r\n",
+            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n} from '@angular/core';\r\n\r\nimport { ShadowOffset, ShadowPickerParams, ShadowPosition } from '../types';\r\nimport { buildShadowString, parseShadowString } from './utils';\r\n\r\nconst defaultParams: ShadowPickerParams = {\r\n    blur: '0',\r\n    color: '#000000',\r\n    offset: {\r\n        y: '0',\r\n        x: '0',\r\n    },\r\n    position: 'outside',\r\n    spread: '0',\r\n};\r\n\r\n@Component({\r\n    selector: 'shadow-picker',\r\n    templateUrl: './shadow-picker.component.html',\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ShadowPickerComponent implements OnChanges {\r\n    @Input() value?: string;\r\n    @Input() showSample = false;\r\n    @Input() className = '';\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    public state?: ShadowPickerParams;\r\n    public sample?: string;\r\n\r\n    private setNewState(state: ShadowPickerParams, emit = true): void {\r\n        this.state = state;\r\n        this.sample = buildShadowString(this.state);\r\n        if (emit) this.onChange.emit(this.sample);\r\n    }\r\n\r\n    public updateState(\r\n        column: keyof ShadowPickerParams,\r\n        value: string | ShadowOffset | ShadowPosition | undefined,\r\n    ): void {\r\n        this.setNewState({\r\n            ...this.state,\r\n            [column]: value,\r\n        });\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.setNewState(\r\n                parseShadowString(changes.value.currentValue) || { ...defaultParams },\r\n                false,\r\n            );\r\n        }\r\n    }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "implements": [
                 "OnChanges"
             ],
-            "accessors": {
-                "state": {
-                    "name": "state",
-                    "setSignature": {
-                        "name": "state",
-                        "type": "void",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "args": [
-                            {
-                                "name": "value",
-                                "type": "ShadowPickerParams | undefined",
-                                "deprecated": false,
-                                "deprecationMessage": ""
-                            }
-                        ],
-                        "returnType": "void",
-                        "line": 37,
-                        "jsdoctags": [
-                            {
-                                "name": "value",
-                                "type": "ShadowPickerParams | undefined",
-                                "deprecated": false,
-                                "deprecationMessage": "",
-                                "tagName": {
-                                    "text": "param"
-                                }
-                            }
-                        ]
-                    },
-                    "getSignature": {
-                        "name": "state",
-                        "type": "",
-                        "returnType": "ShadowPickerParams | undefined",
-                        "line": 41
-                    }
-                }
-            },
             "templateData": "<div [ngClass]=\"className\" class=\"shadow-picker\">\r\n    <div class=\"sp-field-container\">\r\n        <type-field\r\n            [value]=\"state?.position || 'outside'\"\r\n            (onChange)=\"updateState('position', $event)\"\r\n        ></type-field>\r\n        <offset-field\r\n            [value]=\"state?.offset || { x: '0', y: '0' }\"\r\n            (onChange)=\"updateState('offset', $event)\"\r\n        ></offset-field>\r\n        <slider-field\r\n            [value]=\"state?.blur || '0'\"\r\n            (onChange)=\"updateState('blur', $event)\"\r\n            title=\"Blur\"\r\n        ></slider-field>\r\n        <slider-field\r\n            [value]=\"state?.spread || '0'\"\r\n            (onChange)=\"updateState('spread', $event)\"\r\n            title=\"Spread\"\r\n        ></slider-field>\r\n        <color-field\r\n            title=\"Color\"\r\n            [value]=\"state?.color || '#000000'\"\r\n            (onChange)=\"updateState('color', $event)\"\r\n            [attr.title]=\"state?.color || '#000000'\"\r\n        ></color-field>\r\n    </div>\r\n    <div *ngIf=\"showSample\" class=\"sp-sample-bg\">\r\n        <div class=\"sp-sample\" [ngStyle]=\"{ 'box-shadow': sample }\"></div>\r\n    </div>\r\n</div>\r\n"
         },
         {
@@ -1869,7 +1831,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "5d4a2a71-e42c-4d58-9147-41e6dbb62ca0",
+                        "destrucuredGroupId": "784ad6f4-09b5-42fd-a49e-ff6b7871624b",
                         "destructuredParameter": true
                     },
                     {
@@ -1877,7 +1839,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "5d4a2a71-e42c-4d58-9147-41e6dbb62ca0",
+                        "destrucuredGroupId": "784ad6f4-09b5-42fd-a49e-ff6b7871624b",
                         "destructuredParameter": true
                     }
                 ],
@@ -1888,7 +1850,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "5d4a2a71-e42c-4d58-9147-41e6dbb62ca0",
+                        "destrucuredGroupId": "784ad6f4-09b5-42fd-a49e-ff6b7871624b",
                         "destructuredParameter": true,
                         "tagName": {
                             "text": "param"
@@ -1899,7 +1861,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "5d4a2a71-e42c-4d58-9147-41e6dbb62ca0",
+                        "destrucuredGroupId": "784ad6f4-09b5-42fd-a49e-ff6b7871624b",
                         "destructuredParameter": true,
                         "tagName": {
                             "text": "param"
@@ -2188,7 +2150,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "5d4a2a71-e42c-4d58-9147-41e6dbb62ca0",
+                            "destrucuredGroupId": "784ad6f4-09b5-42fd-a49e-ff6b7871624b",
                             "destructuredParameter": true
                         },
                         {
@@ -2196,7 +2158,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "5d4a2a71-e42c-4d58-9147-41e6dbb62ca0",
+                            "destrucuredGroupId": "784ad6f4-09b5-42fd-a49e-ff6b7871624b",
                             "destructuredParameter": true
                         }
                     ],
@@ -2207,7 +2169,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "5d4a2a71-e42c-4d58-9147-41e6dbb62ca0",
+                            "destrucuredGroupId": "784ad6f4-09b5-42fd-a49e-ff6b7871624b",
                             "destructuredParameter": true,
                             "tagName": {
                                 "text": "param"
@@ -2218,7 +2180,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "5d4a2a71-e42c-4d58-9147-41e6dbb62ca0",
+                            "destrucuredGroupId": "784ad6f4-09b5-42fd-a49e-ff6b7871624b",
                             "destructuredParameter": true,
                             "tagName": {
                                 "text": "param"

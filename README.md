@@ -10,7 +10,7 @@ Run `yarn storybook` for a dev server.
 
 ![Demo](https://raw.githubusercontent.com/KondakovArtem/ngx-shadow-picker/master/src/assets/demo.png)
 
-[**Live Demo**](https://react-shadow-picker.now.sh)
+[**Live Demo**](https://61a14f59d1e351003a3cace0-dfycorfmwj.chromatic.com/?path=/story/shadowpicker--basic)
 
 ### Installation
 
