@@ -4,3 +4,4 @@
 
 export * from './components/shadow-picker.module';
 export * from './components/shadow-picker.component';
+export * from './components/utils';

@@ -11,7 +11,7 @@ import {
 @Component({
     selector: 'input-field',
     template: `<input
-        class="input shadow-picker__input"
+        class="sp-input shadow-picker__input"
         [ngModel]="tmp"
         (focus)="setActive(true)"
         (blur)="blur()"

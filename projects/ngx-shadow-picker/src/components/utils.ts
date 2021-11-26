@@ -75,3 +75,33 @@ export const buildShadowString = (params: ShadowPickerParams): string => {
 
     return values.join(' ');
 };
+
+export interface IColorState {
+    alpha: number;
+    color: string;
+}
+
+export function parseHexColor(value: string): IColorState | null {
+    const match = value.match(/#(?<hex>[0-9A-F]{6,8})/i) as any;
+    const hex = match?.groups?.hex;
+    if (hex) {
+        let alpha = 255;
+        if (hex.length === 8) {
+            alpha = parseInt(hex.substr(6, 2), 16);
+        }
+        return { alpha, color: `#${hex.substr(0, 6)}` };
+    }
+    return null;
+}
+
+// <T extends (...args: any) => any>(func: T, wait?: number, options?: DebounceSettings): DebouncedFunc<T>
+
+export function debounce<T extends (...args: any) => any>(func: T, timeout = 300): T {
+    let timer: ReturnType<typeof setTimeout>;
+    return ((...args: any): any => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            func(...args);
+        }, timeout);
+    }) as T;
+}

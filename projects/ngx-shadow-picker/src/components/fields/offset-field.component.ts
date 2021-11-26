@@ -9,29 +9,31 @@ import {
 } from '@angular/core';
 
 import { ShadowOffset, ShadowOffsetUnit, ShadowPickerParams } from '../../types';
-import { useOffsetUnit, useUnitValue } from '../utils';
+import { useOffsetUnit } from '../utils';
 
 @Component({
     selector: 'offset-field',
     template: `
-        <div class="offset-field">
-            <div class="inputs">
-                <div class="row">
-                    <label class="shadow-picker-label">X Offset</label>
+        <div class="sp-offset-field">
+            <div class="sp-inputs">
+                <div class="sp-row">
+                    <label class="sp-label">X Offset</label>
                     <input-field
+                        style="flex: 1; display: flex;"
                         [value]="value.x"
                         (onChange)="inputChange('x', $event)"
                     ></input-field>
                 </div>
-                <div class="row">
-                    <label class="shadow-picker-label">Y Offset</label>
+                <div class="sp-row">
+                    <label class="sp-label">Y Offset</label>
                     <input-field
+                        style="flex: 1; display: flex;"
                         [value]="value.y"
                         (onChange)="inputChange('y', $event)"
                     ></input-field>
                 </div>
             </div>
-            <div class="grid">
+            <div class="sp-grid">
                 <offset-grid [offset]="offsetUnit" (onChange)="gridChange($event)"></offset-grid>
             </div>
         </div>

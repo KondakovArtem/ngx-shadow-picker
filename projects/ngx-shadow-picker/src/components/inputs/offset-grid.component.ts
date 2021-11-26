@@ -6,9 +6,7 @@ import {
     EventEmitter,
     Input,
     OnChanges,
-    OnInit,
     Output,
-    SimpleChange,
     SimpleChanges,
     ViewChild,
 } from '@angular/core';
@@ -22,7 +20,7 @@ interface Offset {
     selector: 'offset-grid',
     template: `<svg
         #svgContainer
-        class="offset-grid shadow-picker__grid"
+        class="sp-offset-grid"
         (mousemove)="onMove($event)"
         (mousedown)="setDragging(true)"
         (mouseup)="setDragging(false)"
@@ -36,9 +34,9 @@ interface Offset {
             x2="50"
             y2="100"
             stroke-width="2"
-            stroke-dasharray="2,1"
+            stroke-dasharray="3,3"
             stroke="currentColor"
-            class="shadow-picker__grid-line"
+            class="sp-grid-line"
         ></line>
 
         <line
@@ -46,14 +44,14 @@ interface Offset {
             y1="50"
             x2="100"
             y2="50"
-            stroke-dasharray="2,1"
+            stroke-dasharray="3,3"
             stroke-width="2"
             stroke="currentColor"
-            class="shadow-picker__grid-line"
+            class="sp-grid-line"
         ></line>
 
         <line
-            class="shadow-picker__grid-line"
+            class="sp-grid-line"
             x1="50"
             y1="50"
             [attr.x2]="posX"
@@ -62,7 +60,7 @@ interface Offset {
             stroke="currentColor"
         ></line>
         <circle
-            class="shadow-picker__grid-handle"
+            class="sp-grid-handle"
             [attr.cx]="posX"
             [attr.cy]="posY"
             r="5"

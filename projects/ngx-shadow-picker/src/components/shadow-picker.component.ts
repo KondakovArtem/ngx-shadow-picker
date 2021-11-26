@@ -25,30 +25,38 @@ const defaultParams: ShadowPickerParams = {
 @Component({
     selector: 'shadow-picker',
     templateUrl: './shadow-picker.component.html',
-    styleUrls: ['../../styles/shadow-picker.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShadowPickerComponent implements OnChanges {
-    public state: ShadowPickerParams = {};
-
     @Input() value?: string;
+    @Input() showSample = false;
     @Output() onChange = new EventEmitter<string>();
+
+    public state: ShadowPickerParams = {};
+    public sample?: string;
+
+    private setNewState(state: ShadowPickerParams, emit = true): void {
+        this.state = state;
+        this.sample = buildShadowString(this.state);
+        if (emit) this.onChange.emit(this.sample);
+    }
 
     public updateState(
         column: keyof ShadowPickerParams,
         value: string | ShadowOffset | ShadowPosition | undefined,
     ): void {
-        this.state = {
+        this.setNewState({
             ...this.state,
             [column]: value,
-        };
-        this.onChange.emit(buildShadowString(this.state));
-        // !isControlled && setState(newParams);
+        });
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.value) {
-            this.state = parseShadowString(changes.value.currentValue) || { ...defaultParams };
+            this.setNewState(
+                parseShadowString(changes.value.currentValue) || { ...defaultParams },
+                false,
+            );
         }
     }
 }

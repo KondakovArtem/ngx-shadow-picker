@@ -5,7 +5,6 @@
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true,
     "strict": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
@@ -13,9 +12,9 @@
     "declaration": false,
     "downlevelIteration": true,
     "paths": {
-      "ng-gridstack": [
-        "dist/ng-gridstack/ng-gridstack",
-        "dist/ng-gridstack"
+      "ngx-shadow-picker": [
+        "dist/ngx-shadow-picker/ngx-shadow-picker",
+        "dist/ngx-shadow-picker"
       ]
     },
     "experimentalDecorators": true,

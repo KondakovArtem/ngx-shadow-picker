@@ -12,11 +12,15 @@ import { useUnitValue } from '../utils';
 @Component({
     selector: 'slider-field',
     template: `
-        <div class="slider-field">
-            <label class="shadow-picker-label">{{ title }}</label>
-            <input-field [value]="value" (onChange)="onChange.emit($event)"></input-field>
+        <div class="sp-slider-field">
+            <label class="sp-label">{{ title }}</label>
+            <input-field
+                style="flex-grow: 1; display:flex;"
+                [value]="value"
+                (onChange)="onChange.emit($event)"
+            ></input-field>
             <input
-                class="shadow-picker-slider"
+                class="sp-slider"
                 type="range"
                 [ngModel]="state.amount"
                 (ngModelChange)="changed($event)"

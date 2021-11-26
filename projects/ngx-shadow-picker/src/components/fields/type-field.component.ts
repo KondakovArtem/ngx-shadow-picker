@@ -5,18 +5,18 @@ import { ShadowPosition } from '../../types';
 @Component({
     selector: 'type-field',
     template: `
-        <div class="shadow-picker-wrapper">
-            <label class="shadow-picker-label">Type</label>
-            <div class="shadow-picker-group">
+        <div class="sp-type-field">
+            <label class="sp-label">Type</label>
+            <div class="sp-group">
                 <div
-                    class="shadow-picker-button shadow-picker__position"
+                    class="sp-button sp-position sp-button-out"
                     [ngClass]="[value === 'outside' ? 'active' : '']"
                     (click)="onChange.emit('outside')"
                 >
                     Outside
                 </div>
                 <div
-                    class="shadow-picker-button shadow-picker__position"
+                    class="sp-button sp-position sp-button-in"
                     [ngClass]="[value === 'inside' ? 'active' : '']"
                     (click)="onChange.emit('inside')"
                 >

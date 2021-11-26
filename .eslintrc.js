@@ -30,7 +30,7 @@ module.exports = {
                     'error',
                     {
                         type: 'element',
-                        prefix: ['shadow', 'type', 'offset', 'input', 'slider'],
+                        prefix: ['shadow', 'type', 'offset', 'input', 'slider', 'color'],
                         style: 'kebab-case',
                     },
                 ],
