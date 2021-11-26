@@ -6,7 +6,7 @@
         "ng": "ng",
         "start": "ng serve",
         "build": "ng build ngx-shadow-picker",
-        "prePublish": "yarn build",
+        "prepublish": "yarn build",
         "publish": "yarn publish dist/ngx-shadow-picker",
         "watch": "ng build --watch --configuration development",
         "test": "ng test",

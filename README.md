@@ -12,23 +12,46 @@ Run `yarn storybook` for a dev server.
 
 [**Live Demo**](https://61a14f59d1e351003a3cace0-dfycorfmwj.chromatic.com/?path=/story/shadowpicker--basic)
 
-### Installation
+## Installation
 
 ```sh
 yarn add ngx-shadow-picker
 ```
 
-### Usage
+## Usage
 
 The component can be used either in a Controlled or Uncontrolled way.
 If you pass the value back to the component, it will be controlled.
 
 ```typescript
-import { NgxShadowPickerModule } from "ngx-shadow-picker";
+import { ShadowPickerModule } from 'ngx-shadow-picker';
+
+...
+
+@NgModule({
+    declarations: [],
+    imports: [
+      ...
+      ShadowPickerModule
+    ],
+    providers: [],
+})
+export class AppModule {}
 
 ```
 
-#### Styling
+Add component to the template
+```html
+  ...
+    <shadow-picker 
+      [showSample]="true" 
+      [value]="value" 
+      (onChange)="value = $event"
+    ></shadow-picker>
+  ...
+```
+
+## Styling
 
 Add scss style in your project
 
@@ -36,3 +59,18 @@ Add scss style in your project
   @import '~ngx-shadow-picker/styles/shadow-picker';
 ```
 
+
+## Styling customization
+
+There are several scss variables that can be overridden
+```scss
+  $shadow-picker-empty-bg-size: 10px !default;
+  $shadow-picker-background: #2a2a2a !default;
+  $shadow-picker-width: 256px !default;
+  $shadow-picker-font-size: 14px !default;
+  $shadow-picker-color: #bec6cf !default;
+  $shadow-picker-padding: 8px !default;
+  $shadow-picker-offsetgrid-size: 100px !default;
+  $shadow-picker-control-color: #4285f4 !default;
+  $shadow-picker-control-border-radius: 2px !default;
+```
