@@ -8,7 +8,7 @@ A shadow picker inspired by the Chromium devtools.  This is a slight reimagining
 
 Run `yarn storybook` for a dev server. 
 
-![Demo](./assets/demo.png)
+![Demo](https://raw.githubusercontent.com/KondakovArtem/ngx-shadow-picker/master/src/assets/demo.png)
 
 [**Live Demo**](https://react-shadow-picker.now.sh)
 
