@@ -8,7 +8,7 @@ import {
     SimpleChanges,
 } from '@angular/core';
 
-import { ShadowOffset, ShadowOffsetUnit, ShadowPickerParams } from '../../types';
+import { ShadowOffsetUnit, ShadowPickerParams } from '../../types';
 import { Offset } from '../inputs/offset-grid.component';
 import { useOffsetUnit } from '../utils';
 

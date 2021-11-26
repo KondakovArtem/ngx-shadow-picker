@@ -37,7 +37,7 @@ export function useUnitValue(value: string): {
 }
 
 export const parseShadowString = (value: string): ShadowPickerParams | null => {
-    const parts = value.replace(/ {2}/gi, ' ').trim().split(' ');
+    const parts = (value || '').replace(/ {2}/gi, ' ').trim().split(' ');
     let position: ShadowPosition = 'outside';
 
     if (parts[0] === 'inset') {

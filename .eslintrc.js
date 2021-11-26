@@ -1,6 +1,7 @@
 module.exports = {
     root: true,
     ignorePatterns: ['projects /**/*'],
+    extends: ['plugin:storybook/recommended'],
     overrides: [
         {
             files: ['*.ts'],
@@ -73,7 +74,12 @@ module.exports = {
             extends: ['plugin:prettier/recommended'],
             rules: {
                 // NOTE: WE ARE OVERRIDING THE DEFAULT CONFIG TO ALWAYS SET THE PARSER TO ANGULAR (SEE BELOW)
-                'prettier/prettier': ['error', { parser: 'angular' }],
+                'prettier/prettier': [
+                    'error',
+                    {
+                        parser: 'angular',
+                    },
+                ],
             },
         },
     ],

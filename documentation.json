@@ -3,12 +3,12 @@
     "interfaces": [
         {
             "name": "IColorState",
-            "id": "interface-IColorState-ad7b46eb19715a28547fd510d7f225acc989d4a865bedbf54b21935cc961fc3dca896a88b546a13cb44fb59d217d9f0edad54af186ae0a1e64287630d0223096",
+            "id": "interface-IColorState-594c25210afcf43a011b0de4034cea777ee8b3274e750cb935163c4566854cfcb69bd497c18a9801e45e64135530785363852d6b9d41b7648108597a66749b28",
             "file": "projects/ngx-shadow-picker/src/components/utils.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import type { ShadowOffsetUnit, ShadowPickerParams, ShadowPosition } from '../types';\r\n\r\nexport const unitRegex = /(-?\\d+)((r?em)|(px)|%)$/;\r\n\r\nexport function useOffsetUnit(\r\n    { x, y }: ShadowPickerParams['offset'] = { x: '0', y: '0' },\r\n): ShadowOffsetUnit {\r\n    const xData = useUnitValue(x);\r\n    const yData = useUnitValue(y);\r\n    return {\r\n        x: xData.amount,\r\n        xUnit: xData.unit,\r\n        y: yData.amount,\r\n        yUnit: yData.unit,\r\n    };\r\n}\r\n\r\nexport function useUnitValue(value: string): {\r\n    amount: number;\r\n    unit: string;\r\n} {\r\n    const defRes = {\r\n        amount: 0,\r\n        unit: 'px',\r\n    };\r\n\r\n    if ([undefined, null, ''].includes(value)) return defRes;\r\n    const matches = `${value}`.match(unitRegex);\r\n\r\n    if (matches?.length === 5) {\r\n        return {\r\n            amount: parseInt(matches[1], 10),\r\n            unit: matches[2],\r\n        };\r\n    }\r\n    return defRes;\r\n}\r\n\r\nexport const parseShadowString = (value: string): ShadowPickerParams | null => {\r\n    const parts = value.replace(/ {2}/gi, ' ').trim().split(' ');\r\n    let position: ShadowPosition = 'outside';\r\n\r\n    if (parts[0] === 'inset') {\r\n        parts.shift();\r\n        position = 'inside';\r\n    }\r\n\r\n    if (parts.length === 3) {\r\n        const [x, y, color] = parts;\r\n        return { offset: { x, y }, color, position };\r\n    }\r\n\r\n    if (parts.length === 4) {\r\n        const [x, y, blur, color] = parts;\r\n        return { offset: { x, y }, color, blur, position };\r\n    }\r\n\r\n    if (parts.length === 5) {\r\n        const [x, y, blur, spread, color] = parts;\r\n        return { offset: { x, y }, color, spread, blur, position };\r\n    }\r\n\r\n    return null;\r\n};\r\n\r\nexport const buildShadowString = (params: ShadowPickerParams): string => {\r\n    const values = [\r\n        params.position === 'inside' ? 'inset' : undefined,\r\n        params.offset?.x || '0',\r\n        params.offset?.y || '0',\r\n        params.blur,\r\n        params.spread,\r\n        params.color || '#000000',\r\n    ].filter((p) => !!p);\r\n\r\n    return values.join(' ');\r\n};\r\n\r\nexport interface IColorState {\r\n    alpha: number;\r\n    color: string;\r\n}\r\n\r\nexport function parseHexColor(value: string): IColorState | null {\r\n    const match = value.match(/#(?<hex>[0-9A-F]{6,8})/i) as any;\r\n    const hex = match?.groups?.hex;\r\n    if (hex) {\r\n        let alpha = 255;\r\n        if (hex.length === 8) {\r\n            alpha = parseInt(hex.substr(6, 2), 16);\r\n        }\r\n        return { alpha, color: `#${hex.substr(0, 6)}` };\r\n    }\r\n    return null;\r\n}\r\n\r\n// <T extends (...args: any) => any>(func: T, wait?: number, options?: DebounceSettings): DebouncedFunc<T>\r\n\r\nexport function debounce<T extends (...args: any) => any>(func: T, timeout = 300): T {\r\n    let timer: ReturnType<typeof setTimeout>;\r\n    return ((...args: any): any => {\r\n        clearTimeout(timer);\r\n        timer = setTimeout(() => {\r\n            func(...args);\r\n        }, timeout);\r\n    }) as T;\r\n}\r\n",
+            "sourceCode": "import type { ShadowOffsetUnit, ShadowPickerParams, ShadowPosition } from '../types';\r\n\r\nexport const unitRegex = /(-?\\d+)((r?em)|(px)|%)$/;\r\n\r\nexport function useOffsetUnit(\r\n    { x, y }: ShadowPickerParams['offset'] = { x: '0', y: '0' },\r\n): ShadowOffsetUnit {\r\n    const xData = useUnitValue(x);\r\n    const yData = useUnitValue(y);\r\n    return {\r\n        x: xData.amount,\r\n        xUnit: xData.unit,\r\n        y: yData.amount,\r\n        yUnit: yData.unit,\r\n    };\r\n}\r\n\r\nexport function useUnitValue(value: string): {\r\n    amount: number;\r\n    unit: string;\r\n} {\r\n    const defRes = {\r\n        amount: 0,\r\n        unit: 'px',\r\n    };\r\n\r\n    if ([undefined, null, ''].includes(value)) return defRes;\r\n    const matches = `${value}`.match(unitRegex);\r\n\r\n    if (matches?.length === 5) {\r\n        return {\r\n            amount: parseInt(matches[1], 10),\r\n            unit: matches[2],\r\n        };\r\n    }\r\n    return defRes;\r\n}\r\n\r\nexport const parseShadowString = (value: string): ShadowPickerParams | null => {\r\n    const parts = (value || '').replace(/ {2}/gi, ' ').trim().split(' ');\r\n    let position: ShadowPosition = 'outside';\r\n\r\n    if (parts[0] === 'inset') {\r\n        parts.shift();\r\n        position = 'inside';\r\n    }\r\n\r\n    if (parts.length === 3) {\r\n        const [x, y, color] = parts;\r\n        return { offset: { x, y }, color, position };\r\n    }\r\n\r\n    if (parts.length === 4) {\r\n        const [x, y, blur, color] = parts;\r\n        return { offset: { x, y }, color, blur, position };\r\n    }\r\n\r\n    if (parts.length === 5) {\r\n        const [x, y, blur, spread, color] = parts;\r\n        return { offset: { x, y }, color, spread, blur, position };\r\n    }\r\n\r\n    return null;\r\n};\r\n\r\nexport const buildShadowString = (params: ShadowPickerParams): string => {\r\n    const values = [\r\n        params.position === 'inside' ? 'inset' : undefined,\r\n        params.offset?.x || '0',\r\n        params.offset?.y || '0',\r\n        params.blur,\r\n        params.spread,\r\n        params.color || '#000000',\r\n    ].filter((p) => !!p);\r\n\r\n    return values.join(' ');\r\n};\r\n\r\nexport interface IColorState {\r\n    alpha: number;\r\n    color: string;\r\n}\r\n\r\nexport function parseHexColor(value: string): IColorState | null {\r\n    const match = value.match(/#(?<hex>[0-9A-F]{6,8})/i) as any;\r\n    const hex = match?.groups?.hex;\r\n    if (hex) {\r\n        let alpha = 255;\r\n        if (hex.length === 8) {\r\n            alpha = parseInt(hex.substr(6, 2), 16);\r\n        }\r\n        return { alpha, color: `#${hex.substr(0, 6)}` };\r\n    }\r\n    return null;\r\n}\r\n\r\n// <T extends (...args: any) => any>(func: T, wait?: number, options?: DebounceSettings): DebouncedFunc<T>\r\n\r\nexport function debounce<T extends (...args: any) => any>(func: T, timeout = 300): T {\r\n    let timer: ReturnType<typeof setTimeout>;\r\n    return ((...args: any): any => {\r\n        clearTimeout(timer);\r\n        timer = setTimeout(() => {\r\n            func(...args);\r\n        }, timeout);\r\n    }) as T;\r\n}\r\n",
             "properties": [
                 {
                     "name": "alpha",
@@ -1097,7 +1097,7 @@
         },
         {
             "name": "ShadowPickerComponent",
-            "id": "component-ShadowPickerComponent-d74ba32b3c8736fcfb615177f67c09b59107be0430cf38b4f550d1bf15be59a2bc851f89438e3625cfb7d283904deffa55e1e6458f79c0a9b574248a6104451a",
+            "id": "component-ShadowPickerComponent-49335c0d535d6fcc328989031b89d8c316a35892132afe68dd2e79fd31c4762b1dfbf58e451e8e7450d57122de3d02b0c2aff085d64af77716807b5e8a64a88b",
             "file": "projects/ngx-shadow-picker/src/components/shadow-picker.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1152,26 +1152,25 @@
             ],
             "propertiesClass": [
                 {
+                    "name": "_state",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ShadowPickerParams",
+                    "optional": true,
+                    "description": "",
+                    "line": 36,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
                     "name": "sample",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "string",
                     "optional": true,
                     "description": "",
-                    "line": 37,
-                    "modifierKind": [
-                        123
-                    ]
-                },
-                {
-                    "name": "state",
-                    "defaultValue": "{}",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "ShadowPickerParams",
-                    "optional": false,
-                    "description": "",
-                    "line": 36,
+                    "line": 45,
                     "modifierKind": [
                         123
                     ]
@@ -1191,7 +1190,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 55,
+                    "line": 63,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1226,7 +1225,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 39,
+                    "line": 47,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1273,7 +1272,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 45,
+                    "line": 53,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1308,13 +1307,51 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n} from '@angular/core';\r\n\r\nimport { ShadowOffset, ShadowPickerParams, ShadowPosition } from '../types';\r\nimport { buildShadowString, parseShadowString } from './utils';\r\n\r\nconst defaultParams: ShadowPickerParams = {\r\n    blur: '0',\r\n    color: '#000000',\r\n    offset: {\r\n        y: '0',\r\n        x: '0',\r\n    },\r\n    position: 'outside',\r\n    spread: '0',\r\n};\r\n\r\n@Component({\r\n    selector: 'shadow-picker',\r\n    templateUrl: './shadow-picker.component.html',\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ShadowPickerComponent implements OnChanges {\r\n    @Input() value?: string;\r\n    @Input() showSample = false;\r\n    @Input() className = '';\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    public state: ShadowPickerParams = {};\r\n    public sample?: string;\r\n\r\n    private setNewState(state: ShadowPickerParams, emit = true): void {\r\n        this.state = state;\r\n        this.sample = buildShadowString(this.state);\r\n        if (emit) this.onChange.emit(this.sample);\r\n    }\r\n\r\n    public updateState(\r\n        column: keyof ShadowPickerParams,\r\n        value: string | ShadowOffset | ShadowPosition | undefined,\r\n    ): void {\r\n        this.setNewState({\r\n            ...this.state,\r\n            [column]: value,\r\n        });\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.setNewState(\r\n                parseShadowString(changes.value.currentValue) || { ...defaultParams },\r\n                false,\r\n            );\r\n        }\r\n    }\r\n}\r\n",
+            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n} from '@angular/core';\r\n\r\nimport { ShadowOffset, ShadowPickerParams, ShadowPosition } from '../types';\r\nimport { buildShadowString, parseShadowString } from './utils';\r\n\r\nconst defaultParams: ShadowPickerParams = {\r\n    blur: '0',\r\n    color: '#000000',\r\n    offset: {\r\n        y: '0',\r\n        x: '0',\r\n    },\r\n    position: 'outside',\r\n    spread: '0',\r\n};\r\n\r\n@Component({\r\n    selector: 'shadow-picker',\r\n    templateUrl: './shadow-picker.component.html',\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ShadowPickerComponent implements OnChanges {\r\n    @Input() value?: string;\r\n    @Input() showSample = false;\r\n    @Input() className = '';\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    public _state?: ShadowPickerParams;\r\n    public set state(value: ShadowPickerParams | undefined) {\r\n        debugger;\r\n        this._state = value;\r\n    }\r\n    get state(): ShadowPickerParams | undefined {\r\n        return this._state;\r\n    }\r\n\r\n    public sample?: string;\r\n\r\n    private setNewState(state: ShadowPickerParams, emit = true): void {\r\n        this.state = state;\r\n        this.sample = buildShadowString(this.state);\r\n        if (emit) this.onChange.emit(this.sample);\r\n    }\r\n\r\n    public updateState(\r\n        column: keyof ShadowPickerParams,\r\n        value: string | ShadowOffset | ShadowPosition | undefined,\r\n    ): void {\r\n        this.setNewState({\r\n            ...this.state,\r\n            [column]: value,\r\n        });\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.setNewState(\r\n                parseShadowString(changes.value.currentValue) || { ...defaultParams },\r\n                false,\r\n            );\r\n        }\r\n    }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "implements": [
                 "OnChanges"
             ],
+            "accessors": {
+                "state": {
+                    "name": "state",
+                    "setSignature": {
+                        "name": "state",
+                        "type": "void",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "args": [
+                            {
+                                "name": "value",
+                                "type": "ShadowPickerParams | undefined",
+                                "deprecated": false,
+                                "deprecationMessage": ""
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 37,
+                        "jsdoctags": [
+                            {
+                                "name": "value",
+                                "type": "ShadowPickerParams | undefined",
+                                "deprecated": false,
+                                "deprecationMessage": "",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    },
+                    "getSignature": {
+                        "name": "state",
+                        "type": "",
+                        "returnType": "ShadowPickerParams | undefined",
+                        "line": 41
+                    }
+                }
+            },
             "templateData": "<div [ngClass]=\"className\" class=\"shadow-picker\">\r\n    <div class=\"sp-field-container\">\r\n        <type-field\r\n            [value]=\"state?.position || 'outside'\"\r\n            (onChange)=\"updateState('position', $event)\"\r\n        ></type-field>\r\n        <offset-field\r\n            [value]=\"state?.offset || { x: '0', y: '0' }\"\r\n            (onChange)=\"updateState('offset', $event)\"\r\n        ></offset-field>\r\n        <slider-field\r\n            [value]=\"state?.blur || '0'\"\r\n            (onChange)=\"updateState('blur', $event)\"\r\n            title=\"Blur\"\r\n        ></slider-field>\r\n        <slider-field\r\n            [value]=\"state?.spread || '0'\"\r\n            (onChange)=\"updateState('spread', $event)\"\r\n            title=\"Spread\"\r\n        ></slider-field>\r\n        <color-field\r\n            title=\"Color\"\r\n            [value]=\"state?.color || '#000000'\"\r\n            (onChange)=\"updateState('color', $event)\"\r\n            [attr.title]=\"state?.color || '#000000'\"\r\n        ></color-field>\r\n    </div>\r\n    <div *ngIf=\"showSample\" class=\"sp-sample-bg\">\r\n        <div class=\"sp-sample\" [ngStyle]=\"{ 'box-shadow': sample }\"></div>\r\n    </div>\r\n</div>\r\n"
         },
         {
@@ -1701,7 +1738,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "(value: string): ShadowPickerParams | null => {\r\n    const parts = value.replace(/ {2}/gi, ' ').trim().split(' ');\r\n    let position: ShadowPosition = 'outside';\r\n\r\n    if (parts[0] === 'inset') {\r\n        parts.shift();\r\n        position = 'inside';\r\n    }\r\n\r\n    if (parts.length === 3) {\r\n        const [x, y, color] = parts;\r\n        return { offset: { x, y }, color, position };\r\n    }\r\n\r\n    if (parts.length === 4) {\r\n        const [x, y, blur, color] = parts;\r\n        return { offset: { x, y }, color, blur, position };\r\n    }\r\n\r\n    if (parts.length === 5) {\r\n        const [x, y, blur, spread, color] = parts;\r\n        return { offset: { x, y }, color, spread, blur, position };\r\n    }\r\n\r\n    return null;\r\n}"
+                "defaultValue": "(value: string): ShadowPickerParams | null => {\r\n    const parts = (value || '').replace(/ {2}/gi, ' ').trim().split(' ');\r\n    let position: ShadowPosition = 'outside';\r\n\r\n    if (parts[0] === 'inset') {\r\n        parts.shift();\r\n        position = 'inside';\r\n    }\r\n\r\n    if (parts.length === 3) {\r\n        const [x, y, color] = parts;\r\n        return { offset: { x, y }, color, position };\r\n    }\r\n\r\n    if (parts.length === 4) {\r\n        const [x, y, blur, color] = parts;\r\n        return { offset: { x, y }, color, blur, position };\r\n    }\r\n\r\n    if (parts.length === 5) {\r\n        const [x, y, blur, spread, color] = parts;\r\n        return { offset: { x, y }, color, spread, blur, position };\r\n    }\r\n\r\n    return null;\r\n}"
             },
             {
                 "name": "require",
@@ -1729,7 +1766,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<ShadowPickerComponent>",
-                "defaultValue": "(props: any) => ({ props })"
+                "defaultValue": "(props) => ({ props })"
             },
             {
                 "name": "unitRegex",
@@ -1832,7 +1869,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "d71634cd-ac8c-477d-858c-fb498be000df",
+                        "destrucuredGroupId": "5d4a2a71-e42c-4d58-9147-41e6dbb62ca0",
                         "destructuredParameter": true
                     },
                     {
@@ -1840,7 +1877,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "d71634cd-ac8c-477d-858c-fb498be000df",
+                        "destrucuredGroupId": "5d4a2a71-e42c-4d58-9147-41e6dbb62ca0",
                         "destructuredParameter": true
                     }
                 ],
@@ -1851,7 +1888,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "d71634cd-ac8c-477d-858c-fb498be000df",
+                        "destrucuredGroupId": "5d4a2a71-e42c-4d58-9147-41e6dbb62ca0",
                         "destructuredParameter": true,
                         "tagName": {
                             "text": "param"
@@ -1862,7 +1899,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "d71634cd-ac8c-477d-858c-fb498be000df",
+                        "destrucuredGroupId": "5d4a2a71-e42c-4d58-9147-41e6dbb62ca0",
                         "destructuredParameter": true,
                         "tagName": {
                             "text": "param"
@@ -1934,7 +1971,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story<ShadowPickerComponent>",
-                    "defaultValue": "(props: any) => ({ props })"
+                    "defaultValue": "(props) => ({ props })"
                 }
             ],
             "projects/ngx-shadow-picker/src/components/utils.ts": [
@@ -1956,7 +1993,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "(value: string): ShadowPickerParams | null => {\r\n    const parts = value.replace(/ {2}/gi, ' ').trim().split(' ');\r\n    let position: ShadowPosition = 'outside';\r\n\r\n    if (parts[0] === 'inset') {\r\n        parts.shift();\r\n        position = 'inside';\r\n    }\r\n\r\n    if (parts.length === 3) {\r\n        const [x, y, color] = parts;\r\n        return { offset: { x, y }, color, position };\r\n    }\r\n\r\n    if (parts.length === 4) {\r\n        const [x, y, blur, color] = parts;\r\n        return { offset: { x, y }, color, blur, position };\r\n    }\r\n\r\n    if (parts.length === 5) {\r\n        const [x, y, blur, spread, color] = parts;\r\n        return { offset: { x, y }, color, spread, blur, position };\r\n    }\r\n\r\n    return null;\r\n}"
+                    "defaultValue": "(value: string): ShadowPickerParams | null => {\r\n    const parts = (value || '').replace(/ {2}/gi, ' ').trim().split(' ');\r\n    let position: ShadowPosition = 'outside';\r\n\r\n    if (parts[0] === 'inset') {\r\n        parts.shift();\r\n        position = 'inside';\r\n    }\r\n\r\n    if (parts.length === 3) {\r\n        const [x, y, color] = parts;\r\n        return { offset: { x, y }, color, position };\r\n    }\r\n\r\n    if (parts.length === 4) {\r\n        const [x, y, blur, color] = parts;\r\n        return { offset: { x, y }, color, blur, position };\r\n    }\r\n\r\n    if (parts.length === 5) {\r\n        const [x, y, blur, spread, color] = parts;\r\n        return { offset: { x, y }, color, spread, blur, position };\r\n    }\r\n\r\n    return null;\r\n}"
                 },
                 {
                     "name": "unitRegex",
@@ -2151,7 +2188,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "d71634cd-ac8c-477d-858c-fb498be000df",
+                            "destrucuredGroupId": "5d4a2a71-e42c-4d58-9147-41e6dbb62ca0",
                             "destructuredParameter": true
                         },
                         {
@@ -2159,7 +2196,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "d71634cd-ac8c-477d-858c-fb498be000df",
+                            "destrucuredGroupId": "5d4a2a71-e42c-4d58-9147-41e6dbb62ca0",
                             "destructuredParameter": true
                         }
                     ],
@@ -2170,7 +2207,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "d71634cd-ac8c-477d-858c-fb498be000df",
+                            "destrucuredGroupId": "5d4a2a71-e42c-4d58-9147-41e6dbb62ca0",
                             "destructuredParameter": true,
                             "tagName": {
                                 "text": "param"
@@ -2181,7 +2218,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "d71634cd-ac8c-477d-858c-fb498be000df",
+                            "destrucuredGroupId": "5d4a2a71-e42c-4d58-9147-41e6dbb62ca0",
                             "destructuredParameter": true,
                             "tagName": {
                                 "text": "param"

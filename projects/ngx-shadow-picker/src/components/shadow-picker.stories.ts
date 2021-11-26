@@ -9,7 +9,6 @@ export default {
     component: ShadowPickerComponent,
     decorators: [
         moduleMetadata({
-            declarations: [],
             imports: [CommonModule, ShadowPickerModule],
         }),
         componentWrapperDecorator(
@@ -25,7 +24,7 @@ export default {
     ],
 } as Meta;
 
-const Template: Story<ShadowPickerComponent> = (props: any) => ({ props });
+const Template: Story<ShadowPickerComponent> = (props) => ({ props });
 
 export const Basic = Template.bind({});
 Object.assign(Basic, {

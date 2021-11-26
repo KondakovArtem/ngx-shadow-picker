@@ -33,7 +33,7 @@ export class ShadowPickerComponent implements OnChanges {
     @Input() className = '';
     @Output() onChange = new EventEmitter<string>();
 
-    public state: ShadowPickerParams = {};
+    public state?: ShadowPickerParams;
     public sample?: string;
 
     private setNewState(state: ShadowPickerParams, emit = true): void {

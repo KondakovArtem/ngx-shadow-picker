@@ -138,6 +138,15 @@
             "tsConfig": "projects/ngx-shadow-picker/tsconfig.spec.json",
             "karmaConfig": "projects/ngx-shadow-picker/karma.conf.js"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/**/*.ts",
+              "projects/**/*.html"
+            ]
+          }
         }
       }
     }
