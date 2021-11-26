@@ -1,4 +1,17 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChange,
+    SimpleChanges,
+    ViewChild,
+} from '@angular/core';
 
 interface Offset {
     x: number;
@@ -8,80 +21,104 @@ interface Offset {
 @Component({
     selector: 'offset-grid',
     template: `<svg
+        #svgContainer
         class="offset-grid shadow-picker__grid"
-        (mouseMove)="onMove($event)"
-        (mouseDown)="setDragging(true)"
-        (mouseUp)="setDragging(false)"
+        (mousemove)="onMove($event)"
+        (mousedown)="setDragging(true)"
+        (mouseup)="setDragging(false)"
         [ngClass]="{ dragging: dragging }"
-        [attr.data-touch]="true"
-        [attr.viewBox]="'0 0 100 100'"
+        data-touch="true"
+        viewBox="0 0 100 100"
     >
         <line
-            [attr.x1]="50"
-            [attr.y1]="0"
-            [attr.x2]="50"
-            [attr.y2]="100"
-            [attr.strokeWidth]="2"
-            [attr.strokeDasharray]="'2,1'"
-            [attr.stroke]="currentColor"
+            x1="50"
+            y1="0"
+            x2="50"
+            y2="100"
+            stroke-width="2"
+            stroke-dasharray="2,1"
+            stroke="currentColor"
             class="shadow-picker__grid-line"
         ></line>
 
         <line
-            [attr.x1]="0"
-            [attr.y1]="50"
-            [attr.x2]="100"
-            [attr.y2]="50"
-            [attr.strokeDasharray]="'2,1'"
-            [attr.strokeWidth]="2"
-            [attr.stroke]="currentColor"
+            x1="0"
+            y1="50"
+            x2="100"
+            y2="50"
+            stroke-dasharray="2,1"
+            stroke-width="2"
+            stroke="currentColor"
             class="shadow-picker__grid-line"
         ></line>
 
         <line
-            [attr.x1]="50"
-            [attr.y1]="50"
+            class="shadow-picker__grid-line"
+            x1="50"
+            y1="50"
             [attr.x2]="posX"
             [attr.y2]="posY"
-            [attr.strokeWidth]="2"
-            [attr.stroke]="'currentColor'"
-            class="shadow-picker__grid-line"
+            stroke-width="2"
+            stroke="currentColor"
         ></line>
         <circle
             class="shadow-picker__grid-handle"
             [attr.cx]="posX"
             [attr.cy]="posY"
-            [attr.r]="5"
-            [attr.fill]="currentColor"
+            r="5"
+            fill="currentColor"
         ></circle>
     </svg>`,
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OffsetGridComponent {
-    @Input() offset?: Offset;
+export class OffsetGridComponent implements OnChanges {
+    @Input() offset!: Offset;
     @Input() max = 20;
     @Output() onChange = new EventEmitter<Offset>();
 
     public dragging = false;
-    public svg: any;
+    @ViewChild('svgContainer') svgRef!: ElementRef<SVGSVGElement>;
 
-    // public posX = (50 / this.max) * x + 50;
-    // public posY = (50 / this.max) * y + 50;
+    public posX = 50;
+    public posY = 50;
+
+    constructor(private cdr: ChangeDetectorRef) {}
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.offset) {
+            if (changes.offset.currentValue && !this.dragging) {
+                this.updatePostCoord(changes.offset.currentValue);
+            }
+        }
+    }
+
+    public updatePostCoord(offset: Offset = { x: 0, y: 0 }): void {
+        const { x = 0, y = 0 } = offset;
+        this.posX = (50 / this.max) * x + 50;
+        this.posY = (50 / this.max) * y + 50;
+    }
+
+    public setDragging(value: boolean): void {
+        this.dragging = value;
+    }
 
     public onMove(e: any): void {
-        if (!this.dragging || !this.svg?.current) return;
+        if (!this.dragging || !this.svgRef.nativeElement) return;
         this.updatePos(e);
     }
 
     public updatePos(e: { clientX: number; clientY: number }): void {
-        const point = this.svg.current.createSVGPoint();
+        const point = this.svgRef.nativeElement.createSVGPoint();
         point.x = e.clientX;
         point.y = e.clientY;
-        const t = point.matrixTransform(this.svg.current.getScreenCTM().inverse());
+        const t = point.matrixTransform(this.svgRef.nativeElement.getScreenCTM()?.inverse());
 
-        this.onChange.emit({
-            x: Math.trunc((t.x - 50) * (this.max / 50) * 100) / 100,
-            y: Math.trunc((t.y - 50) * (this.max / 50) * 100) / 100,
-        });
+        const newCoord = {
+            x: Math.trunc((t.x - 50) * (this.max / 50)), // * 100) / 100,
+            y: Math.trunc((t.y - 50) * (this.max / 50)), //* 100) / 100,
+        };
+
+        this.updatePostCoord(newCoord);
+        this.onChange.emit(newCoord);
     }
 }

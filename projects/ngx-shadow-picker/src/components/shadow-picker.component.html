@@ -4,20 +4,20 @@
         (onChange)="updateState('position', $event)"
     ></type-field>
     <offset-field
-        [value]="state?.offset || { x: '0', y: '0' }"
+        [value]="state?.offset || { x: 0, y: 0 }"
         (onChange)="updateState('offset', $event)"
     ></offset-field>
-    <!--<slider-field
+    <slider-field
         [value]="state?.blur || '0'"
-        (onChange)="updateState('blur')"
+        (onChange)="updateState('blur', $event)"
         title="Blur"
     ></slider-field>
     <slider-field
         [value]="state?.spread || '0'"
-        (onChange)="updateState('spread')"
+        (onChange)="updateState('spread', $event)"
         title="Spread"
     ></slider-field>
-    <color-field
+    <!--<color-field
         [value]="state?.color || '#000000'"
         (onChange)="updateState('color')"
     ></color-field> -->

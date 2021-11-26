@@ -1,9 +1,17 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+} from '@angular/core';
 
 @Component({
     selector: 'input-field',
     template: `<input
-        class="shadow-picker__input"
+        class="input shadow-picker__input"
         [ngModel]="tmp"
         (focus)="setActive(true)"
         (blur)="blur()"
@@ -11,7 +19,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
     />`,
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InputFieldComponent {
+export class InputFieldComponent implements OnChanges {
     @Input() value?: string;
     @Output() onChange = new EventEmitter<string>();
 
@@ -30,5 +38,10 @@ export class InputFieldComponent {
     public blur(): void {
         this.setActive(false);
         if (/(-?\d+)((r?em)|(px)|%)$/.test(this.tmp as string)) this.onChange.emit(this.tmp);
+    }
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.value && changes.value.currentValue) {
+            this.tmp = changes.value.currentValue;
+        }
     }
 }

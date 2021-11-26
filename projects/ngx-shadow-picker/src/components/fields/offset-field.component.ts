@@ -1,6 +1,15 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+} from '@angular/core';
 
-import { ShadowOffset, ShadowPickerParams } from '../../types';
+import { ShadowOffset, ShadowOffsetUnit, ShadowPickerParams } from '../../types';
+import { useOffsetUnit, useUnitValue } from '../utils';
 
 @Component({
     selector: 'offset-field',
@@ -22,29 +31,27 @@ import { ShadowOffset, ShadowPickerParams } from '../../types';
                     ></input-field>
                 </div>
             </div>
-
             <div class="grid">
-                <offset-grid
-                    [offset]="{ x: xAmount, y: yAmount }"
-                    onChange="{gridChange($event)}"
-                ></offset-grid>
+                <offset-grid [offset]="offsetUnit" (onChange)="gridChange($event)"></offset-grid>
             </div>
         </div>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OffsetFieldComponent {
+export class OffsetFieldComponent implements OnChanges {
     @Input() value!: ShadowPickerParams['offset'];
     @Output() onChange = new EventEmitter<ShadowPickerParams['offset']>();
 
-    public xAmount = 0;
-    public xUnit = 'px';
-    public yAmount = 0;
-    public yUnit = 'px';
+    public offsetUnit: ShadowOffsetUnit = {
+        x: 0,
+        y: 0,
+        xUnit: 'px',
+        yUnit: 'px',
+    };
 
     public gridChange({ x, y }: ShadowOffset): void {
-        const { xUnit, yUnit } = this;
-        this.onChange.emit({ x: x + xUnit, y: y + yUnit });
+        const { xUnit, yUnit } = this.offsetUnit;
+        this.onChange.emit({ x: `${x}${xUnit}`, y: `${y}${yUnit}` });
     }
 
     public inputChange(axis: 'x' | 'y', val: string): void {
@@ -53,6 +60,12 @@ export class OffsetFieldComponent {
                 ...this.value,
                 [axis]: val,
             });
+        }
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.value) {
+            this.offsetUnit = useOffsetUnit(changes.value.currentValue);
         }
     }
 }

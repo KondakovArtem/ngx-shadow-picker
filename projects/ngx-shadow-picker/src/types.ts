@@ -5,6 +5,13 @@ export interface ShadowOffset {
     y: string;
 }
 
+export interface ShadowOffsetUnit {
+    x: number;
+    y: number;
+    xUnit: string;
+    yUnit: string;
+}
+
 export interface ShadowPickerParams {
     position?: ShadowPosition;
     offset?: ShadowOffset;
