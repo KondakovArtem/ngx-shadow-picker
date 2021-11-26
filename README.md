@@ -1,27 +1,38 @@
-# NgGridstack
+![npm](https://img.shields.io/npm/v/ngx-shadow-picker) ![NPM](https://img.shields.io/npm/l/ngx-shadow-picker)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.6.
+# NgxShadowPicker
+
+A shadow picker inspired by the Chromium devtools.  This is a slight reimagining and a port of the component [react-shadow-picker](https://www.npmjs.com/package/react-shadow-picker)
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `yarn storybook` for a dev server. 
 
-## Code scaffolding
+![Demo](./assets/demo.png)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+[**Live Demo**](https://react-shadow-picker.now.sh)
 
-## Build
+### Installation
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```sh
+yarn add ngx-shadow-picker
+```
 
-## Running unit tests
+### Usage
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+The component can be used either in a Controlled or Uncontrolled way.
+If you pass the value back to the component, it will be controlled.
 
-## Running end-to-end tests
+```typescript
+import { NgxShadowPickerModule } from "ngx-shadow-picker";
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```
 
-## Further help
+#### Styling
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Add scss style in your project
+
+```scss
+  @import '~ngx-shadow-picker/styles/shadow-picker';
+```
+
