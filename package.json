@@ -1,0 +1,82 @@
+{
+  "name": "ngx-shadow-picker",
+  "version": "0.0.1",
+  "scripts": {
+    "postinstall": "ngcc && husky install",
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "yarn docs:json && build-storybook"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "~12.2.6",
+    "@angular/common": "~12.2.6",
+    "@angular/compiler": "~12.2.6",
+    "@angular/core": "~12.2.6",
+    "@angular/forms": "~12.2.6",
+    "@angular/platform-browser": "~12.2.6",
+    "@angular/platform-browser-dynamic": "~12.2.6",
+    "lodash": "^4.17.21",
+    "rxjs": "~7.3.0",
+    "tslib": "^2.3.1",
+    "zone.js": "~0.11.4"
+  },
+  "lint-staged": {
+    "*.{js,ts,html}": [
+      "eslint --fix"
+    ],
+    "*.scss": [
+      "stylelint --fix"
+    ]
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~12.2.6",
+    "@angular-eslint/builder": "^12.6.1",
+    "@angular-eslint/eslint-plugin": "^12.6.1",
+    "@angular-eslint/eslint-plugin-template": "^12.6.1",
+    "@angular-eslint/schematics": "^12.6.1",
+    "@angular-eslint/template-parser": "^12.6.1",
+    "@angular/cli": "~12.2.6",
+    "@angular/compiler-cli": "~12.2.6",
+    "@angular/elements": "^12.2.6",
+    "@babel/core": "^7.15.5",
+    "@compodoc/compodoc": "^1.1.15",
+    "@eslint/eslintrc": "^1.0.4",
+    "@storybook/addon-actions": "^6.3.12",
+    "@storybook/addon-essentials": "^6.3.12",
+    "@storybook/addon-links": "^6.3.12",
+    "@storybook/angular": "^6.3.12",
+    "@storybook/builder-webpack5": "^6.3.12",
+    "@storybook/manager-webpack5": "^6.3.12",
+    "@storybook/preset-scss": "^1.0.3",
+    "@types/lodash": "^4.14.174",
+    "@types/node": "^12.11.1",
+    "@typescript-eslint/eslint-plugin": "^5.3.0",
+    "@typescript-eslint/parser": "^5.3.0",
+    "@webcomponents/custom-elements": "^1.5.0",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^6.3.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-typescript": "^14.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.0",
+    "lint-staged": "^11.2.6",
+    "ng-packagr": "^12.2.2",
+    "postcss": "^8.3.11",
+    "prettier": "^2.4.1",
+    "sass": "^1.42.1",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^3.3.0",
+    "stylelint": "^14.0.1",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-standard-scss": "^2.0.1",
+    "typescript": "~4.3.5"
+  }
+}

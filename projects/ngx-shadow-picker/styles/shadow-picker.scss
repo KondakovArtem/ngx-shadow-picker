@@ -1,0 +1,105 @@
+@use 'sass:math';
+
+::ng-deep {
+    .shadow-picker {
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        background: #2a2a2a;
+        width: 240px;
+        height: 240px;
+        font-size: 14px;
+        font-family: sans-serif;
+        color: #bec6cf;
+    }
+
+    .shadow-picker-wrapper {
+        flex: 1;
+        display: flex;
+    }
+
+    .shadow-picker-label {
+        justify-content: flex-end;
+        width: 60px;
+        display: flex;
+        align-items: center;
+        user-select: none;
+    }
+
+    .shadow-picker-group {
+        display: flex;
+        width: 170px;
+        margin: 0 0 0 auto;
+    }
+
+    .shadow-picker-button {
+        border: 1px solid #555a;
+        background: transparent;
+        cursor: pointer;
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        margin: 0.5em 0;
+        &.active {
+            background: #4285f4;
+        }
+    }
+
+    .shadow-picker-button-out {
+        border-radius: 2px 0 0 2px;
+    }
+
+    .shadow-picker-button-in {
+        border-radius: 0 2px 2px 0;
+    }
+
+    .offset-field {
+        flex: 3;
+        display: flex;
+        .inputs {
+            display: grid;
+            grid-template-rows: repeat(3, 1fr);
+            flex: 2;
+            .row {
+                grid-column: 2 / span 2;
+                display: flex;
+                align-items: center;
+            }
+        }
+        .grid {
+            flex: 2;
+        }
+    }
+
+    .input {
+        background: transparent;
+        color: inherit;
+        border: 1px solid #555a;
+        border-radius: 2px;
+        width: 60px;
+        height: 28px;
+        margin: 0 8px;
+        box-sizing: border-box;
+        //flex: 1;
+        text-align: right;
+    }
+
+    .offset-grid {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #5a5a5a;
+        cursor: 'grab';
+        &.dragging {
+            cursor: 'grabbing';
+        }
+    }
+    .line {
+        color: #555a;
+    }
+    .handle {
+        color: #4285f4;
+        pointer-events: none;
+    }
+}

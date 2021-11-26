@@ -1,0 +1,24 @@
+<div [ngClass]="'shadow-picker' + className" class="shadow-picker">
+    <type-field
+        [value]="state?.position || 'outside'"
+        (onChange)="updateState('position', $event)"
+    ></type-field>
+    <offset-field
+        [value]="state?.offset || { x: '0', y: '0' }"
+        (onChange)="updateState('offset', $event)"
+    ></offset-field>
+    <!--<slider-field
+        [value]="state?.blur || '0'"
+        (onChange)="updateState('blur')"
+        title="Blur"
+    ></slider-field>
+    <slider-field
+        [value]="state?.spread || '0'"
+        (onChange)="updateState('spread')"
+        title="Spread"
+    ></slider-field>
+    <color-field
+        [value]="state?.color || '#000000'"
+        (onChange)="updateState('color')"
+    ></color-field> -->
+</div>
