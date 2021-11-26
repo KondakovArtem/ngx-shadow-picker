@@ -30,6 +30,7 @@ const defaultParams: ShadowPickerParams = {
 export class ShadowPickerComponent implements OnChanges {
     @Input() value?: string;
     @Input() showSample = false;
+    @Input() className = '';
     @Output() onChange = new EventEmitter<string>();
 
     public state: ShadowPickerParams = {};

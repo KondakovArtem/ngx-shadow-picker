@@ -24,11 +24,11 @@ const defaultColorState: IColorState = {
             (onChange)="onChange.emit($event)"
         ></input-field>
         <div class="sp-color-controller">
-            <input type="color" [ngModel]="color" (ngModelChange)="updated($event)" />
+            <input type="color" [ngModel]="state.color" (ngModelChange)="updated($event)" />
             <input
                 class="sp-slider"
                 type="range"
-                [ngModel]="alpha"
+                [ngModel]="state.alpha"
                 (ngModelChange)="updatedAlpha($event)"
                 max="255"
             />

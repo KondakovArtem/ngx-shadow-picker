@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 
 import { ShadowOffset, ShadowOffsetUnit, ShadowPickerParams } from '../../types';
+import { Offset } from '../inputs/offset-grid.component';
 import { useOffsetUnit } from '../utils';
 
 @Component({
@@ -20,7 +21,7 @@ import { useOffsetUnit } from '../utils';
                     <label class="sp-label">X Offset</label>
                     <input-field
                         style="flex: 1; display: flex;"
-                        [value]="value.x"
+                        [value]="value?.x"
                         (onChange)="inputChange('x', $event)"
                     ></input-field>
                 </div>
@@ -28,7 +29,7 @@ import { useOffsetUnit } from '../utils';
                     <label class="sp-label">Y Offset</label>
                     <input-field
                         style="flex: 1; display: flex;"
-                        [value]="value.y"
+                        [value]="value?.y"
                         (onChange)="inputChange('y', $event)"
                     ></input-field>
                 </div>
@@ -51,7 +52,7 @@ export class OffsetFieldComponent implements OnChanges {
         yUnit: 'px',
     };
 
-    public gridChange({ x, y }: ShadowOffset): void {
+    public gridChange({ x, y }: Offset): void {
         const { xUnit, yUnit } = this.offsetUnit;
         this.onChange.emit({ x: `${x}${xUnit}`, y: `${y}${yUnit}` });
     }

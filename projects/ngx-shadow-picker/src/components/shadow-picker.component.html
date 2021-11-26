@@ -1,11 +1,11 @@
-<div [ngClass]="[className || '']" class="shadow-picker">
+<div [ngClass]="className" class="shadow-picker">
     <div class="sp-field-container">
         <type-field
             [value]="state?.position || 'outside'"
             (onChange)="updateState('position', $event)"
         ></type-field>
         <offset-field
-            [value]="state?.offset || { x: 0, y: 0 }"
+            [value]="state?.offset || { x: '0', y: '0' }"
             (onChange)="updateState('offset', $event)"
         ></offset-field>
         <slider-field

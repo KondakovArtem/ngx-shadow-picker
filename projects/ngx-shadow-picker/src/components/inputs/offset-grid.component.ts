@@ -11,7 +11,7 @@ import {
     ViewChild,
 } from '@angular/core';
 
-interface Offset {
+export interface Offset {
     x: number;
     y: number;
 }
