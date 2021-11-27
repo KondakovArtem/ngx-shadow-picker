@@ -24,6 +24,9 @@ export interface Offset {
         (mousemove)="onMove($event)"
         (mousedown)="setDragging(true)"
         (mouseup)="setDragging(false)"
+        (touchmove)="onMove($event)"
+        (touchstart)="setDragging(true)"
+        (touchstop)="setDragging(false)"
         [ngClass]="{ dragging: dragging }"
         data-touch="true"
         viewBox="0 0 100 100"
@@ -105,16 +108,28 @@ export class OffsetGridComponent implements OnChanges {
         this.updatePos(e);
     }
 
-    public updatePos(e: { clientX: number; clientY: number }): void {
+    public updatePos(e: {
+        clientX: number;
+        clientY: number;
+        touches?: { clientX: number; clientY: number }[];
+    }): void {
         const point = this.svgRef.nativeElement.createSVGPoint();
-        point.x = e.clientX;
-        point.y = e.clientY;
+        if (e.touches) {
+            point.x = e.touches[0].clientX;
+            point.y = e.touches[0].clientY;
+        } else {
+            point.x = e.clientX;
+            point.y = e.clientY;
+        }
         const t = point.matrixTransform(this.svgRef.nativeElement.getScreenCTM()?.inverse());
 
         const newCoord = {
             x: Math.trunc((t.x - 50) * (this.max / 50)), // * 100) / 100,
             y: Math.trunc((t.y - 50) * (this.max / 50)), //* 100) / 100,
         };
+
+        newCoord.x = Math.max(-this.max, Math.min(newCoord.x, this.max));
+        newCoord.y = Math.max(-this.max, Math.min(newCoord.y, this.max));
 
         this.updatePostCoord(newCoord);
         this.onChange.emit(newCoord);
