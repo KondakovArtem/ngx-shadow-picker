@@ -14,7 +14,8 @@
         "storybook": "yarn docs:json && start-storybook -p 6006",
         "build-storybook": "yarn docs:json && build-storybook",
         "lint": "ng lint ngx-shadow-picker",
-        "husky": "yarn lint-staged --relative"
+        "husky": "yarn lint-staged --relative",
+        "chromatic": "npx chromatic --project-token=9059fa148ebf"
     },
     "license": "MIT",
     "homepage": "https://github.com/KondakovArtem/ngx-shadow-picker",

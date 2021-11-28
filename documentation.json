@@ -1945,21 +1945,21 @@
                 "name": "environment",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/environments/environment.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  production: false\n}"
-            },
-            {
-                "name": "environment",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/environments/environment.prod.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  production: true\n}"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/environments/environment.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  production: false\n}"
             },
             {
                 "name": "isLength",
@@ -2241,7 +2241,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "0a53a9cb-1471-43dc-89b4-e6d64417a060",
+                        "destrucuredGroupId": "e439da3a-8422-4a31-8269-14c2bc8a7e5b",
                         "destructuredParameter": true
                     },
                     {
@@ -2249,7 +2249,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "0a53a9cb-1471-43dc-89b4-e6d64417a060",
+                        "destrucuredGroupId": "e439da3a-8422-4a31-8269-14c2bc8a7e5b",
                         "destructuredParameter": true
                     }
                 ],
@@ -2260,7 +2260,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "0a53a9cb-1471-43dc-89b4-e6d64417a060",
+                        "destrucuredGroupId": "e439da3a-8422-4a31-8269-14c2bc8a7e5b",
                         "destructuredParameter": true,
                         "tagName": {
                             "text": "param"
@@ -2271,7 +2271,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "0a53a9cb-1471-43dc-89b4-e6d64417a060",
+                        "destrucuredGroupId": "e439da3a-8422-4a31-8269-14c2bc8a7e5b",
                         "destructuredParameter": true,
                         "tagName": {
                             "text": "param"
@@ -2464,18 +2464,6 @@
                     "defaultValue": "{\r\n    blur: '0',\r\n    color: '#000000',\r\n    offset: {\r\n        y: '0',\r\n        x: '0',\r\n    },\r\n    position: 'outside',\r\n    spread: '0',\r\n}"
                 }
             ],
-            "src/environments/environment.ts": [
-                {
-                    "name": "environment",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/environments/environment.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  production: false\n}"
-                }
-            ],
             "src/environments/environment.prod.ts": [
                 {
                     "name": "environment",
@@ -2486,6 +2474,18 @@
                     "deprecationMessage": "",
                     "type": "object",
                     "defaultValue": "{\n  production: true\n}"
+                }
+            ],
+            "src/environments/environment.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  production: false\n}"
                 }
             ],
             "projects/ngx-shadow-picker/src/components/css-box-shadow.ts": [
@@ -2713,7 +2713,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "0a53a9cb-1471-43dc-89b4-e6d64417a060",
+                            "destrucuredGroupId": "e439da3a-8422-4a31-8269-14c2bc8a7e5b",
                             "destructuredParameter": true
                         },
                         {
@@ -2721,7 +2721,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "0a53a9cb-1471-43dc-89b4-e6d64417a060",
+                            "destrucuredGroupId": "e439da3a-8422-4a31-8269-14c2bc8a7e5b",
                             "destructuredParameter": true
                         }
                     ],
@@ -2732,7 +2732,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "0a53a9cb-1471-43dc-89b4-e6d64417a060",
+                            "destrucuredGroupId": "e439da3a-8422-4a31-8269-14c2bc8a7e5b",
                             "destructuredParameter": true,
                             "tagName": {
                                 "text": "param"
@@ -2743,7 +2743,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "0a53a9cb-1471-43dc-89b4-e6d64417a060",
+                            "destrucuredGroupId": "e439da3a-8422-4a31-8269-14c2bc8a7e5b",
                             "destructuredParameter": true,
                             "tagName": {
                                 "text": "param"
