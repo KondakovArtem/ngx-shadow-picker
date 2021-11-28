@@ -2,13 +2,81 @@
     "pipes": [],
     "interfaces": [
         {
+            "name": "IBoxShadow",
+            "id": "interface-IBoxShadow-10dac57f3448397c75fb08e1d0d3f4d5e11d63e3e8453c61355dad079e6b4a78d81b73af6154373237098ff8e0cd2ce2c95d7f98a79d0c551e6c2b1e227f753d",
+            "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "const VALUES_REG = /,(?![^(]*\\))/;\r\nconst PARTS_REG = /\\s(?![^(]*\\))/;\r\nconst LENGTH_REG = /^[0-9]+[a-zA-Z%]+?$/;\r\n\r\nexport interface IBoxShadow {\r\n    inset: boolean;\r\n    offsetX: number | string;\r\n    offsetY: number | string;\r\n    blurRadius?: number | string;\r\n    spreadRadius?: number | string;\r\n    color?: string;\r\n}\r\n\r\nconst parseValue = (str: string): IBoxShadow => {\r\n    const parts = str.split(PARTS_REG);\r\n    const inset = parts.includes('inset');\r\n    const last = parts.slice(-1)[0];\r\n    const color = !isLength(last) ? last : undefined;\r\n\r\n    const nums = parts\r\n        .filter((n) => n !== 'inset')\r\n        .filter((n) => n !== color)\r\n        .map(toNum);\r\n    const [offsetX, offsetY, blurRadius, spreadRadius] = nums;\r\n\r\n    return {\r\n        inset,\r\n        offsetX,\r\n        offsetY,\r\n        blurRadius,\r\n        spreadRadius,\r\n        color,\r\n    };\r\n};\r\n\r\nconst stringifyValue = (obj: IBoxShadow): string => {\r\n    const { inset, offsetX = 0, offsetY = 0, blurRadius = 0, spreadRadius, color } = obj || {};\r\n\r\n    return [inset ? 'inset' : null, offsetX, offsetY, blurRadius, spreadRadius, color]\r\n        .filter((v) => v !== null && v !== undefined)\r\n        .map(toPx)\r\n        .map((s) => `${s}`.trim())\r\n        .join(' ');\r\n};\r\n\r\nconst isLength = (v: string): boolean => v === '0' || LENGTH_REG.test(v);\r\nconst toNum = (v: string): number | string => {\r\n    if (!/px$/.test(v) && v !== '0') return v;\r\n    const n = parseFloat(v);\r\n    return !Number.isNaN(n) ? n : v;\r\n};\r\nconst toPx = (n: number | string | undefined | null): string | number | undefined | null =>\r\n    typeof n === 'number' && n !== 0 ? `${n}px` : n;\r\n\r\nexport const parse = (str: string): IBoxShadow[] =>\r\n    str\r\n        .split(VALUES_REG)\r\n        .map((s) => s.trim())\r\n        .map(parseValue);\r\n\r\nexport const stringify = (arr: IBoxShadow[]): string => arr.map(stringifyValue).join(', ');\r\n",
+            "properties": [
+                {
+                    "name": "blurRadius",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number | string",
+                    "optional": true,
+                    "description": "",
+                    "line": 13
+                },
+                {
+                    "name": "color",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 15
+                },
+                {
+                    "name": "inset",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "",
+                    "line": 10
+                },
+                {
+                    "name": "offsetX",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number | string",
+                    "optional": false,
+                    "description": "",
+                    "line": 11
+                },
+                {
+                    "name": "offsetY",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number | string",
+                    "optional": false,
+                    "description": "",
+                    "line": 12
+                },
+                {
+                    "name": "spreadRadius",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number | string",
+                    "optional": true,
+                    "description": "",
+                    "line": 14
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
+        },
+        {
             "name": "IColorState",
-            "id": "interface-IColorState-594c25210afcf43a011b0de4034cea777ee8b3274e750cb935163c4566854cfcb69bd497c18a9801e45e64135530785363852d6b9d41b7648108597a66749b28",
+            "id": "interface-IColorState-7d5e21a7a385badb6d7a8ed9195a216935688785e18f9a2bbfc44a730340ad3e3fd5cceccf63dca7c7e7afd9eb5a51142bfe0b1ac6aba1c5be4f19db83041221",
             "file": "projects/ngx-shadow-picker/src/components/utils.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import type { ShadowOffsetUnit, ShadowPickerParams, ShadowPosition } from '../types';\r\n\r\nexport const unitRegex = /(-?\\d+)((r?em)|(px)|%)$/;\r\n\r\nexport function useOffsetUnit(\r\n    { x, y }: ShadowPickerParams['offset'] = { x: '0', y: '0' },\r\n): ShadowOffsetUnit {\r\n    const xData = useUnitValue(x);\r\n    const yData = useUnitValue(y);\r\n    return {\r\n        x: xData.amount,\r\n        xUnit: xData.unit,\r\n        y: yData.amount,\r\n        yUnit: yData.unit,\r\n    };\r\n}\r\n\r\nexport function useUnitValue(value: string): {\r\n    amount: number;\r\n    unit: string;\r\n} {\r\n    const defRes = {\r\n        amount: 0,\r\n        unit: 'px',\r\n    };\r\n\r\n    if ([undefined, null, ''].includes(value)) return defRes;\r\n    const matches = `${value}`.match(unitRegex);\r\n\r\n    if (matches?.length === 5) {\r\n        return {\r\n            amount: parseInt(matches[1], 10),\r\n            unit: matches[2],\r\n        };\r\n    }\r\n    return defRes;\r\n}\r\n\r\nexport const parseShadowString = (value: string): ShadowPickerParams | null => {\r\n    const parts = (value || '').replace(/ {2}/gi, ' ').trim().split(' ');\r\n    let position: ShadowPosition = 'outside';\r\n\r\n    if (parts[0] === 'inset') {\r\n        parts.shift();\r\n        position = 'inside';\r\n    }\r\n\r\n    if (parts.length === 3) {\r\n        const [x, y, color] = parts;\r\n        return { offset: { x, y }, color, position };\r\n    }\r\n\r\n    if (parts.length === 4) {\r\n        const [x, y, blur, color] = parts;\r\n        return { offset: { x, y }, color, blur, position };\r\n    }\r\n\r\n    if (parts.length === 5) {\r\n        const [x, y, blur, spread, color] = parts;\r\n        return { offset: { x, y }, color, spread, blur, position };\r\n    }\r\n\r\n    return null;\r\n};\r\n\r\nexport const buildShadowString = (params: ShadowPickerParams): string => {\r\n    const values = [\r\n        params.position === 'inside' ? 'inset' : undefined,\r\n        params.offset?.x || '0',\r\n        params.offset?.y || '0',\r\n        params.blur,\r\n        params.spread,\r\n        params.color || '#000000',\r\n    ].filter((p) => !!p);\r\n\r\n    return values.join(' ');\r\n};\r\n\r\nexport interface IColorState {\r\n    alpha: number;\r\n    color: string;\r\n}\r\n\r\nexport function parseHexColor(value: string): IColorState | null {\r\n    const match = value.match(/#(?<hex>[0-9A-F]{6,8})/i) as any;\r\n    const hex = match?.groups?.hex;\r\n    if (hex) {\r\n        let alpha = 255;\r\n        if (hex.length === 8) {\r\n            alpha = parseInt(hex.substr(6, 2), 16);\r\n        }\r\n        return { alpha, color: `#${hex.substr(0, 6)}` };\r\n    }\r\n    return null;\r\n}\r\n\r\n// <T extends (...args: any) => any>(func: T, wait?: number, options?: DebounceSettings): DebouncedFunc<T>\r\n\r\nexport function debounce<T extends (...args: any) => any>(func: T, timeout = 300): T {\r\n    let timer: ReturnType<typeof setTimeout>;\r\n    return ((...args: any): any => {\r\n        clearTimeout(timer);\r\n        timer = setTimeout(() => {\r\n            func(...args);\r\n        }, timeout);\r\n    }) as T;\r\n}\r\n",
+            "sourceCode": "import colorLib from '@kurkle/color';\r\n\r\nimport { parse, stringify } from './css-box-shadow';\r\nimport type { ShadowOffsetUnit, ShadowPickerParams } from '../types';\r\n\r\nexport const unitRegex = /(-?\\d+)((r?em)|(px)|%)$/;\r\n\r\nexport function useOffsetUnit(\r\n    { x, y }: ShadowPickerParams['offset'] = { x: '0', y: '0' },\r\n): ShadowOffsetUnit {\r\n    const xData = useUnitValue(x);\r\n    const yData = useUnitValue(y);\r\n    return {\r\n        x: xData.amount,\r\n        xUnit: xData.unit,\r\n        y: yData.amount,\r\n        yUnit: yData.unit,\r\n    };\r\n}\r\n\r\nexport function useUnitValue(value: string): {\r\n    amount: number;\r\n    unit: string;\r\n} {\r\n    const defRes = {\r\n        amount: 0,\r\n        unit: 'px',\r\n    };\r\n\r\n    if ([undefined, null, ''].includes(value)) return defRes;\r\n    const matches = `${value}`.match(unitRegex);\r\n\r\n    if (matches?.length === 5) {\r\n        return {\r\n            amount: parseInt(matches[1], 10),\r\n            unit: matches[2],\r\n        };\r\n    }\r\n    return defRes;\r\n}\r\n\r\nfunction toPx(value?: string | number): string {\r\n    if (![undefined, null, '', 0].includes(value as string) && !Number.isNaN(value)) {\r\n        return `${value}px`;\r\n    }\r\n    return value as string;\r\n}\r\n\r\nexport const parseShadowString = (value: string): ShadowPickerParams | null => {\r\n    const parseResult = parse(value);\r\n    if (parseResult && parseResult.length) {\r\n        const [{ inset, offsetX, offsetY, blurRadius, spreadRadius }] = parseResult;\r\n        let [{ color }] = parseResult;\r\n        const colorData = colorLib(color as string);\r\n        if (colorData.valid) {\r\n            color = colorData.hexString() as string;\r\n        }\r\n\r\n        return {\r\n            blur: `${toPx(blurRadius || 0)}`,\r\n            spread: `${toPx(spreadRadius || 0)}`,\r\n            offset: {\r\n                x: `${toPx(offsetX || 0)}`,\r\n                y: `${toPx(offsetY || 0)}`,\r\n            },\r\n            position: inset ? 'inside' : 'outside',\r\n            color,\r\n        };\r\n    }\r\n\r\n    // const parts = (value || '').replace(/ {2}/gi, ' ').trim().split(' ');\r\n    // let position: ShadowPosition = 'outside';\r\n\r\n    // if (parts[0] === 'inset') {\r\n    //     parts.shift();\r\n    //     position = 'inside';\r\n    // }\r\n\r\n    // if (parts.length === 3) {\r\n    //     const [x, y, color] = parts;\r\n    //     return { offset: { x, y }, color, position };\r\n    // }\r\n\r\n    // if (parts.length === 4) {\r\n    //     const [x, y, blur, color] = parts;\r\n    //     return { offset: { x, y }, color, blur, position };\r\n    // }\r\n\r\n    // if (parts.length === 5) {\r\n    //     const [x, y, blur, spread, color] = parts;\r\n    //     return { offset: { x, y }, color, spread, blur, position };\r\n    // }\r\n\r\n    return null;\r\n};\r\n\r\nexport const buildShadowString = (params: ShadowPickerParams): string => {\r\n    return stringify([\r\n        {\r\n            inset: params.position === 'inside',\r\n            blurRadius: params.blur,\r\n            offsetX: params.offset?.x || '0',\r\n            offsetY: params.offset?.y || '0',\r\n            spreadRadius: params.spread,\r\n            color: params.color || '#000000',\r\n        },\r\n    ]);\r\n\r\n    // const values = [\r\n    //     params.position === 'inside' ? 'inset' : undefined,\r\n    //     params.offset?.x || '0',\r\n    //     params.offset?.y || '0',\r\n    //     params.blur,\r\n    //     params.spread,\r\n    //     params.color || '#000000',\r\n    // ].filter((p) => !!p);\r\n\r\n    // return values.join(' ');\r\n};\r\n\r\nexport interface IColorState {\r\n    alpha: number;\r\n    color: string;\r\n}\r\n\r\nexport function parseHexColor(value: string): IColorState | null {\r\n    const match = value.match(/#(?<hex>[0-9A-F]{6,8})/i) as any;\r\n    const hex = match?.groups?.hex;\r\n    if (hex) {\r\n        let alpha = 255;\r\n        if (hex.length === 8) {\r\n            alpha = parseInt(hex.substr(6, 2), 16);\r\n        }\r\n        return { alpha, color: `#${hex.substr(0, 6)}` };\r\n    }\r\n    return null;\r\n}\r\n\r\nexport function debounce<T extends (...args: any) => any>(func: T, timeout = 300): T {\r\n    let timer: ReturnType<typeof setTimeout>;\r\n    return ((...args: any): any => {\r\n        clearTimeout(timer);\r\n        timer = setTimeout(() => {\r\n            func(...args);\r\n        }, timeout);\r\n    }) as T;\r\n}\r\n",
             "properties": [
                 {
                     "name": "alpha",
@@ -17,7 +85,7 @@
                     "type": "number",
                     "optional": false,
                     "description": "",
-                    "line": 80
+                    "line": 122
                 },
                 {
                     "name": "color",
@@ -26,7 +94,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 81
+                    "line": 123
                 }
             ],
             "indexSignatures": [],
@@ -35,12 +103,12 @@
         },
         {
             "name": "Offset",
-            "id": "interface-Offset-b1e324aca5c3f23aad7ff070b9b50adb398e38c67dbe9b58a5d2de305dd28e712d8707f7d4d5ec29f9edb06ff0ba213104d5541f7add09f77addfcac4b2911c0",
+            "id": "interface-Offset-61a34bf07a1075bf6fd6a2bb2308ebda8e7956adece86a227e04a85423073a17c4d29b09b322e3a7b9555664e6ab3042011a64ae0172944b21c004b73992cf94",
             "file": "projects/ngx-shadow-picker/src/components/inputs/offset-grid.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    ChangeDetectorRef,\r\n    Component,\r\n    ElementRef,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n    ViewChild,\r\n} from '@angular/core';\r\n\r\nexport interface Offset {\r\n    x: number;\r\n    y: number;\r\n}\r\n\r\n@Component({\r\n    selector: 'offset-grid',\r\n    template: `<svg\r\n        #svgContainer\r\n        class=\"sp-offset-grid\"\r\n        (mousemove)=\"onMove($event)\"\r\n        (mousedown)=\"setDragging(true)\"\r\n        (mouseup)=\"setDragging(false)\"\r\n        [ngClass]=\"{ dragging: dragging }\"\r\n        data-touch=\"true\"\r\n        viewBox=\"0 0 100 100\"\r\n    >\r\n        <line\r\n            x1=\"50\"\r\n            y1=\"0\"\r\n            x2=\"50\"\r\n            y2=\"100\"\r\n            stroke-width=\"2\"\r\n            stroke-dasharray=\"3,3\"\r\n            stroke=\"currentColor\"\r\n            class=\"sp-grid-line\"\r\n        ></line>\r\n\r\n        <line\r\n            x1=\"0\"\r\n            y1=\"50\"\r\n            x2=\"100\"\r\n            y2=\"50\"\r\n            stroke-dasharray=\"3,3\"\r\n            stroke-width=\"2\"\r\n            stroke=\"currentColor\"\r\n            class=\"sp-grid-line\"\r\n        ></line>\r\n\r\n        <line\r\n            class=\"sp-grid-line\"\r\n            x1=\"50\"\r\n            y1=\"50\"\r\n            [attr.x2]=\"posX\"\r\n            [attr.y2]=\"posY\"\r\n            stroke-width=\"2\"\r\n            stroke=\"currentColor\"\r\n        ></line>\r\n        <circle\r\n            class=\"sp-grid-handle\"\r\n            [attr.cx]=\"posX\"\r\n            [attr.cy]=\"posY\"\r\n            r=\"5\"\r\n            fill=\"currentColor\"\r\n        ></circle>\r\n    </svg>`,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class OffsetGridComponent implements OnChanges {\r\n    @Input() offset!: Offset;\r\n    @Input() max = 20;\r\n    @Output() onChange = new EventEmitter<Offset>();\r\n\r\n    public dragging = false;\r\n    @ViewChild('svgContainer') svgRef!: ElementRef<SVGSVGElement>;\r\n\r\n    public posX = 50;\r\n    public posY = 50;\r\n\r\n    constructor(private cdr: ChangeDetectorRef) {}\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.offset) {\r\n            if (changes.offset.currentValue && !this.dragging) {\r\n                this.updatePostCoord(changes.offset.currentValue);\r\n            }\r\n        }\r\n    }\r\n\r\n    public updatePostCoord(offset: Offset = { x: 0, y: 0 }): void {\r\n        const { x = 0, y = 0 } = offset;\r\n        this.posX = (50 / this.max) * x + 50;\r\n        this.posY = (50 / this.max) * y + 50;\r\n    }\r\n\r\n    public setDragging(value: boolean): void {\r\n        this.dragging = value;\r\n    }\r\n\r\n    public onMove(e: any): void {\r\n        if (!this.dragging || !this.svgRef.nativeElement) return;\r\n        this.updatePos(e);\r\n    }\r\n\r\n    public updatePos(e: { clientX: number; clientY: number }): void {\r\n        const point = this.svgRef.nativeElement.createSVGPoint();\r\n        point.x = e.clientX;\r\n        point.y = e.clientY;\r\n        const t = point.matrixTransform(this.svgRef.nativeElement.getScreenCTM()?.inverse());\r\n\r\n        const newCoord = {\r\n            x: Math.trunc((t.x - 50) * (this.max / 50)), // * 100) / 100,\r\n            y: Math.trunc((t.y - 50) * (this.max / 50)), //* 100) / 100,\r\n        };\r\n\r\n        this.updatePostCoord(newCoord);\r\n        this.onChange.emit(newCoord);\r\n    }\r\n}\r\n",
+            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    ChangeDetectorRef,\r\n    Component,\r\n    ElementRef,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n    ViewChild,\r\n} from '@angular/core';\r\n\r\nexport interface Offset {\r\n    x: number;\r\n    y: number;\r\n}\r\n\r\n@Component({\r\n    selector: 'offset-grid',\r\n    template: `<svg\r\n        #svgContainer\r\n        class=\"sp-offset-grid\"\r\n        (mousemove)=\"onMove($event)\"\r\n        (mousedown)=\"setDragging(true)\"\r\n        (mouseup)=\"setDragging(false)\"\r\n        (touchmove)=\"onMove($event)\"\r\n        (touchstart)=\"setDragging(true)\"\r\n        (touchstop)=\"setDragging(false)\"\r\n        [ngClass]=\"{ dragging: dragging }\"\r\n        data-touch=\"true\"\r\n        viewBox=\"0 0 100 100\"\r\n    >\r\n        <line\r\n            x1=\"50\"\r\n            y1=\"0\"\r\n            x2=\"50\"\r\n            y2=\"100\"\r\n            stroke-width=\"2\"\r\n            stroke-dasharray=\"3,3\"\r\n            stroke=\"currentColor\"\r\n            class=\"sp-grid-line\"\r\n        ></line>\r\n\r\n        <line\r\n            x1=\"0\"\r\n            y1=\"50\"\r\n            x2=\"100\"\r\n            y2=\"50\"\r\n            stroke-dasharray=\"3,3\"\r\n            stroke-width=\"2\"\r\n            stroke=\"currentColor\"\r\n            class=\"sp-grid-line\"\r\n        ></line>\r\n\r\n        <line\r\n            class=\"sp-grid-line\"\r\n            x1=\"50\"\r\n            y1=\"50\"\r\n            [attr.x2]=\"posX\"\r\n            [attr.y2]=\"posY\"\r\n            stroke-width=\"2\"\r\n            stroke=\"currentColor\"\r\n        ></line>\r\n        <circle\r\n            class=\"sp-grid-handle\"\r\n            [attr.cx]=\"posX\"\r\n            [attr.cy]=\"posY\"\r\n            r=\"5\"\r\n            fill=\"currentColor\"\r\n        ></circle>\r\n    </svg>`,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class OffsetGridComponent implements OnChanges {\r\n    @Input() offset!: Offset;\r\n    @Input() max = 20;\r\n    @Output() onChange = new EventEmitter<Offset>();\r\n\r\n    public dragging = false;\r\n    @ViewChild('svgContainer') svgRef!: ElementRef<SVGSVGElement>;\r\n\r\n    public posX = 50;\r\n    public posY = 50;\r\n\r\n    constructor(private cdr: ChangeDetectorRef) {}\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.offset) {\r\n            if (changes.offset.currentValue && !this.dragging) {\r\n                this.updatePostCoord(changes.offset.currentValue);\r\n            }\r\n        }\r\n    }\r\n\r\n    public updatePostCoord(offset: Offset = { x: 0, y: 0 }): void {\r\n        const { x = 0, y = 0 } = offset;\r\n        this.posX = (50 / this.max) * x + 50;\r\n        this.posY = (50 / this.max) * y + 50;\r\n    }\r\n\r\n    public setDragging(value: boolean): void {\r\n        this.dragging = value;\r\n    }\r\n\r\n    public onMove(e: any): void {\r\n        if (!this.dragging || !this.svgRef.nativeElement) return;\r\n        this.updatePos(e);\r\n    }\r\n\r\n    public updatePos(e: {\r\n        clientX: number;\r\n        clientY: number;\r\n        touches?: { clientX: number; clientY: number }[];\r\n    }): void {\r\n        const point = this.svgRef.nativeElement.createSVGPoint();\r\n        if (e.touches) {\r\n            point.x = e.touches[0].clientX;\r\n            point.y = e.touches[0].clientY;\r\n        } else {\r\n            point.x = e.clientX;\r\n            point.y = e.clientY;\r\n        }\r\n        const t = point.matrixTransform(this.svgRef.nativeElement.getScreenCTM()?.inverse());\r\n\r\n        const newCoord = {\r\n            x: Math.trunc((t.x - 50) * (this.max / 50)), // * 100) / 100,\r\n            y: Math.trunc((t.y - 50) * (this.max / 50)), //* 100) / 100,\r\n        };\r\n\r\n        newCoord.x = Math.max(-this.max, Math.min(newCoord.x, this.max));\r\n        newCoord.y = Math.max(-this.max, Math.min(newCoord.y, this.max));\r\n\r\n        this.updatePostCoord(newCoord);\r\n        this.onChange.emit(newCoord);\r\n    }\r\n}\r\n",
             "properties": [
                 {
                     "name": "x",
@@ -812,7 +880,7 @@
         },
         {
             "name": "OffsetGridComponent",
-            "id": "component-OffsetGridComponent-b1e324aca5c3f23aad7ff070b9b50adb398e38c67dbe9b58a5d2de305dd28e712d8707f7d4d5ec29f9edb06ff0ba213104d5541f7add09f77addfcac4b2911c0",
+            "id": "component-OffsetGridComponent-61a34bf07a1075bf6fd6a2bb2308ebda8e7956adece86a227e04a85423073a17c4d29b09b322e3a7b9555664e6ab3042011a64ae0172944b21c004b73992cf94",
             "file": "projects/ngx-shadow-picker/src/components/inputs/offset-grid.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -823,7 +891,7 @@
             "selector": "offset-grid",
             "styleUrls": [],
             "styles": [],
-            "template": "<svg        #svgContainer\n        class=\"sp-offset-grid\"\n        (mousemove)=\"onMove($event)\"\n        (mousedown)=\"setDragging(true)\"\n        (mouseup)=\"setDragging(false)\"\n        [ngClass]=\"{ dragging: dragging }\"\n        data-touch=\"true\"\n        viewBox=\"0 0 100 100\"\n    >\n        <line\n            x1=\"50\"\n            y1=\"0\"\n            x2=\"50\"\n            y2=\"100\"\n            stroke-width=\"2\"\n            stroke-dasharray=\"3,3\"\n            stroke=\"currentColor\"\n            class=\"sp-grid-line\"\n        ></line>\n\n        <line\n            x1=\"0\"\n            y1=\"50\"\n            x2=\"100\"\n            y2=\"50\"\n            stroke-dasharray=\"3,3\"\n            stroke-width=\"2\"\n            stroke=\"currentColor\"\n            class=\"sp-grid-line\"\n        ></line>\n\n        <line\n            class=\"sp-grid-line\"\n            x1=\"50\"\n            y1=\"50\"\n            [attr.x2]=\"posX\"\n            [attr.y2]=\"posY\"\n            stroke-width=\"2\"\n            stroke=\"currentColor\"\n        ></line>\n        <circle\n            class=\"sp-grid-handle\"\n            [attr.cx]=\"posX\"\n            [attr.cy]=\"posY\"\n            r=\"5\"\n            fill=\"currentColor\"\n        ></circle>\n    </svg>",
+            "template": "<svg        #svgContainer\n        class=\"sp-offset-grid\"\n        (mousemove)=\"onMove($event)\"\n        (mousedown)=\"setDragging(true)\"\n        (mouseup)=\"setDragging(false)\"\n        (touchmove)=\"onMove($event)\"\n        (touchstart)=\"setDragging(true)\"\n        (touchstop)=\"setDragging(false)\"\n        [ngClass]=\"{ dragging: dragging }\"\n        data-touch=\"true\"\n        viewBox=\"0 0 100 100\"\n    >\n        <line\n            x1=\"50\"\n            y1=\"0\"\n            x2=\"50\"\n            y2=\"100\"\n            stroke-width=\"2\"\n            stroke-dasharray=\"3,3\"\n            stroke=\"currentColor\"\n            class=\"sp-grid-line\"\n        ></line>\n\n        <line\n            x1=\"0\"\n            y1=\"50\"\n            x2=\"100\"\n            y2=\"50\"\n            stroke-dasharray=\"3,3\"\n            stroke-width=\"2\"\n            stroke=\"currentColor\"\n            class=\"sp-grid-line\"\n        ></line>\n\n        <line\n            class=\"sp-grid-line\"\n            x1=\"50\"\n            y1=\"50\"\n            [attr.x2]=\"posX\"\n            [attr.y2]=\"posY\"\n            stroke-width=\"2\"\n            stroke=\"currentColor\"\n        ></line>\n        <circle\n            class=\"sp-grid-handle\"\n            [attr.cx]=\"posX\"\n            [attr.cy]=\"posY\"\n            r=\"5\"\n            fill=\"currentColor\"\n        ></circle>\n    </svg>",
             "templateUrl": [],
             "viewProviders": [],
             "inputsClass": [
@@ -832,7 +900,7 @@
                     "defaultValue": "20",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 74,
+                    "line": 77,
                     "type": "number",
                     "decorators": []
                 },
@@ -840,7 +908,7 @@
                     "name": "offset",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 73,
+                    "line": 76,
                     "type": "Offset",
                     "decorators": []
                 }
@@ -851,7 +919,7 @@
                     "defaultValue": "new EventEmitter<Offset>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 75,
+                    "line": 78,
                     "type": "EventEmitter"
                 }
             ],
@@ -864,7 +932,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 77,
+                    "line": 80,
                     "modifierKind": [
                         123
                     ]
@@ -877,7 +945,7 @@
                     "type": "number",
                     "optional": false,
                     "description": "",
-                    "line": 80,
+                    "line": 83,
                     "modifierKind": [
                         123
                     ]
@@ -890,7 +958,7 @@
                     "type": "number",
                     "optional": false,
                     "description": "",
-                    "line": 81,
+                    "line": 84,
                     "modifierKind": [
                         123
                     ]
@@ -902,7 +970,7 @@
                     "type": "ElementRef<SVGSVGElement>",
                     "optional": false,
                     "description": "",
-                    "line": 78,
+                    "line": 81,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -925,7 +993,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 85,
+                    "line": 88,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -953,7 +1021,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 103,
+                    "line": 106,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -984,7 +1052,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 99,
+                    "line": 102,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1015,7 +1083,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 108,
+                    "line": 111,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1047,7 +1115,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 93,
+                    "line": 96,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1074,7 +1142,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    ChangeDetectorRef,\r\n    Component,\r\n    ElementRef,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n    ViewChild,\r\n} from '@angular/core';\r\n\r\nexport interface Offset {\r\n    x: number;\r\n    y: number;\r\n}\r\n\r\n@Component({\r\n    selector: 'offset-grid',\r\n    template: `<svg\r\n        #svgContainer\r\n        class=\"sp-offset-grid\"\r\n        (mousemove)=\"onMove($event)\"\r\n        (mousedown)=\"setDragging(true)\"\r\n        (mouseup)=\"setDragging(false)\"\r\n        [ngClass]=\"{ dragging: dragging }\"\r\n        data-touch=\"true\"\r\n        viewBox=\"0 0 100 100\"\r\n    >\r\n        <line\r\n            x1=\"50\"\r\n            y1=\"0\"\r\n            x2=\"50\"\r\n            y2=\"100\"\r\n            stroke-width=\"2\"\r\n            stroke-dasharray=\"3,3\"\r\n            stroke=\"currentColor\"\r\n            class=\"sp-grid-line\"\r\n        ></line>\r\n\r\n        <line\r\n            x1=\"0\"\r\n            y1=\"50\"\r\n            x2=\"100\"\r\n            y2=\"50\"\r\n            stroke-dasharray=\"3,3\"\r\n            stroke-width=\"2\"\r\n            stroke=\"currentColor\"\r\n            class=\"sp-grid-line\"\r\n        ></line>\r\n\r\n        <line\r\n            class=\"sp-grid-line\"\r\n            x1=\"50\"\r\n            y1=\"50\"\r\n            [attr.x2]=\"posX\"\r\n            [attr.y2]=\"posY\"\r\n            stroke-width=\"2\"\r\n            stroke=\"currentColor\"\r\n        ></line>\r\n        <circle\r\n            class=\"sp-grid-handle\"\r\n            [attr.cx]=\"posX\"\r\n            [attr.cy]=\"posY\"\r\n            r=\"5\"\r\n            fill=\"currentColor\"\r\n        ></circle>\r\n    </svg>`,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class OffsetGridComponent implements OnChanges {\r\n    @Input() offset!: Offset;\r\n    @Input() max = 20;\r\n    @Output() onChange = new EventEmitter<Offset>();\r\n\r\n    public dragging = false;\r\n    @ViewChild('svgContainer') svgRef!: ElementRef<SVGSVGElement>;\r\n\r\n    public posX = 50;\r\n    public posY = 50;\r\n\r\n    constructor(private cdr: ChangeDetectorRef) {}\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.offset) {\r\n            if (changes.offset.currentValue && !this.dragging) {\r\n                this.updatePostCoord(changes.offset.currentValue);\r\n            }\r\n        }\r\n    }\r\n\r\n    public updatePostCoord(offset: Offset = { x: 0, y: 0 }): void {\r\n        const { x = 0, y = 0 } = offset;\r\n        this.posX = (50 / this.max) * x + 50;\r\n        this.posY = (50 / this.max) * y + 50;\r\n    }\r\n\r\n    public setDragging(value: boolean): void {\r\n        this.dragging = value;\r\n    }\r\n\r\n    public onMove(e: any): void {\r\n        if (!this.dragging || !this.svgRef.nativeElement) return;\r\n        this.updatePos(e);\r\n    }\r\n\r\n    public updatePos(e: { clientX: number; clientY: number }): void {\r\n        const point = this.svgRef.nativeElement.createSVGPoint();\r\n        point.x = e.clientX;\r\n        point.y = e.clientY;\r\n        const t = point.matrixTransform(this.svgRef.nativeElement.getScreenCTM()?.inverse());\r\n\r\n        const newCoord = {\r\n            x: Math.trunc((t.x - 50) * (this.max / 50)), // * 100) / 100,\r\n            y: Math.trunc((t.y - 50) * (this.max / 50)), //* 100) / 100,\r\n        };\r\n\r\n        this.updatePostCoord(newCoord);\r\n        this.onChange.emit(newCoord);\r\n    }\r\n}\r\n",
+            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    ChangeDetectorRef,\r\n    Component,\r\n    ElementRef,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n    ViewChild,\r\n} from '@angular/core';\r\n\r\nexport interface Offset {\r\n    x: number;\r\n    y: number;\r\n}\r\n\r\n@Component({\r\n    selector: 'offset-grid',\r\n    template: `<svg\r\n        #svgContainer\r\n        class=\"sp-offset-grid\"\r\n        (mousemove)=\"onMove($event)\"\r\n        (mousedown)=\"setDragging(true)\"\r\n        (mouseup)=\"setDragging(false)\"\r\n        (touchmove)=\"onMove($event)\"\r\n        (touchstart)=\"setDragging(true)\"\r\n        (touchstop)=\"setDragging(false)\"\r\n        [ngClass]=\"{ dragging: dragging }\"\r\n        data-touch=\"true\"\r\n        viewBox=\"0 0 100 100\"\r\n    >\r\n        <line\r\n            x1=\"50\"\r\n            y1=\"0\"\r\n            x2=\"50\"\r\n            y2=\"100\"\r\n            stroke-width=\"2\"\r\n            stroke-dasharray=\"3,3\"\r\n            stroke=\"currentColor\"\r\n            class=\"sp-grid-line\"\r\n        ></line>\r\n\r\n        <line\r\n            x1=\"0\"\r\n            y1=\"50\"\r\n            x2=\"100\"\r\n            y2=\"50\"\r\n            stroke-dasharray=\"3,3\"\r\n            stroke-width=\"2\"\r\n            stroke=\"currentColor\"\r\n            class=\"sp-grid-line\"\r\n        ></line>\r\n\r\n        <line\r\n            class=\"sp-grid-line\"\r\n            x1=\"50\"\r\n            y1=\"50\"\r\n            [attr.x2]=\"posX\"\r\n            [attr.y2]=\"posY\"\r\n            stroke-width=\"2\"\r\n            stroke=\"currentColor\"\r\n        ></line>\r\n        <circle\r\n            class=\"sp-grid-handle\"\r\n            [attr.cx]=\"posX\"\r\n            [attr.cy]=\"posY\"\r\n            r=\"5\"\r\n            fill=\"currentColor\"\r\n        ></circle>\r\n    </svg>`,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class OffsetGridComponent implements OnChanges {\r\n    @Input() offset!: Offset;\r\n    @Input() max = 20;\r\n    @Output() onChange = new EventEmitter<Offset>();\r\n\r\n    public dragging = false;\r\n    @ViewChild('svgContainer') svgRef!: ElementRef<SVGSVGElement>;\r\n\r\n    public posX = 50;\r\n    public posY = 50;\r\n\r\n    constructor(private cdr: ChangeDetectorRef) {}\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.offset) {\r\n            if (changes.offset.currentValue && !this.dragging) {\r\n                this.updatePostCoord(changes.offset.currentValue);\r\n            }\r\n        }\r\n    }\r\n\r\n    public updatePostCoord(offset: Offset = { x: 0, y: 0 }): void {\r\n        const { x = 0, y = 0 } = offset;\r\n        this.posX = (50 / this.max) * x + 50;\r\n        this.posY = (50 / this.max) * y + 50;\r\n    }\r\n\r\n    public setDragging(value: boolean): void {\r\n        this.dragging = value;\r\n    }\r\n\r\n    public onMove(e: any): void {\r\n        if (!this.dragging || !this.svgRef.nativeElement) return;\r\n        this.updatePos(e);\r\n    }\r\n\r\n    public updatePos(e: {\r\n        clientX: number;\r\n        clientY: number;\r\n        touches?: { clientX: number; clientY: number }[];\r\n    }): void {\r\n        const point = this.svgRef.nativeElement.createSVGPoint();\r\n        if (e.touches) {\r\n            point.x = e.touches[0].clientX;\r\n            point.y = e.touches[0].clientY;\r\n        } else {\r\n            point.x = e.clientX;\r\n            point.y = e.clientY;\r\n        }\r\n        const t = point.matrixTransform(this.svgRef.nativeElement.getScreenCTM()?.inverse());\r\n\r\n        const newCoord = {\r\n            x: Math.trunc((t.x - 50) * (this.max / 50)), // * 100) / 100,\r\n            y: Math.trunc((t.y - 50) * (this.max / 50)), //* 100) / 100,\r\n        };\r\n\r\n        newCoord.x = Math.max(-this.max, Math.min(newCoord.x, this.max));\r\n        newCoord.y = Math.max(-this.max, Math.min(newCoord.y, this.max));\r\n\r\n        this.updatePostCoord(newCoord);\r\n        this.onChange.emit(newCoord);\r\n    }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -1091,7 +1159,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 81,
+                "line": 84,
                 "jsdoctags": [
                     {
                         "name": "cdr",
@@ -1647,7 +1715,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "(params: ShadowPickerParams): string => {\r\n    const values = [\r\n        params.position === 'inside' ? 'inset' : undefined,\r\n        params.offset?.x || '0',\r\n        params.offset?.y || '0',\r\n        params.blur,\r\n        params.spread,\r\n        params.color || '#000000',\r\n    ].filter((p) => !!p);\r\n\r\n    return values.join(' ');\r\n}"
+                "defaultValue": "(params: ShadowPickerParams): string => {\r\n    return stringify([\r\n        {\r\n            inset: params.position === 'inside',\r\n            blurRadius: params.blur,\r\n            offsetX: params.offset?.x || '0',\r\n            offsetY: params.offset?.y || '0',\r\n            spreadRadius: params.spread,\r\n            color: params.color || '#000000',\r\n        },\r\n    ]);\r\n\r\n    // const values = [\r\n    //     params.position === 'inside' ? 'inset' : undefined,\r\n    //     params.offset?.x || '0',\r\n    //     params.offset?.y || '0',\r\n    //     params.blur,\r\n    //     params.spread,\r\n    //     params.color || '#000000',\r\n    // ].filter((p) => !!p);\r\n\r\n    // return values.join(' ');\r\n}"
             },
             {
                 "name": "context",
@@ -1710,6 +1778,36 @@
                 "defaultValue": "{\n  production: false\n}"
             },
             {
+                "name": "isLength",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "(v: string): boolean => v === '0' || LENGTH_REG.test(v)"
+            },
+            {
+                "name": "LENGTH_REG",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "/^[0-9]+[a-zA-Z%]+?$/"
+            },
+            {
+                "name": "parse",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "(str: string): IBoxShadow[] =>\r\n    str\r\n        .split(VALUES_REG)\r\n        .map((s) => s.trim())\r\n        .map(parseValue)"
+            },
+            {
                 "name": "parseShadowString",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -1717,7 +1815,27 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "(value: string): ShadowPickerParams | null => {\r\n    const parts = (value || '').replace(/ {2}/gi, ' ').trim().split(' ');\r\n    let position: ShadowPosition = 'outside';\r\n\r\n    if (parts[0] === 'inset') {\r\n        parts.shift();\r\n        position = 'inside';\r\n    }\r\n\r\n    if (parts.length === 3) {\r\n        const [x, y, color] = parts;\r\n        return { offset: { x, y }, color, position };\r\n    }\r\n\r\n    if (parts.length === 4) {\r\n        const [x, y, blur, color] = parts;\r\n        return { offset: { x, y }, color, blur, position };\r\n    }\r\n\r\n    if (parts.length === 5) {\r\n        const [x, y, blur, spread, color] = parts;\r\n        return { offset: { x, y }, color, spread, blur, position };\r\n    }\r\n\r\n    return null;\r\n}"
+                "defaultValue": "(value: string): ShadowPickerParams | null => {\r\n    const parseResult = parse(value);\r\n    if (parseResult && parseResult.length) {\r\n        const [{ inset, offsetX, offsetY, blurRadius, spreadRadius }] = parseResult;\r\n        let [{ color }] = parseResult;\r\n        const colorData = colorLib(color as string);\r\n        if (colorData.valid) {\r\n            color = colorData.hexString() as string;\r\n        }\r\n\r\n        return {\r\n            blur: `${toPx(blurRadius || 0)}`,\r\n            spread: `${toPx(spreadRadius || 0)}`,\r\n            offset: {\r\n                x: `${toPx(offsetX || 0)}`,\r\n                y: `${toPx(offsetY || 0)}`,\r\n            },\r\n            position: inset ? 'inside' : 'outside',\r\n            color,\r\n        };\r\n    }\r\n\r\n    // const parts = (value || '').replace(/ {2}/gi, ' ').trim().split(' ');\r\n    // let position: ShadowPosition = 'outside';\r\n\r\n    // if (parts[0] === 'inset') {\r\n    //     parts.shift();\r\n    //     position = 'inside';\r\n    // }\r\n\r\n    // if (parts.length === 3) {\r\n    //     const [x, y, color] = parts;\r\n    //     return { offset: { x, y }, color, position };\r\n    // }\r\n\r\n    // if (parts.length === 4) {\r\n    //     const [x, y, blur, color] = parts;\r\n    //     return { offset: { x, y }, color, blur, position };\r\n    // }\r\n\r\n    // if (parts.length === 5) {\r\n    //     const [x, y, blur, spread, color] = parts;\r\n    //     return { offset: { x, y }, color, spread, blur, position };\r\n    // }\r\n\r\n    return null;\r\n}"
+            },
+            {
+                "name": "parseValue",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "(str: string): IBoxShadow => {\r\n    const parts = str.split(PARTS_REG);\r\n    const inset = parts.includes('inset');\r\n    const last = parts.slice(-1)[0];\r\n    const color = !isLength(last) ? last : undefined;\r\n\r\n    const nums = parts\r\n        .filter((n) => n !== 'inset')\r\n        .filter((n) => n !== color)\r\n        .map(toNum);\r\n    const [offsetX, offsetY, blurRadius, spreadRadius] = nums;\r\n\r\n    return {\r\n        inset,\r\n        offsetX,\r\n        offsetY,\r\n        blurRadius,\r\n        spreadRadius,\r\n        color,\r\n    };\r\n}"
+            },
+            {
+                "name": "PARTS_REG",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "/\\s(?![^(]*\\))/"
             },
             {
                 "name": "require",
@@ -1738,6 +1856,36 @@
                 "type": "literal type"
             },
             {
+                "name": "RGBA",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ngx-shadow-picker/src/components/shadow-picker.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "stringify",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "(arr: IBoxShadow[]): string => arr.map(stringifyValue).join(', ')"
+            },
+            {
+                "name": "stringifyValue",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "(obj: IBoxShadow): string => {\r\n    const { inset, offsetX = 0, offsetY = 0, blurRadius = 0, spreadRadius, color } = obj || {};\r\n\r\n    return [inset ? 'inset' : null, offsetX, offsetY, blurRadius, spreadRadius, color]\r\n        .filter((v) => v !== null && v !== undefined)\r\n        .map(toPx)\r\n        .map((s) => `${s}`.trim())\r\n        .join(' ');\r\n}"
+            },
+            {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -1748,6 +1896,26 @@
                 "defaultValue": "(props) => ({ props })"
             },
             {
+                "name": "toNum",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "(v: string): number | string => {\r\n    if (!/px$/.test(v) && v !== '0') return v;\r\n    const n = parseFloat(v);\r\n    return !Number.isNaN(n) ? n : v;\r\n}"
+            },
+            {
+                "name": "toPx",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "(n: number | string | undefined | null): string | number | undefined | null =>\r\n    typeof n === 'number' && n !== 0 ? `${n}px` : n"
+            },
+            {
                 "name": "unitRegex",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -1756,6 +1924,18 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "/(-?\\d+)((r?em)|(px)|%)$/"
+            },
+            {
+                "name": "VALUES_REG",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "/,(?![^(]*\\))/",
+                "rawdescription": "imported from https://github.com/jxnblk/css-box-shadow/blob/master/index.js",
+                "description": "<p>imported from <a href=\"https://github.com/jxnblk/css-box-shadow/blob/master/index.js\">https://github.com/jxnblk/css-box-shadow/blob/master/index.js</a></p>\n"
             }
         ],
         "functions": [
@@ -1835,6 +2015,35 @@
                 ]
             },
             {
+                "name": "toPx",
+                "file": "projects/ngx-shadow-picker/src/components/utils.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "args": [
+                    {
+                        "name": "value",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "optional": true
+                    }
+                ],
+                "returnType": "string",
+                "jsdoctags": [
+                    {
+                        "name": "value",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "optional": true,
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            {
                 "name": "useOffsetUnit",
                 "file": "projects/ngx-shadow-picker/src/components/utils.ts",
                 "ctype": "miscellaneous",
@@ -1848,7 +2057,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "968240c2-880b-4d48-8e20-ddab63643025",
+                        "destrucuredGroupId": "b7836ff3-564e-44a0-8eac-8f97e16619d3",
                         "destructuredParameter": true
                     },
                     {
@@ -1856,7 +2065,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "968240c2-880b-4d48-8e20-ddab63643025",
+                        "destrucuredGroupId": "b7836ff3-564e-44a0-8eac-8f97e16619d3",
                         "destructuredParameter": true
                     }
                 ],
@@ -1867,7 +2076,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "968240c2-880b-4d48-8e20-ddab63643025",
+                        "destrucuredGroupId": "b7836ff3-564e-44a0-8eac-8f97e16619d3",
                         "destructuredParameter": true,
                         "tagName": {
                             "text": "param"
@@ -1878,7 +2087,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "968240c2-880b-4d48-8e20-ddab63643025",
+                        "destrucuredGroupId": "b7836ff3-564e-44a0-8eac-8f97e16619d3",
                         "destructuredParameter": true,
                         "tagName": {
                             "text": "param"
@@ -1943,6 +2152,16 @@
                     "defaultValue": "Template.bind({})"
                 },
                 {
+                    "name": "RGBA",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ngx-shadow-picker/src/components/shadow-picker.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
@@ -1962,7 +2181,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "(params: ShadowPickerParams): string => {\r\n    const values = [\r\n        params.position === 'inside' ? 'inset' : undefined,\r\n        params.offset?.x || '0',\r\n        params.offset?.y || '0',\r\n        params.blur,\r\n        params.spread,\r\n        params.color || '#000000',\r\n    ].filter((p) => !!p);\r\n\r\n    return values.join(' ');\r\n}"
+                    "defaultValue": "(params: ShadowPickerParams): string => {\r\n    return stringify([\r\n        {\r\n            inset: params.position === 'inside',\r\n            blurRadius: params.blur,\r\n            offsetX: params.offset?.x || '0',\r\n            offsetY: params.offset?.y || '0',\r\n            spreadRadius: params.spread,\r\n            color: params.color || '#000000',\r\n        },\r\n    ]);\r\n\r\n    // const values = [\r\n    //     params.position === 'inside' ? 'inset' : undefined,\r\n    //     params.offset?.x || '0',\r\n    //     params.offset?.y || '0',\r\n    //     params.blur,\r\n    //     params.spread,\r\n    //     params.color || '#000000',\r\n    // ].filter((p) => !!p);\r\n\r\n    // return values.join(' ');\r\n}"
                 },
                 {
                     "name": "parseShadowString",
@@ -1972,7 +2191,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "(value: string): ShadowPickerParams | null => {\r\n    const parts = (value || '').replace(/ {2}/gi, ' ').trim().split(' ');\r\n    let position: ShadowPosition = 'outside';\r\n\r\n    if (parts[0] === 'inset') {\r\n        parts.shift();\r\n        position = 'inside';\r\n    }\r\n\r\n    if (parts.length === 3) {\r\n        const [x, y, color] = parts;\r\n        return { offset: { x, y }, color, position };\r\n    }\r\n\r\n    if (parts.length === 4) {\r\n        const [x, y, blur, color] = parts;\r\n        return { offset: { x, y }, color, blur, position };\r\n    }\r\n\r\n    if (parts.length === 5) {\r\n        const [x, y, blur, spread, color] = parts;\r\n        return { offset: { x, y }, color, spread, blur, position };\r\n    }\r\n\r\n    return null;\r\n}"
+                    "defaultValue": "(value: string): ShadowPickerParams | null => {\r\n    const parseResult = parse(value);\r\n    if (parseResult && parseResult.length) {\r\n        const [{ inset, offsetX, offsetY, blurRadius, spreadRadius }] = parseResult;\r\n        let [{ color }] = parseResult;\r\n        const colorData = colorLib(color as string);\r\n        if (colorData.valid) {\r\n            color = colorData.hexString() as string;\r\n        }\r\n\r\n        return {\r\n            blur: `${toPx(blurRadius || 0)}`,\r\n            spread: `${toPx(spreadRadius || 0)}`,\r\n            offset: {\r\n                x: `${toPx(offsetX || 0)}`,\r\n                y: `${toPx(offsetY || 0)}`,\r\n            },\r\n            position: inset ? 'inside' : 'outside',\r\n            color,\r\n        };\r\n    }\r\n\r\n    // const parts = (value || '').replace(/ {2}/gi, ' ').trim().split(' ');\r\n    // let position: ShadowPosition = 'outside';\r\n\r\n    // if (parts[0] === 'inset') {\r\n    //     parts.shift();\r\n    //     position = 'inside';\r\n    // }\r\n\r\n    // if (parts.length === 3) {\r\n    //     const [x, y, color] = parts;\r\n    //     return { offset: { x, y }, color, position };\r\n    // }\r\n\r\n    // if (parts.length === 4) {\r\n    //     const [x, y, blur, color] = parts;\r\n    //     return { offset: { x, y }, color, blur, position };\r\n    // }\r\n\r\n    // if (parts.length === 5) {\r\n    //     const [x, y, blur, spread, color] = parts;\r\n    //     return { offset: { x, y }, color, spread, blur, position };\r\n    // }\r\n\r\n    return null;\r\n}"
                 },
                 {
                     "name": "unitRegex",
@@ -2074,6 +2293,110 @@
                     "type": "object",
                     "defaultValue": "{\n  production: false\n}"
                 }
+            ],
+            "projects/ngx-shadow-picker/src/components/css-box-shadow.ts": [
+                {
+                    "name": "isLength",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "(v: string): boolean => v === '0' || LENGTH_REG.test(v)"
+                },
+                {
+                    "name": "LENGTH_REG",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "/^[0-9]+[a-zA-Z%]+?$/"
+                },
+                {
+                    "name": "parse",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "(str: string): IBoxShadow[] =>\r\n    str\r\n        .split(VALUES_REG)\r\n        .map((s) => s.trim())\r\n        .map(parseValue)"
+                },
+                {
+                    "name": "parseValue",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "(str: string): IBoxShadow => {\r\n    const parts = str.split(PARTS_REG);\r\n    const inset = parts.includes('inset');\r\n    const last = parts.slice(-1)[0];\r\n    const color = !isLength(last) ? last : undefined;\r\n\r\n    const nums = parts\r\n        .filter((n) => n !== 'inset')\r\n        .filter((n) => n !== color)\r\n        .map(toNum);\r\n    const [offsetX, offsetY, blurRadius, spreadRadius] = nums;\r\n\r\n    return {\r\n        inset,\r\n        offsetX,\r\n        offsetY,\r\n        blurRadius,\r\n        spreadRadius,\r\n        color,\r\n    };\r\n}"
+                },
+                {
+                    "name": "PARTS_REG",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "/\\s(?![^(]*\\))/"
+                },
+                {
+                    "name": "stringify",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "(arr: IBoxShadow[]): string => arr.map(stringifyValue).join(', ')"
+                },
+                {
+                    "name": "stringifyValue",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "(obj: IBoxShadow): string => {\r\n    const { inset, offsetX = 0, offsetY = 0, blurRadius = 0, spreadRadius, color } = obj || {};\r\n\r\n    return [inset ? 'inset' : null, offsetX, offsetY, blurRadius, spreadRadius, color]\r\n        .filter((v) => v !== null && v !== undefined)\r\n        .map(toPx)\r\n        .map((s) => `${s}`.trim())\r\n        .join(' ');\r\n}"
+                },
+                {
+                    "name": "toNum",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "(v: string): number | string => {\r\n    if (!/px$/.test(v) && v !== '0') return v;\r\n    const n = parseFloat(v);\r\n    return !Number.isNaN(n) ? n : v;\r\n}"
+                },
+                {
+                    "name": "toPx",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "(n: number | string | undefined | null): string | number | undefined | null =>\r\n    typeof n === 'number' && n !== 0 ? `${n}px` : n"
+                },
+                {
+                    "name": "VALUES_REG",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "/,(?![^(]*\\))/",
+                    "rawdescription": "imported from https://github.com/jxnblk/css-box-shadow/blob/master/index.js",
+                    "description": "<p>imported from <a href=\"https://github.com/jxnblk/css-box-shadow/blob/master/index.js\">https://github.com/jxnblk/css-box-shadow/blob/master/index.js</a></p>\n"
+                }
             ]
         },
         "groupedFunctions": {
@@ -2154,6 +2477,35 @@
                     ]
                 },
                 {
+                    "name": "toPx",
+                    "file": "projects/ngx-shadow-picker/src/components/utils.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "args": [
+                        {
+                            "name": "value",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "optional": true
+                        }
+                    ],
+                    "returnType": "string",
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "optional": true,
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
                     "name": "useOffsetUnit",
                     "file": "projects/ngx-shadow-picker/src/components/utils.ts",
                     "ctype": "miscellaneous",
@@ -2167,7 +2519,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "968240c2-880b-4d48-8e20-ddab63643025",
+                            "destrucuredGroupId": "b7836ff3-564e-44a0-8eac-8f97e16619d3",
                             "destructuredParameter": true
                         },
                         {
@@ -2175,7 +2527,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "968240c2-880b-4d48-8e20-ddab63643025",
+                            "destrucuredGroupId": "b7836ff3-564e-44a0-8eac-8f97e16619d3",
                             "destructuredParameter": true
                         }
                     ],
@@ -2186,7 +2538,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "968240c2-880b-4d48-8e20-ddab63643025",
+                            "destrucuredGroupId": "b7836ff3-564e-44a0-8eac-8f97e16619d3",
                             "destructuredParameter": true,
                             "tagName": {
                                 "text": "param"
@@ -2197,7 +2549,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "968240c2-880b-4d48-8e20-ddab63643025",
+                            "destrucuredGroupId": "b7836ff3-564e-44a0-8eac-8f97e16619d3",
                             "destructuredParameter": true,
                             "tagName": {
                                 "text": "param"
@@ -2255,9 +2607,118 @@
     },
     "routes": [],
     "coverage": {
-        "count": 0,
+        "count": 2,
         "status": "low",
         "files": [
+            {
+                "filePath": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "IBoxShadow",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "isLength",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "LENGTH_REG",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "parse",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "parseValue",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "PARTS_REG",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "stringify",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "stringifyValue",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "toNum",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "toPx",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ngx-shadow-picker/src/components/css-box-shadow.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "VALUES_REG",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
             {
                 "filePath": "projects/ngx-shadow-picker/src/components/fields/color-field.component.ts",
                 "type": "component",
@@ -2365,6 +2826,16 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
+                "name": "RGBA",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ngx-shadow-picker/src/components/shadow-picker.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
                 "name": "Template",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
@@ -2395,6 +2866,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "function",
                 "name": "parseHexColor",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ngx-shadow-picker/src/components/utils.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "toPx",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

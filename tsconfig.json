@@ -14,7 +14,8 @@
     "paths": {
       "ngx-shadow-picker": [
         "dist/ngx-shadow-picker/ngx-shadow-picker",
-        "dist/ngx-shadow-picker"
+        "dist/ngx-shadow-picker",
+        "projects/ngx-shadow-picker/src/public-api.ts"
       ]
     },
     "experimentalDecorators": true,

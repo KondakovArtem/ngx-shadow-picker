@@ -34,3 +34,12 @@ Object.assign(Basic, {
     },
     argTypes: { onChange: { action: 'clicked' } },
 });
+
+export const RGBA = Template.bind({});
+Object.assign(RGBA, {
+    args: {
+        value: '9px 6px 1px 1px rgba(134, 32, 34, 15%)',
+        showSample: true,
+    },
+    argTypes: { onChange: { action: 'clicked' } },
+});

@@ -1,4 +1,7 @@
-import type { ShadowOffsetUnit, ShadowPickerParams, ShadowPosition } from '../types';
+import colorLib from '@kurkle/color';
+
+import { parse, stringify } from './css-box-shadow';
+import type { ShadowOffsetUnit, ShadowPickerParams } from '../types';
 
 export const unitRegex = /(-?\d+)((r?em)|(px)|%)$/;
 
@@ -36,44 +39,49 @@ export function useUnitValue(value: string): {
     return defRes;
 }
 
+function toPx(value?: string | number): string {
+    if (![undefined, null, '', 0].includes(value as string) && !Number.isNaN(value)) {
+        return `${value}px`;
+    }
+    return value as string;
+}
+
 export const parseShadowString = (value: string): ShadowPickerParams | null => {
-    const parts = (value || '').replace(/ {2}/gi, ' ').trim().split(' ');
-    let position: ShadowPosition = 'outside';
-
-    if (parts[0] === 'inset') {
-        parts.shift();
-        position = 'inside';
+    const parseResult = parse(value);
+    if (parseResult && parseResult.length) {
+        const [{ inset, offsetX, offsetY, blurRadius, spreadRadius }] = parseResult;
+        let [{ color }] = parseResult;
+        if (!/^#[A-F0-9a-f]{1,8}$/.test(color || '')) {
+            const colorData = colorLib(color as string);
+            if (colorData.valid) {
+                color = colorData.hexString() as string;
+            }
+        }
+        return {
+            blur: `${toPx(blurRadius || 0)}`,
+            spread: `${toPx(spreadRadius || 0)}`,
+            offset: {
+                x: `${toPx(offsetX || 0)}`,
+                y: `${toPx(offsetY || 0)}`,
+            },
+            position: inset ? 'inside' : 'outside',
+            color,
+        };
     }
-
-    if (parts.length === 3) {
-        const [x, y, color] = parts;
-        return { offset: { x, y }, color, position };
-    }
-
-    if (parts.length === 4) {
-        const [x, y, blur, color] = parts;
-        return { offset: { x, y }, color, blur, position };
-    }
-
-    if (parts.length === 5) {
-        const [x, y, blur, spread, color] = parts;
-        return { offset: { x, y }, color, spread, blur, position };
-    }
-
     return null;
 };
 
 export const buildShadowString = (params: ShadowPickerParams): string => {
-    const values = [
-        params.position === 'inside' ? 'inset' : undefined,
-        params.offset?.x || '0',
-        params.offset?.y || '0',
-        params.blur,
-        params.spread,
-        params.color || '#000000',
-    ].filter((p) => !!p);
-
-    return values.join(' ');
+    return stringify([
+        {
+            inset: params.position === 'inside',
+            blurRadius: params.blur,
+            offsetX: params.offset?.x || '0',
+            offsetY: params.offset?.y || '0',
+            spreadRadius: params.spread,
+            color: params.color || '#000000',
+        },
+    ]);
 };
 
 export interface IColorState {
@@ -93,8 +101,6 @@ export function parseHexColor(value: string): IColorState | null {
     }
     return null;
 }
-
-// <T extends (...args: any) => any>(func: T, wait?: number, options?: DebounceSettings): DebouncedFunc<T>
 
 export function debounce<T extends (...args: any) => any>(func: T, timeout = 300): T {
     let timer: ReturnType<typeof setTimeout>;
