@@ -102,6 +102,38 @@
             "methods": []
         },
         {
+            "name": "ISliderFieldState",
+            "id": "interface-ISliderFieldState-456b42866e5ee383ba43f0dc4ed0f7af8391c5bd2e973b8e14ef8696e7d60b352a54995910993bb8d3bdd5072f12e35ad435c014fbb91c45e2c98a4797b3f0f0",
+            "file": "projects/ngx-shadow-picker/src/components/fields/slider-field.component.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n    TemplateRef,\r\n} from '@angular/core';\r\nimport { useUnitValue } from '../utils';\r\n\r\ninterface ISliderFieldState {\r\n    amount: number;\r\n    unit: string;\r\n}\r\n\r\n@Component({\r\n    selector: 'slider-field',\r\n    template: `\r\n        <div class=\"sp-slider-field\">\r\n            <label class=\"sp-label\">{{ title }}</label>\r\n            <input-field\r\n                style=\"flex-grow: 1; display:flex;\"\r\n                [value]=\"value\"\r\n                (onChange)=\"onChange.emit($event)\"\r\n                [template]=\"inputTpl\"\r\n            ></input-field>\r\n\r\n            <ng-container *ngIf=\"sliderTpl\">\r\n                <ng-container\r\n                    *ngTemplateOutlet=\"sliderTpl; context: templateContext\"\r\n                ></ng-container>\r\n            </ng-container>\r\n            <input\r\n                *ngIf=\"!sliderTpl\"\r\n                class=\"sp-slider\"\r\n                type=\"range\"\r\n                [ngModel]=\"state.amount\"\r\n                (ngModelChange)=\"changed($event)\"\r\n                max=\"100\"\r\n            />\r\n        </div>\r\n    `,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class SliderFieldComponent implements OnChanges {\r\n    @Input() title?: string;\r\n    @Input() value?: string;\r\n    @Input() inputTpl?: TemplateRef<any>;\r\n    @Input() sliderTpl?: TemplateRef<any>;\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    public setState(newState: ISliderFieldState): void {\r\n        this.state = newState;\r\n        this.templateContext = {\r\n            ...this.templateContext,\r\n            value: this.state.amount,\r\n        };\r\n    }\r\n\r\n    public state: ISliderFieldState = {\r\n        amount: 0,\r\n        unit: 'px',\r\n    };\r\n\r\n    public templateContext: {\r\n        value?: number;\r\n        onChange: {\r\n            emit($event: string): void;\r\n        };\r\n    } = {\r\n        value: 0,\r\n        onChange: {\r\n            emit: ($event: string) => this.changed($event),\r\n        },\r\n    };\r\n\r\n    public changed($event: string): void {\r\n        const amount = parseInt($event, 10);\r\n        this.setState({\r\n            ...this.state,\r\n            amount,\r\n        });\r\n        this.onChange.emit(`${this.state.amount}${this.state.unit}`);\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.setState(useUnitValue(changes.value.currentValue));\r\n        }\r\n    }\r\n}\r\n",
+            "properties": [
+                {
+                    "name": "amount",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 14
+                },
+                {
+                    "name": "unit",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 15
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
+        },
+        {
             "name": "Offset",
             "id": "interface-Offset-61a34bf07a1075bf6fd6a2bb2308ebda8e7956adece86a227e04a85423073a17c4d29b09b322e3a7b9555664e6ab3042011a64ae0172944b21c004b73992cf94",
             "file": "projects/ngx-shadow-picker/src/components/inputs/offset-grid.component.ts",
@@ -526,7 +558,7 @@
         },
         {
             "name": "InputFieldComponent",
-            "id": "component-InputFieldComponent-112f48d77831d9d2e2b0cb687513a03a314e7386d4c9b7f99157781250b48de0de7e0f3da8447a2247a137a7d7856e0dc05e5615703fa3fd66feb5c89a954b93",
+            "id": "component-InputFieldComponent-b9d375a9a335fd0362c51d2576a037148b4b128ac59e33828cb3f3cfee171d38711f09ac82e7ce2b33481d28b02449f2b36c72cc8e32cc7e2a63f74e056e6485",
             "file": "projects/ngx-shadow-picker/src/components/inputs/input.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -537,15 +569,23 @@
             "selector": "input-field",
             "styleUrls": [],
             "styles": [],
-            "template": "<input        class=\"sp-input shadow-picker__input\"\n        [ngModel]=\"tmp\"\n        (focus)=\"setActive(true)\"\n        (blur)=\"blur()\"\n        (ngModelChange)=\"changed($event)\"\n    />",
+            "template": "<ng-container *ngIf=\"template\">            <ng-container *ngTemplateOutlet=\"template; context: templateContext\"></ng-container>\n        </ng-container>\n\n        <input\n            *ngIf=\"!template\"\n            class=\"sp-input shadow-picker__input\"\n            [ngModel]=\"tmp\"\n            (focus)=\"setActive(true)\"\n            (blur)=\"blur()\"\n            (ngModelChange)=\"changed($event)\"\n        />",
             "templateUrl": [],
             "viewProviders": [],
             "inputsClass": [
                 {
+                    "name": "template",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 30,
+                    "type": "TemplateRef<any>",
+                    "decorators": []
+                },
+                {
                     "name": "value",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 23,
+                    "line": 29,
                     "type": "string",
                     "decorators": []
                 }
@@ -556,7 +596,7 @@
                     "defaultValue": "new EventEmitter<string>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 24,
+                    "line": 31,
                     "type": "EventEmitter"
                 }
             ],
@@ -569,7 +609,20 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 27,
+                    "line": 34,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "templateContext",
+                    "defaultValue": "{\r\n        value: '',\r\n        onChange: {\r\n            emit: ($event: string) => this.changed($event),\r\n        },\r\n    }",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type",
+                    "optional": false,
+                    "description": "",
+                    "line": 36,
                     "modifierKind": [
                         123
                     ]
@@ -581,7 +634,7 @@
                     "type": "string",
                     "optional": true,
                     "description": "",
-                    "line": 26,
+                    "line": 33,
                     "modifierKind": [
                         123
                     ]
@@ -594,7 +647,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 38,
+                    "line": 61,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -614,7 +667,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 33,
+                    "line": 52,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -645,7 +698,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 42,
+                    "line": 65,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -673,7 +726,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 29,
+                    "line": 48,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -699,7 +752,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n} from '@angular/core';\r\n\r\n@Component({\r\n    selector: 'input-field',\r\n    template: `<input\r\n        class=\"sp-input shadow-picker__input\"\r\n        [ngModel]=\"tmp\"\r\n        (focus)=\"setActive(true)\"\r\n        (blur)=\"blur()\"\r\n        (ngModelChange)=\"changed($event)\"\r\n    />`,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class InputFieldComponent implements OnChanges {\r\n    @Input() value?: string;\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    public tmp?: string;\r\n    public active = false;\r\n\r\n    public setActive(val: boolean): void {\r\n        this.active = val;\r\n    }\r\n\r\n    public changed(newValue: string): void {\r\n        this.tmp = newValue;\r\n        this.onChange.emit(newValue);\r\n    }\r\n\r\n    public blur(): void {\r\n        this.setActive(false);\r\n        if (/(-?\\d+)((r?em)|(px)|%)$/.test(this.tmp as string)) this.onChange.emit(this.tmp);\r\n    }\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value && changes.value.currentValue) {\r\n            this.tmp = changes.value.currentValue;\r\n        }\r\n    }\r\n}\r\n",
+            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n    TemplateRef,\r\n} from '@angular/core';\r\n\r\n@Component({\r\n    selector: 'input-field',\r\n    template: `<ng-container *ngIf=\"template\">\r\n            <ng-container *ngTemplateOutlet=\"template; context: templateContext\"></ng-container>\r\n        </ng-container>\r\n\r\n        <input\r\n            *ngIf=\"!template\"\r\n            class=\"sp-input shadow-picker__input\"\r\n            [ngModel]=\"tmp\"\r\n            (focus)=\"setActive(true)\"\r\n            (blur)=\"blur()\"\r\n            (ngModelChange)=\"changed($event)\"\r\n        />`,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class InputFieldComponent implements OnChanges {\r\n    @Input() value?: string;\r\n    @Input() template?: TemplateRef<any>;\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    public tmp?: string;\r\n    public active = false;\r\n\r\n    public templateContext: {\r\n        value?: string;\r\n        onChange: {\r\n            emit($event: string): void;\r\n        };\r\n    } = {\r\n        value: '',\r\n        onChange: {\r\n            emit: ($event: string) => this.changed($event),\r\n        },\r\n    };\r\n\r\n    public setActive(val: boolean): void {\r\n        this.active = val;\r\n    }\r\n\r\n    public changed(newValue: string): void {\r\n        this.tmp = newValue;\r\n        this.templateContext = {\r\n            ...this.templateContext,\r\n            value: this.tmp,\r\n        };\r\n        this.onChange.emit(newValue);\r\n    }\r\n\r\n    public blur(): void {\r\n        this.setActive(false);\r\n        if (/(-?\\d+)((r?em)|(px)|%)$/.test(this.tmp as string)) this.onChange.emit(this.tmp);\r\n    }\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value && changes.value.currentValue) {\r\n            this.tmp = changes.value.currentValue;\r\n            this.templateContext = {\r\n                ...this.templateContext,\r\n                value: this.tmp,\r\n            };\r\n        }\r\n    }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -709,7 +762,7 @@
         },
         {
             "name": "OffsetFieldComponent",
-            "id": "component-OffsetFieldComponent-5ade6886b8e32caef2411352be302fb70f9b5c6c107957f4218549bc8cca9cae9de97626aa6957e35a625e5e33fa02380e6f321481b69b8a4cab7fac41714622",
+            "id": "component-OffsetFieldComponent-8a407882e1b10cb69bd0743718d7d7b86623490df3f4521d38d2f6f416e446b597c626636c8eb691d6be857039d58cfd2e499e2f378c690c2a6d9d8064291b1b",
             "file": "projects/ngx-shadow-picker/src/components/fields/offset-field.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -720,15 +773,23 @@
             "selector": "offset-field",
             "styleUrls": [],
             "styles": [],
-            "template": "<div class=\"sp-offset-field\">\n    <div class=\"sp-inputs\">\n        <div class=\"sp-row\">\n            <label class=\"sp-label\">X Offset</label>\n            <input-field\n                style=\"flex: 1; display: flex;\"\n                [value]=\"value?.x\"\n                (onChange)=\"inputChange('x', $event)\"\n            ></input-field>\n        </div>\n        <div class=\"sp-row\">\n            <label class=\"sp-label\">Y Offset</label>\n            <input-field\n                style=\"flex: 1; display: flex;\"\n                [value]=\"value?.y\"\n                (onChange)=\"inputChange('y', $event)\"\n            ></input-field>\n        </div>\n    </div>\n    <div class=\"sp-grid\">\n        <offset-grid [offset]=\"offsetUnit\" (onChange)=\"gridChange($event)\"></offset-grid>\n    </div>\n</div>\n",
+            "template": "<div class=\"sp-offset-field\">\n    <div class=\"sp-inputs\">\n        <div class=\"sp-row\">\n            <label class=\"sp-label\">X Offset</label>\n            <input-field\n                style=\"flex: 1; display: flex;\"\n                [template]=\"inputTpl\"\n                [value]=\"value?.x\"\n                (onChange)=\"inputChange('x', $event)\"\n            ></input-field>\n        </div>\n        <div class=\"sp-row\">\n            <label class=\"sp-label\">Y Offset</label>\n            <input-field\n                [template]=\"inputTpl\"\n                style=\"flex: 1; display: flex;\"\n                [value]=\"value?.y\"\n                (onChange)=\"inputChange('y', $event)\"\n            ></input-field>\n        </div>\n    </div>\n    <div class=\"sp-grid\">\n        <offset-grid [offset]=\"offsetUnit\" (onChange)=\"gridChange($event)\"></offset-grid>\n    </div>\n</div>\n",
             "templateUrl": [],
             "viewProviders": [],
             "inputsClass": [
                 {
+                    "name": "inputTpl",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 49,
+                    "type": "TemplateRef<any>",
+                    "decorators": []
+                },
+                {
                     "name": "value",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 45,
+                    "line": 48,
                     "type": "",
                     "decorators": []
                 }
@@ -739,7 +800,7 @@
                     "defaultValue": "new EventEmitter<ShadowPickerParams['offset']>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 46,
+                    "line": 50,
                     "type": "EventEmitter"
                 }
             ],
@@ -752,7 +813,7 @@
                     "type": "ShadowOffsetUnit",
                     "optional": false,
                     "description": "",
-                    "line": 48,
+                    "line": 52,
                     "modifierKind": [
                         123
                     ]
@@ -771,7 +832,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 55,
+                    "line": 59,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -807,7 +868,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 60,
+                    "line": 64,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -847,7 +908,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 69,
+                    "line": 73,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -870,7 +931,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n} from '@angular/core';\r\n\r\nimport { ShadowOffsetUnit, ShadowPickerParams } from '../../types';\r\nimport { Offset } from '../inputs/offset-grid.component';\r\nimport { useOffsetUnit } from '../utils';\r\n\r\n@Component({\r\n    selector: 'offset-field',\r\n    template: `\r\n        <div class=\"sp-offset-field\">\r\n            <div class=\"sp-inputs\">\r\n                <div class=\"sp-row\">\r\n                    <label class=\"sp-label\">X Offset</label>\r\n                    <input-field\r\n                        style=\"flex: 1; display: flex;\"\r\n                        [value]=\"value?.x\"\r\n                        (onChange)=\"inputChange('x', $event)\"\r\n                    ></input-field>\r\n                </div>\r\n                <div class=\"sp-row\">\r\n                    <label class=\"sp-label\">Y Offset</label>\r\n                    <input-field\r\n                        style=\"flex: 1; display: flex;\"\r\n                        [value]=\"value?.y\"\r\n                        (onChange)=\"inputChange('y', $event)\"\r\n                    ></input-field>\r\n                </div>\r\n            </div>\r\n            <div class=\"sp-grid\">\r\n                <offset-grid [offset]=\"offsetUnit\" (onChange)=\"gridChange($event)\"></offset-grid>\r\n            </div>\r\n        </div>\r\n    `,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class OffsetFieldComponent implements OnChanges {\r\n    @Input() value!: ShadowPickerParams['offset'];\r\n    @Output() onChange = new EventEmitter<ShadowPickerParams['offset']>();\r\n\r\n    public offsetUnit: ShadowOffsetUnit = {\r\n        x: 0,\r\n        y: 0,\r\n        xUnit: 'px',\r\n        yUnit: 'px',\r\n    };\r\n\r\n    public gridChange({ x, y }: Offset): void {\r\n        const { xUnit, yUnit } = this.offsetUnit;\r\n        this.onChange.emit({ x: `${x}${xUnit}`, y: `${y}${yUnit}` });\r\n    }\r\n\r\n    public inputChange(axis: 'x' | 'y', val: string): void {\r\n        if (this.value) {\r\n            this.onChange.emit({\r\n                ...this.value,\r\n                [axis]: val,\r\n            });\r\n        }\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.offsetUnit = useOffsetUnit(changes.value.currentValue);\r\n        }\r\n    }\r\n}\r\n",
+            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n    TemplateRef,\r\n} from '@angular/core';\r\n\r\nimport { ShadowOffsetUnit, ShadowPickerParams } from '../../types';\r\nimport { Offset } from '../inputs/offset-grid.component';\r\nimport { useOffsetUnit } from '../utils';\r\n\r\n@Component({\r\n    selector: 'offset-field',\r\n    template: `\r\n        <div class=\"sp-offset-field\">\r\n            <div class=\"sp-inputs\">\r\n                <div class=\"sp-row\">\r\n                    <label class=\"sp-label\">X Offset</label>\r\n                    <input-field\r\n                        style=\"flex: 1; display: flex;\"\r\n                        [template]=\"inputTpl\"\r\n                        [value]=\"value?.x\"\r\n                        (onChange)=\"inputChange('x', $event)\"\r\n                    ></input-field>\r\n                </div>\r\n                <div class=\"sp-row\">\r\n                    <label class=\"sp-label\">Y Offset</label>\r\n                    <input-field\r\n                        [template]=\"inputTpl\"\r\n                        style=\"flex: 1; display: flex;\"\r\n                        [value]=\"value?.y\"\r\n                        (onChange)=\"inputChange('y', $event)\"\r\n                    ></input-field>\r\n                </div>\r\n            </div>\r\n            <div class=\"sp-grid\">\r\n                <offset-grid [offset]=\"offsetUnit\" (onChange)=\"gridChange($event)\"></offset-grid>\r\n            </div>\r\n        </div>\r\n    `,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class OffsetFieldComponent implements OnChanges {\r\n    @Input() value!: ShadowPickerParams['offset'];\r\n    @Input() inputTpl?: TemplateRef<any>;\r\n    @Output() onChange = new EventEmitter<ShadowPickerParams['offset']>();\r\n\r\n    public offsetUnit: ShadowOffsetUnit = {\r\n        x: 0,\r\n        y: 0,\r\n        xUnit: 'px',\r\n        yUnit: 'px',\r\n    };\r\n\r\n    public gridChange({ x, y }: Offset): void {\r\n        const { xUnit, yUnit } = this.offsetUnit;\r\n        this.onChange.emit({ x: `${x}${xUnit}`, y: `${y}${yUnit}` });\r\n    }\r\n\r\n    public inputChange(axis: 'x' | 'y', val: string): void {\r\n        if (this.value) {\r\n            this.onChange.emit({\r\n                ...this.value,\r\n                [axis]: val,\r\n            });\r\n        }\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.offsetUnit = useOffsetUnit(changes.value.currentValue);\r\n        }\r\n    }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -1178,7 +1239,7 @@
         },
         {
             "name": "ShadowPickerComponent",
-            "id": "component-ShadowPickerComponent-19f8d92cd684e43e7177d5b35f05841fb8c1f3e07299b50238126583de1d5ad2a9c773adaf9e713b53099adcb264f6660bc181d8a92144fab0c48bba1b39ee87",
+            "id": "component-ShadowPickerComponent-ba5bbff5c3f849f2aae8f0229ea21400565761bcc659184d465d41c51d9a1d1b71bc7dcc09f35201f95a6b199a0ad967f31634ad7066c45040243db84862bc99",
             "file": "projects/ngx-shadow-picker/src/components/shadow-picker.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1199,7 +1260,7 @@
                     "defaultValue": "''",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 33,
+                    "line": 35,
                     "type": "string",
                     "decorators": []
                 },
@@ -1208,7 +1269,7 @@
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 32,
+                    "line": 34,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -1216,7 +1277,7 @@
                     "name": "value",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 31,
+                    "line": 33,
                     "type": "string",
                     "decorators": []
                 }
@@ -1227,11 +1288,26 @@
                     "defaultValue": "new EventEmitter<string>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 34,
+                    "line": 36,
                     "type": "EventEmitter"
                 }
             ],
             "propertiesClass": [
+                {
+                    "name": "inputTpl",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "TemplateRef<any>",
+                    "optional": false,
+                    "description": "",
+                    "line": 39,
+                    "decorators": [
+                        {
+                            "name": "ContentChild",
+                            "stringifiedArguments": "'input', {read: TemplateRef, static: true}"
+                        }
+                    ]
+                },
                 {
                     "name": "sample",
                     "deprecated": false,
@@ -1239,9 +1315,24 @@
                     "type": "string",
                     "optional": true,
                     "description": "",
-                    "line": 37,
+                    "line": 43,
                     "modifierKind": [
                         123
+                    ]
+                },
+                {
+                    "name": "sliderTpl",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "TemplateRef<any>",
+                    "optional": false,
+                    "description": "",
+                    "line": 40,
+                    "decorators": [
+                        {
+                            "name": "ContentChild",
+                            "stringifiedArguments": "'slider', {read: TemplateRef, static: true}"
+                        }
                     ]
                 },
                 {
@@ -1251,9 +1342,24 @@
                     "type": "ShadowPickerParams",
                     "optional": true,
                     "description": "",
-                    "line": 36,
+                    "line": 42,
                     "modifierKind": [
                         123
+                    ]
+                },
+                {
+                    "name": "typeTpl",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "TemplateRef<any>",
+                    "optional": false,
+                    "description": "",
+                    "line": 38,
+                    "decorators": [
+                        {
+                            "name": "ContentChild",
+                            "stringifiedArguments": "'type', {read: TemplateRef, static: true}"
+                        }
                     ]
                 }
             ],
@@ -1271,7 +1377,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 55,
+                    "line": 61,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1306,7 +1412,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 39,
+                    "line": 45,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1353,7 +1459,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 45,
+                    "line": 51,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1388,18 +1494,18 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n} from '@angular/core';\r\n\r\nimport { ShadowOffset, ShadowPickerParams, ShadowPosition } from '../types';\r\nimport { buildShadowString, parseShadowString } from './utils';\r\n\r\nconst defaultParams: ShadowPickerParams = {\r\n    blur: '0',\r\n    color: '#000000',\r\n    offset: {\r\n        y: '0',\r\n        x: '0',\r\n    },\r\n    position: 'outside',\r\n    spread: '0',\r\n};\r\n\r\n@Component({\r\n    selector: 'shadow-picker',\r\n    templateUrl: './shadow-picker.component.html',\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ShadowPickerComponent implements OnChanges {\r\n    @Input() value?: string;\r\n    @Input() showSample = false;\r\n    @Input() className = '';\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    public state?: ShadowPickerParams;\r\n    public sample?: string;\r\n\r\n    private setNewState(state: ShadowPickerParams, emit = true): void {\r\n        this.state = state;\r\n        this.sample = buildShadowString(this.state);\r\n        if (emit) this.onChange.emit(this.sample);\r\n    }\r\n\r\n    public updateState(\r\n        column: keyof ShadowPickerParams,\r\n        value: string | ShadowOffset | ShadowPosition | undefined,\r\n    ): void {\r\n        this.setNewState({\r\n            ...this.state,\r\n            [column]: value,\r\n        });\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.setNewState(\r\n                parseShadowString(changes.value.currentValue) || { ...defaultParams },\r\n                false,\r\n            );\r\n        }\r\n    }\r\n}\r\n",
+            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    ContentChild,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n    TemplateRef,\r\n} from '@angular/core';\r\n\r\nimport { ShadowOffset, ShadowPickerParams, ShadowPosition } from '../types';\r\nimport { buildShadowString, parseShadowString } from './utils';\r\n\r\nconst defaultParams: ShadowPickerParams = {\r\n    blur: '0',\r\n    color: '#000000',\r\n    offset: {\r\n        y: '0',\r\n        x: '0',\r\n    },\r\n    position: 'outside',\r\n    spread: '0',\r\n};\r\n\r\n@Component({\r\n    selector: 'shadow-picker',\r\n    templateUrl: './shadow-picker.component.html',\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ShadowPickerComponent implements OnChanges {\r\n    @Input() value?: string;\r\n    @Input() showSample = false;\r\n    @Input() className = '';\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    @ContentChild('type', { read: TemplateRef, static: true }) typeTpl!: TemplateRef<any>;\r\n    @ContentChild('input', { read: TemplateRef, static: true }) inputTpl!: TemplateRef<any>;\r\n    @ContentChild('slider', { read: TemplateRef, static: true }) sliderTpl!: TemplateRef<any>;\r\n\r\n    public state?: ShadowPickerParams;\r\n    public sample?: string;\r\n\r\n    private setNewState(state: ShadowPickerParams, emit = true): void {\r\n        this.state = state;\r\n        this.sample = buildShadowString(this.state);\r\n        if (emit) this.onChange.emit(this.sample);\r\n    }\r\n\r\n    public updateState(\r\n        column: keyof ShadowPickerParams,\r\n        value: string | ShadowOffset | ShadowPosition | undefined,\r\n    ): void {\r\n        this.setNewState({\r\n            ...this.state,\r\n            [column]: value,\r\n        });\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.setNewState(\r\n                parseShadowString(changes.value.currentValue) || { ...defaultParams },\r\n                false,\r\n            );\r\n        }\r\n    }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "implements": [
                 "OnChanges"
             ],
-            "templateData": "<div [ngClass]=\"className\" class=\"shadow-picker\">\r\n    <div class=\"sp-field-container\">\r\n        <type-field\r\n            [value]=\"state?.position || 'outside'\"\r\n            (onChange)=\"updateState('position', $event)\"\r\n        ></type-field>\r\n        <offset-field\r\n            [value]=\"state?.offset || { x: '0', y: '0' }\"\r\n            (onChange)=\"updateState('offset', $event)\"\r\n        ></offset-field>\r\n        <slider-field\r\n            [value]=\"state?.blur || '0'\"\r\n            (onChange)=\"updateState('blur', $event)\"\r\n            title=\"Blur\"\r\n        ></slider-field>\r\n        <slider-field\r\n            [value]=\"state?.spread || '0'\"\r\n            (onChange)=\"updateState('spread', $event)\"\r\n            title=\"Spread\"\r\n        ></slider-field>\r\n        <color-field\r\n            title=\"Color\"\r\n            [value]=\"state?.color || '#000000'\"\r\n            (onChange)=\"updateState('color', $event)\"\r\n            [attr.title]=\"state?.color || '#000000'\"\r\n        ></color-field>\r\n    </div>\r\n    <div *ngIf=\"showSample\" class=\"sp-sample-bg\">\r\n        <div class=\"sp-sample\" [ngStyle]=\"{ 'box-shadow': sample }\"></div>\r\n    </div>\r\n</div>\r\n"
+            "templateData": "<div [ngClass]=\"className\" class=\"shadow-picker\">\r\n    <div class=\"sp-field-container\">\r\n        <type-field\r\n            [value]=\"state?.position || 'outside'\"\r\n            (onChange)=\"updateState('position', $event)\"\r\n            [template]=\"typeTpl\"\r\n        ></type-field>\r\n        <offset-field\r\n            [value]=\"state?.offset || { x: '0', y: '0' }\"\r\n            (onChange)=\"updateState('offset', $event)\"\r\n            [inputTpl]=\"inputTpl\"\r\n        ></offset-field>\r\n        <slider-field\r\n            [value]=\"state?.blur || '0'\"\r\n            (onChange)=\"updateState('blur', $event)\"\r\n            [inputTpl]=\"inputTpl\"\r\n            [sliderTpl]=\"sliderTpl\"\r\n            title=\"Blur\"\r\n        ></slider-field>\r\n        <slider-field\r\n            [value]=\"state?.spread || '0'\"\r\n            (onChange)=\"updateState('spread', $event)\"\r\n            [inputTpl]=\"inputTpl\"\r\n            [sliderTpl]=\"sliderTpl\"\r\n            title=\"Spread\"\r\n        ></slider-field>\r\n        <color-field\r\n            title=\"Color\"\r\n            [value]=\"state?.color || '#000000'\"\r\n            (onChange)=\"updateState('color', $event)\"\r\n            [attr.title]=\"state?.color || '#000000'\"\r\n        ></color-field>\r\n    </div>\r\n    <div *ngIf=\"showSample\" class=\"sp-sample-bg\">\r\n        <div class=\"sp-sample\" [ngStyle]=\"{ 'box-shadow': sample }\"></div>\r\n    </div>\r\n</div>\r\n"
         },
         {
             "name": "SliderFieldComponent",
-            "id": "component-SliderFieldComponent-6c6acd174ee645d4a183907ebcca89babb882aa6c1f957497f24f1753b636d44f86cd9c88033c69f7ee39680394bd701bccc6c0877a931d32152220b13044ab3",
+            "id": "component-SliderFieldComponent-456b42866e5ee383ba43f0dc4ed0f7af8391c5bd2e973b8e14ef8696e7d60b352a54995910993bb8d3bdd5072f12e35ad435c014fbb91c45e2c98a4797b3f0f0",
             "file": "projects/ngx-shadow-picker/src/components/fields/slider-field.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1410,15 +1516,31 @@
             "selector": "slider-field",
             "styleUrls": [],
             "styles": [],
-            "template": "<div class=\"sp-slider-field\">\n    <label class=\"sp-label\">{{ title }}</label>\n    <input-field\n        style=\"flex-grow: 1; display:flex;\"\n        [value]=\"value\"\n        (onChange)=\"onChange.emit($event)\"\n    ></input-field>\n    <input\n        class=\"sp-slider\"\n        type=\"range\"\n        [ngModel]=\"state.amount\"\n        (ngModelChange)=\"changed($event)\"\n        max=\"100\"\n    />\n</div>\n",
+            "template": "<div class=\"sp-slider-field\">\n    <label class=\"sp-label\">{{ title }}</label>\n    <input-field\n        style=\"flex-grow: 1; display:flex;\"\n        [value]=\"value\"\n        (onChange)=\"onChange.emit($event)\"\n        [template]=\"inputTpl\"\n    ></input-field>\n\n    <ng-container *ngIf=\"sliderTpl\">\n        <ng-container\n            *ngTemplateOutlet=\"sliderTpl; context: templateContext\"\n        ></ng-container>\n    </ng-container>\n    <input\n        *ngIf=\"!sliderTpl\"\n        class=\"sp-slider\"\n        type=\"range\"\n        [ngModel]=\"state.amount\"\n        (ngModelChange)=\"changed($event)\"\n        max=\"100\"\n    />\n</div>\n",
             "templateUrl": [],
             "viewProviders": [],
             "inputsClass": [
                 {
+                    "name": "inputTpl",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 50,
+                    "type": "TemplateRef<any>",
+                    "decorators": []
+                },
+                {
+                    "name": "sliderTpl",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 51,
+                    "type": "TemplateRef<any>",
+                    "decorators": []
+                },
+                {
                     "name": "title",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 34,
+                    "line": 48,
                     "type": "string",
                     "decorators": []
                 },
@@ -1426,7 +1548,7 @@
                     "name": "value",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 35,
+                    "line": 49,
                     "type": "string",
                     "decorators": []
                 }
@@ -1437,7 +1559,7 @@
                     "defaultValue": "new EventEmitter<string>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 36,
+                    "line": 52,
                     "type": "EventEmitter"
                 }
             ],
@@ -1447,10 +1569,23 @@
                     "defaultValue": "{\r\n        amount: 0,\r\n        unit: 'px',\r\n    }",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "object",
+                    "type": "ISliderFieldState",
                     "optional": false,
                     "description": "",
-                    "line": 38,
+                    "line": 62,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "templateContext",
+                    "defaultValue": "{\r\n        value: 0,\r\n        onChange: {\r\n            emit: ($event: string) => this.changed($event),\r\n        },\r\n    }",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type",
+                    "optional": false,
+                    "description": "",
+                    "line": 67,
                     "modifierKind": [
                         123
                     ]
@@ -1470,7 +1605,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 43,
+                    "line": 79,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1501,13 +1636,44 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 52,
+                    "line": 88,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
                             "name": "changes",
                             "type": "SimpleChanges",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "setState",
+                    "args": [
+                        {
+                            "name": "newState",
+                            "type": "ISliderFieldState",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 54,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "newState",
+                            "type": "ISliderFieldState",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
@@ -1524,7 +1690,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n} from '@angular/core';\r\nimport { useUnitValue } from '../utils';\r\n\r\n@Component({\r\n    selector: 'slider-field',\r\n    template: `\r\n        <div class=\"sp-slider-field\">\r\n            <label class=\"sp-label\">{{ title }}</label>\r\n            <input-field\r\n                style=\"flex-grow: 1; display:flex;\"\r\n                [value]=\"value\"\r\n                (onChange)=\"onChange.emit($event)\"\r\n            ></input-field>\r\n            <input\r\n                class=\"sp-slider\"\r\n                type=\"range\"\r\n                [ngModel]=\"state.amount\"\r\n                (ngModelChange)=\"changed($event)\"\r\n                max=\"100\"\r\n            />\r\n        </div>\r\n    `,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class SliderFieldComponent implements OnChanges {\r\n    @Input() title?: string;\r\n    @Input() value?: string;\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    public state = {\r\n        amount: 0,\r\n        unit: 'px',\r\n    };\r\n\r\n    public changed($event: string): void {\r\n        const amount = parseInt($event, 10);\r\n        this.state = {\r\n            ...this.state,\r\n            amount,\r\n        };\r\n        this.onChange.emit(`${this.state.amount}${this.state.unit}`);\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.state = useUnitValue(changes.value.currentValue);\r\n        }\r\n    }\r\n}\r\n",
+            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n    TemplateRef,\r\n} from '@angular/core';\r\nimport { useUnitValue } from '../utils';\r\n\r\ninterface ISliderFieldState {\r\n    amount: number;\r\n    unit: string;\r\n}\r\n\r\n@Component({\r\n    selector: 'slider-field',\r\n    template: `\r\n        <div class=\"sp-slider-field\">\r\n            <label class=\"sp-label\">{{ title }}</label>\r\n            <input-field\r\n                style=\"flex-grow: 1; display:flex;\"\r\n                [value]=\"value\"\r\n                (onChange)=\"onChange.emit($event)\"\r\n                [template]=\"inputTpl\"\r\n            ></input-field>\r\n\r\n            <ng-container *ngIf=\"sliderTpl\">\r\n                <ng-container\r\n                    *ngTemplateOutlet=\"sliderTpl; context: templateContext\"\r\n                ></ng-container>\r\n            </ng-container>\r\n            <input\r\n                *ngIf=\"!sliderTpl\"\r\n                class=\"sp-slider\"\r\n                type=\"range\"\r\n                [ngModel]=\"state.amount\"\r\n                (ngModelChange)=\"changed($event)\"\r\n                max=\"100\"\r\n            />\r\n        </div>\r\n    `,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class SliderFieldComponent implements OnChanges {\r\n    @Input() title?: string;\r\n    @Input() value?: string;\r\n    @Input() inputTpl?: TemplateRef<any>;\r\n    @Input() sliderTpl?: TemplateRef<any>;\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    public setState(newState: ISliderFieldState): void {\r\n        this.state = newState;\r\n        this.templateContext = {\r\n            ...this.templateContext,\r\n            value: this.state.amount,\r\n        };\r\n    }\r\n\r\n    public state: ISliderFieldState = {\r\n        amount: 0,\r\n        unit: 'px',\r\n    };\r\n\r\n    public templateContext: {\r\n        value?: number;\r\n        onChange: {\r\n            emit($event: string): void;\r\n        };\r\n    } = {\r\n        value: 0,\r\n        onChange: {\r\n            emit: ($event: string) => this.changed($event),\r\n        },\r\n    };\r\n\r\n    public changed($event: string): void {\r\n        const amount = parseInt($event, 10);\r\n        this.setState({\r\n            ...this.state,\r\n            amount,\r\n        });\r\n        this.onChange.emit(`${this.state.amount}${this.state.unit}`);\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.setState(useUnitValue(changes.value.currentValue));\r\n        }\r\n    }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -1534,7 +1700,7 @@
         },
         {
             "name": "TypeFieldComponent",
-            "id": "component-TypeFieldComponent-2de0d4ede980a2f4feae745a0762250872c2c74535bc941f0c7759ae563a542a87da0bf721fb2bbbe9b1f42c9b1e1ba47ec7c37057d5ebbb7017fba8d05c826f",
+            "id": "component-TypeFieldComponent-3b2f618bbe4b13ae93dfcc0d622015dd4cf03f6f2bc7b236fd4decdf12ae024343005e577a2972766d3546ddefcc1cd7b68cfb6e38532f42f8efaa789b9b8214",
             "file": "projects/ngx-shadow-picker/src/components/fields/type-field.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1545,15 +1711,23 @@
             "selector": "type-field",
             "styleUrls": [],
             "styles": [],
-            "template": "<div class=\"sp-type-field\">\n    <label class=\"sp-label\">Type</label>\n    <div class=\"sp-group\">\n        <div\n            class=\"sp-button sp-position sp-button-out\"\n            [ngClass]=\"[value === 'outside' ? 'active' : '']\"\n            (click)=\"onChange.emit('outside')\"\n        >\n            Outside\n        </div>\n        <div\n            class=\"sp-button sp-position sp-button-in\"\n            [ngClass]=\"[value === 'inside' ? 'active' : '']\"\n            (click)=\"onChange.emit('inside')\"\n        >\n            Inside\n        </div>\n    </div>\n</div>\n",
+            "template": "<div class=\"sp-type-field\">\n    <label class=\"sp-label\">Type</label>\n    <div class=\"sp-group\">\n        <ng-container *ngIf=\"template\">\n            <ng-container\n                *ngTemplateOutlet=\"template; context: { value: value, onChange: onChange }\"\n            ></ng-container>\n        </ng-container>\n        <ng-container *ngIf=\"!template\">\n            <div\n                class=\"sp-button sp-position sp-button-out\"\n                [ngClass]=\"[value === 'outside' ? 'active' : '']\"\n                (click)=\"onChange.emit('outside')\"\n            >\n                Outside\n            </div>\n            <div\n                class=\"sp-button sp-position sp-button-in\"\n                [ngClass]=\"[value === 'inside' ? 'active' : '']\"\n                (click)=\"onChange.emit('inside')\"\n            >\n                Inside\n            </div>\n        </ng-container>\n    </div>\n</div>\n",
             "templateUrl": [],
             "viewProviders": [],
             "inputsClass": [
                 {
+                    "name": "template",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 46,
+                    "type": "TemplateRef<any>",
+                    "decorators": []
+                },
+                {
                     "name": "value",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 31,
+                    "line": 45,
                     "type": "ShadowPosition",
                     "decorators": []
                 }
@@ -1564,7 +1738,7 @@
                     "defaultValue": "new EventEmitter<ShadowPosition>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 32,
+                    "line": 47,
                     "type": "EventEmitter"
                 }
             ],
@@ -1577,7 +1751,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';\r\n\r\nimport { ShadowPosition } from '../../types';\r\n\r\n@Component({\r\n    selector: 'type-field',\r\n    template: `\r\n        <div class=\"sp-type-field\">\r\n            <label class=\"sp-label\">Type</label>\r\n            <div class=\"sp-group\">\r\n                <div\r\n                    class=\"sp-button sp-position sp-button-out\"\r\n                    [ngClass]=\"[value === 'outside' ? 'active' : '']\"\r\n                    (click)=\"onChange.emit('outside')\"\r\n                >\r\n                    Outside\r\n                </div>\r\n                <div\r\n                    class=\"sp-button sp-position sp-button-in\"\r\n                    [ngClass]=\"[value === 'inside' ? 'active' : '']\"\r\n                    (click)=\"onChange.emit('inside')\"\r\n                >\r\n                    Inside\r\n                </div>\r\n            </div>\r\n        </div>\r\n    `,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class TypeFieldComponent {\r\n    @Input() value?: ShadowPosition;\r\n    @Output() onChange = new EventEmitter<ShadowPosition>();\r\n}\r\n",
+            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    Output,\r\n    TemplateRef,\r\n} from '@angular/core';\r\n\r\nimport { ShadowPosition } from '../../types';\r\n\r\n@Component({\r\n    selector: 'type-field',\r\n    template: `\r\n        <div class=\"sp-type-field\">\r\n            <label class=\"sp-label\">Type</label>\r\n            <div class=\"sp-group\">\r\n                <ng-container *ngIf=\"template\">\r\n                    <ng-container\r\n                        *ngTemplateOutlet=\"template; context: { value: value, onChange: onChange }\"\r\n                    ></ng-container>\r\n                </ng-container>\r\n                <ng-container *ngIf=\"!template\">\r\n                    <div\r\n                        class=\"sp-button sp-position sp-button-out\"\r\n                        [ngClass]=\"[value === 'outside' ? 'active' : '']\"\r\n                        (click)=\"onChange.emit('outside')\"\r\n                    >\r\n                        Outside\r\n                    </div>\r\n                    <div\r\n                        class=\"sp-button sp-position sp-button-in\"\r\n                        [ngClass]=\"[value === 'inside' ? 'active' : '']\"\r\n                        (click)=\"onChange.emit('inside')\"\r\n                    >\r\n                        Inside\r\n                    </div>\r\n                </ng-container>\r\n            </div>\r\n        </div>\r\n    `,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class TypeFieldComponent {\r\n    @Input() value?: ShadowPosition;\r\n    @Input() template?: TemplateRef<any>;\r\n    @Output() onChange = new EventEmitter<ShadowPosition>();\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": ""
@@ -1738,6 +1912,16 @@
                 "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
             },
             {
+                "name": "CustomControls",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ngx-shadow-picker/src/components/shadow-picker.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "defaultColorState",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -1761,21 +1945,21 @@
                 "name": "environment",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/environments/environment.prod.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  production: true\n}"
-            },
-            {
-                "name": "environment",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/environments/environment.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  production: false\n}"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/environments/environment.prod.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  production: true\n}"
             },
             {
                 "name": "isLength",
@@ -2057,7 +2241,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "c04f92cb-548e-4d86-a90d-e328f90df605",
+                        "destrucuredGroupId": "0a53a9cb-1471-43dc-89b4-e6d64417a060",
                         "destructuredParameter": true
                     },
                     {
@@ -2065,7 +2249,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "c04f92cb-548e-4d86-a90d-e328f90df605",
+                        "destrucuredGroupId": "0a53a9cb-1471-43dc-89b4-e6d64417a060",
                         "destructuredParameter": true
                     }
                 ],
@@ -2076,7 +2260,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "c04f92cb-548e-4d86-a90d-e328f90df605",
+                        "destrucuredGroupId": "0a53a9cb-1471-43dc-89b4-e6d64417a060",
                         "destructuredParameter": true,
                         "tagName": {
                             "text": "param"
@@ -2087,7 +2271,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "c04f92cb-548e-4d86-a90d-e328f90df605",
+                        "destrucuredGroupId": "0a53a9cb-1471-43dc-89b4-e6d64417a060",
                         "destructuredParameter": true,
                         "tagName": {
                             "text": "param"
@@ -2143,6 +2327,16 @@
             "projects/ngx-shadow-picker/src/components/shadow-picker.stories.ts": [
                 {
                     "name": "Basic",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ngx-shadow-picker/src/components/shadow-picker.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "CustomControls",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "projects/ngx-shadow-picker/src/components/shadow-picker.stories.ts",
@@ -2270,18 +2464,6 @@
                     "defaultValue": "{\r\n    blur: '0',\r\n    color: '#000000',\r\n    offset: {\r\n        y: '0',\r\n        x: '0',\r\n    },\r\n    position: 'outside',\r\n    spread: '0',\r\n}"
                 }
             ],
-            "src/environments/environment.prod.ts": [
-                {
-                    "name": "environment",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/environments/environment.prod.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  production: true\n}"
-                }
-            ],
             "src/environments/environment.ts": [
                 {
                     "name": "environment",
@@ -2292,6 +2474,18 @@
                     "deprecationMessage": "",
                     "type": "object",
                     "defaultValue": "{\n  production: false\n}"
+                }
+            ],
+            "src/environments/environment.prod.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.prod.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  production: true\n}"
                 }
             ],
             "projects/ngx-shadow-picker/src/components/css-box-shadow.ts": [
@@ -2519,7 +2713,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "c04f92cb-548e-4d86-a90d-e328f90df605",
+                            "destrucuredGroupId": "0a53a9cb-1471-43dc-89b4-e6d64417a060",
                             "destructuredParameter": true
                         },
                         {
@@ -2527,7 +2721,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "c04f92cb-548e-4d86-a90d-e328f90df605",
+                            "destrucuredGroupId": "0a53a9cb-1471-43dc-89b4-e6d64417a060",
                             "destructuredParameter": true
                         }
                     ],
@@ -2538,7 +2732,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "c04f92cb-548e-4d86-a90d-e328f90df605",
+                            "destrucuredGroupId": "0a53a9cb-1471-43dc-89b4-e6d64417a060",
                             "destructuredParameter": true,
                             "tagName": {
                                 "text": "param"
@@ -2549,7 +2743,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "c04f92cb-548e-4d86-a90d-e328f90df605",
+                            "destrucuredGroupId": "0a53a9cb-1471-43dc-89b4-e6d64417a060",
                             "destructuredParameter": true,
                             "tagName": {
                                 "text": "param"
@@ -2744,7 +2938,7 @@
                 "linktype": "component",
                 "name": "OffsetFieldComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/7",
+                "coverageCount": "0/8",
                 "status": "low"
             },
             {
@@ -2753,7 +2947,16 @@
                 "linktype": "component",
                 "name": "SliderFieldComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/7",
+                "coverageCount": "0/11",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ngx-shadow-picker/src/components/fields/slider-field.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ISliderFieldState",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {
@@ -2762,7 +2965,7 @@
                 "linktype": "component",
                 "name": "TypeFieldComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
@@ -2771,7 +2974,7 @@
                 "linktype": "component",
                 "name": "InputFieldComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/9",
+                "coverageCount": "0/11",
                 "status": "low"
             },
             {
@@ -2798,7 +3001,7 @@
                 "linktype": "component",
                 "name": "ShadowPickerComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/10",
+                "coverageCount": "0/13",
                 "status": "low"
             },
             {
@@ -2817,6 +3020,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "Basic",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ngx-shadow-picker/src/components/shadow-picker.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "CustomControls",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
