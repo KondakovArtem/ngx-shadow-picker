@@ -6,6 +6,7 @@ import {
     OnChanges,
     Output,
     SimpleChanges,
+    TemplateRef,
 } from '@angular/core';
 
 import { ShadowOffsetUnit, ShadowPickerParams } from '../../types';
@@ -21,6 +22,7 @@ import { useOffsetUnit } from '../utils';
                     <label class="sp-label">X Offset</label>
                     <input-field
                         style="flex: 1; display: flex;"
+                        [template]="inputTpl"
                         [value]="value?.x"
                         (onChange)="inputChange('x', $event)"
                     ></input-field>
@@ -28,6 +30,7 @@ import { useOffsetUnit } from '../utils';
                 <div class="sp-row">
                     <label class="sp-label">Y Offset</label>
                     <input-field
+                        [template]="inputTpl"
                         style="flex: 1; display: flex;"
                         [value]="value?.y"
                         (onChange)="inputChange('y', $event)"
@@ -43,6 +46,7 @@ import { useOffsetUnit } from '../utils';
 })
 export class OffsetFieldComponent implements OnChanges {
     @Input() value!: ShadowPickerParams['offset'];
+    @Input() inputTpl?: TemplateRef<any>;
     @Output() onChange = new EventEmitter<ShadowPickerParams['offset']>();
 
     public offsetUnit: ShadowOffsetUnit = {

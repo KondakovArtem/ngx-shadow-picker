@@ -3,19 +3,25 @@
         <type-field
             [value]="state?.position || 'outside'"
             (onChange)="updateState('position', $event)"
+            [template]="typeTpl"
         ></type-field>
         <offset-field
             [value]="state?.offset || { x: '0', y: '0' }"
             (onChange)="updateState('offset', $event)"
+            [inputTpl]="inputTpl"
         ></offset-field>
         <slider-field
             [value]="state?.blur || '0'"
             (onChange)="updateState('blur', $event)"
+            [inputTpl]="inputTpl"
+            [sliderTpl]="sliderTpl"
             title="Blur"
         ></slider-field>
         <slider-field
             [value]="state?.spread || '0'"
             (onChange)="updateState('spread', $event)"
+            [inputTpl]="inputTpl"
+            [sliderTpl]="sliderTpl"
             title="Spread"
         ></slider-field>
         <color-field

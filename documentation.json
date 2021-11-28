@@ -71,12 +71,12 @@
         },
         {
             "name": "IColorState",
-            "id": "interface-IColorState-7d5e21a7a385badb6d7a8ed9195a216935688785e18f9a2bbfc44a730340ad3e3fd5cceccf63dca7c7e7afd9eb5a51142bfe0b1ac6aba1c5be4f19db83041221",
+            "id": "interface-IColorState-6db19e25726e7283f613ef0c66d360098ce989c18d59f7689d41738c54e992142a5c430a82f453e10e5a4908bf739240e7c9b465396ad8e9bd6dd34adf4f6ba5",
             "file": "projects/ngx-shadow-picker/src/components/utils.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import colorLib from '@kurkle/color';\r\n\r\nimport { parse, stringify } from './css-box-shadow';\r\nimport type { ShadowOffsetUnit, ShadowPickerParams } from '../types';\r\n\r\nexport const unitRegex = /(-?\\d+)((r?em)|(px)|%)$/;\r\n\r\nexport function useOffsetUnit(\r\n    { x, y }: ShadowPickerParams['offset'] = { x: '0', y: '0' },\r\n): ShadowOffsetUnit {\r\n    const xData = useUnitValue(x);\r\n    const yData = useUnitValue(y);\r\n    return {\r\n        x: xData.amount,\r\n        xUnit: xData.unit,\r\n        y: yData.amount,\r\n        yUnit: yData.unit,\r\n    };\r\n}\r\n\r\nexport function useUnitValue(value: string): {\r\n    amount: number;\r\n    unit: string;\r\n} {\r\n    const defRes = {\r\n        amount: 0,\r\n        unit: 'px',\r\n    };\r\n\r\n    if ([undefined, null, ''].includes(value)) return defRes;\r\n    const matches = `${value}`.match(unitRegex);\r\n\r\n    if (matches?.length === 5) {\r\n        return {\r\n            amount: parseInt(matches[1], 10),\r\n            unit: matches[2],\r\n        };\r\n    }\r\n    return defRes;\r\n}\r\n\r\nfunction toPx(value?: string | number): string {\r\n    if (![undefined, null, '', 0].includes(value as string) && !Number.isNaN(value)) {\r\n        return `${value}px`;\r\n    }\r\n    return value as string;\r\n}\r\n\r\nexport const parseShadowString = (value: string): ShadowPickerParams | null => {\r\n    const parseResult = parse(value);\r\n    if (parseResult && parseResult.length) {\r\n        const [{ inset, offsetX, offsetY, blurRadius, spreadRadius }] = parseResult;\r\n        let [{ color }] = parseResult;\r\n        const colorData = colorLib(color as string);\r\n        if (colorData.valid) {\r\n            color = colorData.hexString() as string;\r\n        }\r\n\r\n        return {\r\n            blur: `${toPx(blurRadius || 0)}`,\r\n            spread: `${toPx(spreadRadius || 0)}`,\r\n            offset: {\r\n                x: `${toPx(offsetX || 0)}`,\r\n                y: `${toPx(offsetY || 0)}`,\r\n            },\r\n            position: inset ? 'inside' : 'outside',\r\n            color,\r\n        };\r\n    }\r\n\r\n    // const parts = (value || '').replace(/ {2}/gi, ' ').trim().split(' ');\r\n    // let position: ShadowPosition = 'outside';\r\n\r\n    // if (parts[0] === 'inset') {\r\n    //     parts.shift();\r\n    //     position = 'inside';\r\n    // }\r\n\r\n    // if (parts.length === 3) {\r\n    //     const [x, y, color] = parts;\r\n    //     return { offset: { x, y }, color, position };\r\n    // }\r\n\r\n    // if (parts.length === 4) {\r\n    //     const [x, y, blur, color] = parts;\r\n    //     return { offset: { x, y }, color, blur, position };\r\n    // }\r\n\r\n    // if (parts.length === 5) {\r\n    //     const [x, y, blur, spread, color] = parts;\r\n    //     return { offset: { x, y }, color, spread, blur, position };\r\n    // }\r\n\r\n    return null;\r\n};\r\n\r\nexport const buildShadowString = (params: ShadowPickerParams): string => {\r\n    return stringify([\r\n        {\r\n            inset: params.position === 'inside',\r\n            blurRadius: params.blur,\r\n            offsetX: params.offset?.x || '0',\r\n            offsetY: params.offset?.y || '0',\r\n            spreadRadius: params.spread,\r\n            color: params.color || '#000000',\r\n        },\r\n    ]);\r\n\r\n    // const values = [\r\n    //     params.position === 'inside' ? 'inset' : undefined,\r\n    //     params.offset?.x || '0',\r\n    //     params.offset?.y || '0',\r\n    //     params.blur,\r\n    //     params.spread,\r\n    //     params.color || '#000000',\r\n    // ].filter((p) => !!p);\r\n\r\n    // return values.join(' ');\r\n};\r\n\r\nexport interface IColorState {\r\n    alpha: number;\r\n    color: string;\r\n}\r\n\r\nexport function parseHexColor(value: string): IColorState | null {\r\n    const match = value.match(/#(?<hex>[0-9A-F]{6,8})/i) as any;\r\n    const hex = match?.groups?.hex;\r\n    if (hex) {\r\n        let alpha = 255;\r\n        if (hex.length === 8) {\r\n            alpha = parseInt(hex.substr(6, 2), 16);\r\n        }\r\n        return { alpha, color: `#${hex.substr(0, 6)}` };\r\n    }\r\n    return null;\r\n}\r\n\r\nexport function debounce<T extends (...args: any) => any>(func: T, timeout = 300): T {\r\n    let timer: ReturnType<typeof setTimeout>;\r\n    return ((...args: any): any => {\r\n        clearTimeout(timer);\r\n        timer = setTimeout(() => {\r\n            func(...args);\r\n        }, timeout);\r\n    }) as T;\r\n}\r\n",
+            "sourceCode": "import colorLib from '@kurkle/color';\r\n\r\nimport { parse, stringify } from './css-box-shadow';\r\nimport type { ShadowOffsetUnit, ShadowPickerParams } from '../types';\r\n\r\nexport const unitRegex = /(-?\\d+)((r?em)|(px)|%)$/;\r\n\r\nexport function useOffsetUnit(\r\n    { x, y }: ShadowPickerParams['offset'] = { x: '0', y: '0' },\r\n): ShadowOffsetUnit {\r\n    const xData = useUnitValue(x);\r\n    const yData = useUnitValue(y);\r\n    return {\r\n        x: xData.amount,\r\n        xUnit: xData.unit,\r\n        y: yData.amount,\r\n        yUnit: yData.unit,\r\n    };\r\n}\r\n\r\nexport function useUnitValue(value: string): {\r\n    amount: number;\r\n    unit: string;\r\n} {\r\n    const defRes = {\r\n        amount: 0,\r\n        unit: 'px',\r\n    };\r\n\r\n    if ([undefined, null, ''].includes(value)) return defRes;\r\n    const matches = `${value}`.match(unitRegex);\r\n\r\n    if (matches?.length === 5) {\r\n        return {\r\n            amount: parseInt(matches[1], 10),\r\n            unit: matches[2],\r\n        };\r\n    }\r\n    return defRes;\r\n}\r\n\r\nfunction toPx(value?: string | number): string {\r\n    if (![undefined, null, '', 0].includes(value as string) && !Number.isNaN(value)) {\r\n        return `${value}px`;\r\n    }\r\n    return value as string;\r\n}\r\n\r\nexport const parseShadowString = (value: string): ShadowPickerParams | null => {\r\n    const parseResult = parse(value);\r\n    if (parseResult && parseResult.length) {\r\n        const [{ inset, offsetX, offsetY, blurRadius, spreadRadius }] = parseResult;\r\n        let [{ color }] = parseResult;\r\n        if (!/^#[A-F0-9a-f]{1,8}$/.test(color || '')) {\r\n            const colorData = colorLib(color as string);\r\n            if (colorData.valid) {\r\n                color = colorData.hexString() as string;\r\n            }\r\n        }\r\n        return {\r\n            blur: `${toPx(blurRadius || 0)}`,\r\n            spread: `${toPx(spreadRadius || 0)}`,\r\n            offset: {\r\n                x: `${toPx(offsetX || 0)}`,\r\n                y: `${toPx(offsetY || 0)}`,\r\n            },\r\n            position: inset ? 'inside' : 'outside',\r\n            color,\r\n        };\r\n    }\r\n    return null;\r\n};\r\n\r\nexport const buildShadowString = (params: ShadowPickerParams): string => {\r\n    return stringify([\r\n        {\r\n            inset: params.position === 'inside',\r\n            blurRadius: params.blur,\r\n            offsetX: params.offset?.x || '0',\r\n            offsetY: params.offset?.y || '0',\r\n            spreadRadius: params.spread,\r\n            color: params.color || '#000000',\r\n        },\r\n    ]);\r\n};\r\n\r\nexport interface IColorState {\r\n    alpha: number;\r\n    color: string;\r\n}\r\n\r\nexport function parseHexColor(value: string): IColorState | null {\r\n    const match = value.match(/#(?<hex>[0-9A-F]{6,8})/i) as any;\r\n    const hex = match?.groups?.hex;\r\n    if (hex) {\r\n        let alpha = 255;\r\n        if (hex.length === 8) {\r\n            alpha = parseInt(hex.substr(6, 2), 16);\r\n        }\r\n        return { alpha, color: `#${hex.substr(0, 6)}` };\r\n    }\r\n    return null;\r\n}\r\n\r\nexport function debounce<T extends (...args: any) => any>(func: T, timeout = 300): T {\r\n    let timer: ReturnType<typeof setTimeout>;\r\n    return ((...args: any): any => {\r\n        clearTimeout(timer);\r\n        timer = setTimeout(() => {\r\n            func(...args);\r\n        }, timeout);\r\n    }) as T;\r\n}\r\n",
             "properties": [
                 {
                     "name": "alpha",
@@ -85,7 +85,7 @@
                     "type": "number",
                     "optional": false,
                     "description": "",
-                    "line": 122
+                    "line": 88
                 },
                 {
                     "name": "color",
@@ -94,7 +94,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 123
+                    "line": 89
                 }
             ],
             "indexSignatures": [],
@@ -1715,7 +1715,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "(params: ShadowPickerParams): string => {\r\n    return stringify([\r\n        {\r\n            inset: params.position === 'inside',\r\n            blurRadius: params.blur,\r\n            offsetX: params.offset?.x || '0',\r\n            offsetY: params.offset?.y || '0',\r\n            spreadRadius: params.spread,\r\n            color: params.color || '#000000',\r\n        },\r\n    ]);\r\n\r\n    // const values = [\r\n    //     params.position === 'inside' ? 'inset' : undefined,\r\n    //     params.offset?.x || '0',\r\n    //     params.offset?.y || '0',\r\n    //     params.blur,\r\n    //     params.spread,\r\n    //     params.color || '#000000',\r\n    // ].filter((p) => !!p);\r\n\r\n    // return values.join(' ');\r\n}"
+                "defaultValue": "(params: ShadowPickerParams): string => {\r\n    return stringify([\r\n        {\r\n            inset: params.position === 'inside',\r\n            blurRadius: params.blur,\r\n            offsetX: params.offset?.x || '0',\r\n            offsetY: params.offset?.y || '0',\r\n            spreadRadius: params.spread,\r\n            color: params.color || '#000000',\r\n        },\r\n    ]);\r\n}"
             },
             {
                 "name": "context",
@@ -1815,7 +1815,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "(value: string): ShadowPickerParams | null => {\r\n    const parseResult = parse(value);\r\n    if (parseResult && parseResult.length) {\r\n        const [{ inset, offsetX, offsetY, blurRadius, spreadRadius }] = parseResult;\r\n        let [{ color }] = parseResult;\r\n        const colorData = colorLib(color as string);\r\n        if (colorData.valid) {\r\n            color = colorData.hexString() as string;\r\n        }\r\n\r\n        return {\r\n            blur: `${toPx(blurRadius || 0)}`,\r\n            spread: `${toPx(spreadRadius || 0)}`,\r\n            offset: {\r\n                x: `${toPx(offsetX || 0)}`,\r\n                y: `${toPx(offsetY || 0)}`,\r\n            },\r\n            position: inset ? 'inside' : 'outside',\r\n            color,\r\n        };\r\n    }\r\n\r\n    // const parts = (value || '').replace(/ {2}/gi, ' ').trim().split(' ');\r\n    // let position: ShadowPosition = 'outside';\r\n\r\n    // if (parts[0] === 'inset') {\r\n    //     parts.shift();\r\n    //     position = 'inside';\r\n    // }\r\n\r\n    // if (parts.length === 3) {\r\n    //     const [x, y, color] = parts;\r\n    //     return { offset: { x, y }, color, position };\r\n    // }\r\n\r\n    // if (parts.length === 4) {\r\n    //     const [x, y, blur, color] = parts;\r\n    //     return { offset: { x, y }, color, blur, position };\r\n    // }\r\n\r\n    // if (parts.length === 5) {\r\n    //     const [x, y, blur, spread, color] = parts;\r\n    //     return { offset: { x, y }, color, spread, blur, position };\r\n    // }\r\n\r\n    return null;\r\n}"
+                "defaultValue": "(value: string): ShadowPickerParams | null => {\r\n    const parseResult = parse(value);\r\n    if (parseResult && parseResult.length) {\r\n        const [{ inset, offsetX, offsetY, blurRadius, spreadRadius }] = parseResult;\r\n        let [{ color }] = parseResult;\r\n        if (!/^#[A-F0-9a-f]{1,8}$/.test(color || '')) {\r\n            const colorData = colorLib(color as string);\r\n            if (colorData.valid) {\r\n                color = colorData.hexString() as string;\r\n            }\r\n        }\r\n        return {\r\n            blur: `${toPx(blurRadius || 0)}`,\r\n            spread: `${toPx(spreadRadius || 0)}`,\r\n            offset: {\r\n                x: `${toPx(offsetX || 0)}`,\r\n                y: `${toPx(offsetY || 0)}`,\r\n            },\r\n            position: inset ? 'inside' : 'outside',\r\n            color,\r\n        };\r\n    }\r\n    return null;\r\n}"
             },
             {
                 "name": "parseValue",
@@ -2057,7 +2057,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "b7836ff3-564e-44a0-8eac-8f97e16619d3",
+                        "destrucuredGroupId": "c04f92cb-548e-4d86-a90d-e328f90df605",
                         "destructuredParameter": true
                     },
                     {
@@ -2065,7 +2065,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "b7836ff3-564e-44a0-8eac-8f97e16619d3",
+                        "destrucuredGroupId": "c04f92cb-548e-4d86-a90d-e328f90df605",
                         "destructuredParameter": true
                     }
                 ],
@@ -2076,7 +2076,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "b7836ff3-564e-44a0-8eac-8f97e16619d3",
+                        "destrucuredGroupId": "c04f92cb-548e-4d86-a90d-e328f90df605",
                         "destructuredParameter": true,
                         "tagName": {
                             "text": "param"
@@ -2087,7 +2087,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "b7836ff3-564e-44a0-8eac-8f97e16619d3",
+                        "destrucuredGroupId": "c04f92cb-548e-4d86-a90d-e328f90df605",
                         "destructuredParameter": true,
                         "tagName": {
                             "text": "param"
@@ -2181,7 +2181,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "(params: ShadowPickerParams): string => {\r\n    return stringify([\r\n        {\r\n            inset: params.position === 'inside',\r\n            blurRadius: params.blur,\r\n            offsetX: params.offset?.x || '0',\r\n            offsetY: params.offset?.y || '0',\r\n            spreadRadius: params.spread,\r\n            color: params.color || '#000000',\r\n        },\r\n    ]);\r\n\r\n    // const values = [\r\n    //     params.position === 'inside' ? 'inset' : undefined,\r\n    //     params.offset?.x || '0',\r\n    //     params.offset?.y || '0',\r\n    //     params.blur,\r\n    //     params.spread,\r\n    //     params.color || '#000000',\r\n    // ].filter((p) => !!p);\r\n\r\n    // return values.join(' ');\r\n}"
+                    "defaultValue": "(params: ShadowPickerParams): string => {\r\n    return stringify([\r\n        {\r\n            inset: params.position === 'inside',\r\n            blurRadius: params.blur,\r\n            offsetX: params.offset?.x || '0',\r\n            offsetY: params.offset?.y || '0',\r\n            spreadRadius: params.spread,\r\n            color: params.color || '#000000',\r\n        },\r\n    ]);\r\n}"
                 },
                 {
                     "name": "parseShadowString",
@@ -2191,7 +2191,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "(value: string): ShadowPickerParams | null => {\r\n    const parseResult = parse(value);\r\n    if (parseResult && parseResult.length) {\r\n        const [{ inset, offsetX, offsetY, blurRadius, spreadRadius }] = parseResult;\r\n        let [{ color }] = parseResult;\r\n        const colorData = colorLib(color as string);\r\n        if (colorData.valid) {\r\n            color = colorData.hexString() as string;\r\n        }\r\n\r\n        return {\r\n            blur: `${toPx(blurRadius || 0)}`,\r\n            spread: `${toPx(spreadRadius || 0)}`,\r\n            offset: {\r\n                x: `${toPx(offsetX || 0)}`,\r\n                y: `${toPx(offsetY || 0)}`,\r\n            },\r\n            position: inset ? 'inside' : 'outside',\r\n            color,\r\n        };\r\n    }\r\n\r\n    // const parts = (value || '').replace(/ {2}/gi, ' ').trim().split(' ');\r\n    // let position: ShadowPosition = 'outside';\r\n\r\n    // if (parts[0] === 'inset') {\r\n    //     parts.shift();\r\n    //     position = 'inside';\r\n    // }\r\n\r\n    // if (parts.length === 3) {\r\n    //     const [x, y, color] = parts;\r\n    //     return { offset: { x, y }, color, position };\r\n    // }\r\n\r\n    // if (parts.length === 4) {\r\n    //     const [x, y, blur, color] = parts;\r\n    //     return { offset: { x, y }, color, blur, position };\r\n    // }\r\n\r\n    // if (parts.length === 5) {\r\n    //     const [x, y, blur, spread, color] = parts;\r\n    //     return { offset: { x, y }, color, spread, blur, position };\r\n    // }\r\n\r\n    return null;\r\n}"
+                    "defaultValue": "(value: string): ShadowPickerParams | null => {\r\n    const parseResult = parse(value);\r\n    if (parseResult && parseResult.length) {\r\n        const [{ inset, offsetX, offsetY, blurRadius, spreadRadius }] = parseResult;\r\n        let [{ color }] = parseResult;\r\n        if (!/^#[A-F0-9a-f]{1,8}$/.test(color || '')) {\r\n            const colorData = colorLib(color as string);\r\n            if (colorData.valid) {\r\n                color = colorData.hexString() as string;\r\n            }\r\n        }\r\n        return {\r\n            blur: `${toPx(blurRadius || 0)}`,\r\n            spread: `${toPx(spreadRadius || 0)}`,\r\n            offset: {\r\n                x: `${toPx(offsetX || 0)}`,\r\n                y: `${toPx(offsetY || 0)}`,\r\n            },\r\n            position: inset ? 'inside' : 'outside',\r\n            color,\r\n        };\r\n    }\r\n    return null;\r\n}"
                 },
                 {
                     "name": "unitRegex",
@@ -2519,7 +2519,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "b7836ff3-564e-44a0-8eac-8f97e16619d3",
+                            "destrucuredGroupId": "c04f92cb-548e-4d86-a90d-e328f90df605",
                             "destructuredParameter": true
                         },
                         {
@@ -2527,7 +2527,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "b7836ff3-564e-44a0-8eac-8f97e16619d3",
+                            "destrucuredGroupId": "c04f92cb-548e-4d86-a90d-e328f90df605",
                             "destructuredParameter": true
                         }
                     ],
@@ -2538,7 +2538,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "b7836ff3-564e-44a0-8eac-8f97e16619d3",
+                            "destrucuredGroupId": "c04f92cb-548e-4d86-a90d-e328f90df605",
                             "destructuredParameter": true,
                             "tagName": {
                                 "text": "param"
@@ -2549,7 +2549,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "b7836ff3-564e-44a0-8eac-8f97e16619d3",
+                            "destrucuredGroupId": "c04f92cb-548e-4d86-a90d-e328f90df605",
                             "destructuredParameter": true,
                             "tagName": {
                                 "text": "param"

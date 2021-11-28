@@ -1,11 +1,13 @@
 import {
     ChangeDetectionStrategy,
     Component,
+    ContentChild,
     EventEmitter,
     Input,
     OnChanges,
     Output,
     SimpleChanges,
+    TemplateRef,
 } from '@angular/core';
 
 import { ShadowOffset, ShadowPickerParams, ShadowPosition } from '../types';
@@ -32,6 +34,10 @@ export class ShadowPickerComponent implements OnChanges {
     @Input() showSample = false;
     @Input() className = '';
     @Output() onChange = new EventEmitter<string>();
+
+    @ContentChild('type', { read: TemplateRef, static: true }) typeTpl!: TemplateRef<any>;
+    @ContentChild('input', { read: TemplateRef, static: true }) inputTpl!: TemplateRef<any>;
+    @ContentChild('slider', { read: TemplateRef, static: true }) sliderTpl!: TemplateRef<any>;
 
     public state?: ShadowPickerParams;
     public sample?: string;
