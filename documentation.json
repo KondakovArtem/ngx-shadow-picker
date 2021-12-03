@@ -103,12 +103,12 @@
         },
         {
             "name": "ISliderFieldState",
-            "id": "interface-ISliderFieldState-816735efc601f9207f9aa33337b38ad33f0080401c00815f2bcccfcc076dc9c264fa8e4bd52a86e39fa6e7daeaa4d01ae305670283ffb3da5eb28ef44bd25cee",
+            "id": "interface-ISliderFieldState-0e278467ef17c153e7c4717c242f928c16e7b20c2014e553e6e2f5b5ac0c1773105b75f4a9ab0c8742cce99b1df882786d954e863843a3605f1e7a1c5cb30e45",
             "file": "projects/ngx-shadow-picker/src/components/fields/slider-field.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n    TemplateRef,\r\n} from '@angular/core';\r\nimport { useUnitValue } from '../utils';\r\n\r\ninterface ISliderFieldState {\r\n    amount: number;\r\n    unit: string;\r\n}\r\n\r\n@Component({\r\n    selector: 'slider-field',\r\n    template: `\r\n        <div class=\"sp-slider-field\">\r\n            <label class=\"sp-label\">{{ title }}</label>\r\n            <input-field\r\n                style=\"flex-grow: 1; display:flex;\"\r\n                [value]=\"value\"\r\n                (onChange)=\"onChange.emit($event)\"\r\n                [template]=\"inputTpl\"\r\n            ></input-field>\r\n\r\n            <ng-container *ngIf=\"sliderTpl\">\r\n                <ng-container\r\n                    *ngTemplateOutlet=\"sliderTpl; context: templateContext\"\r\n                ></ng-container>\r\n            </ng-container>\r\n            <input\r\n                *ngIf=\"!sliderTpl\"\r\n                class=\"sp-slider\"\r\n                type=\"range\"\r\n                [ngModel]=\"state.amount\"\r\n                (ngModelChange)=\"changed($event)\"\r\n                max=\"100\"\r\n            />\r\n        </div>\r\n    `,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class SliderFieldComponent implements OnChanges {\r\n    @Input() title?: string;\r\n    @Input() value?: string;\r\n    @Input() inputTpl?: TemplateRef<any>;\r\n    @Input() sliderTpl?: TemplateRef<any>;\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    public setState(newState: ISliderFieldState): void {\r\n        this.state = newState;\r\n        this.templateContext = {\r\n            ...this.templateContext,\r\n            value: this.state.amount,\r\n        };\r\n    }\r\n\r\n    public state: ISliderFieldState = {\r\n        amount: 0,\r\n        unit: 'px',\r\n    };\r\n\r\n    public templateContext: {\r\n        value?: number;\r\n        onChange: {\r\n            emit($event: string): void;\r\n        };\r\n        max: number;\r\n    } = {\r\n        value: 0,\r\n        onChange: {\r\n            emit: ($event: string) => this.changed($event),\r\n        },\r\n        max: 100\r\n    };\r\n\r\n    public changed($event: string): void {\r\n        const amount = parseInt($event, 10);\r\n        this.setState({\r\n            ...this.state,\r\n            amount,\r\n        });\r\n        this.onChange.emit(`${this.state.amount}${this.state.unit}`);\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.setState(useUnitValue(changes.value.currentValue));\r\n        }\r\n    }\r\n}\r\n",
+            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n    TemplateRef,\r\n} from '@angular/core';\r\nimport { useUnitValue } from '../utils';\r\n\r\ninterface ISliderFieldState {\r\n    amount: number;\r\n    unit: string;\r\n}\r\n\r\n@Component({\r\n    selector: 'slider-field',\r\n    template: `\r\n        <div class=\"sp-slider-field\">\r\n            <label class=\"sp-label\">{{ title }}</label>\r\n            <input-field\r\n                style=\"flex-grow: 1; display:flex;\"\r\n                [value]=\"value\"\r\n                (onChange)=\"onChange.emit($event)\"\r\n                [template]=\"inputTpl\"\r\n            ></input-field>\r\n\r\n            <ng-container *ngIf=\"sliderTpl\">\r\n                <ng-container\r\n                    *ngTemplateOutlet=\"sliderTpl; context: templateContext\"\r\n                ></ng-container>\r\n            </ng-container>\r\n            <input\r\n                *ngIf=\"!sliderTpl\"\r\n                class=\"sp-slider\"\r\n                type=\"range\"\r\n                [ngModel]=\"state.amount\"\r\n                (ngModelChange)=\"changed($event)\"\r\n                max=\"100\"\r\n            />\r\n        </div>\r\n    `,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class SliderFieldComponent implements OnChanges {\r\n    @Input() title?: string;\r\n    @Input() value?: string;\r\n    @Input() inputTpl?: TemplateRef<any>;\r\n    @Input() sliderTpl?: TemplateRef<any>;\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    public setState(newState: ISliderFieldState): void {\r\n        this.state = newState;\r\n        this.templateContext = {\r\n            ...this.templateContext,\r\n            value: this.state.amount,\r\n        };\r\n    }\r\n\r\n    public state: ISliderFieldState = {\r\n        amount: 0,\r\n        unit: 'px',\r\n    };\r\n\r\n    public templateContext: {\r\n        value?: number;\r\n        onChange: {\r\n            emit($event: string): void;\r\n        };\r\n        max: number;\r\n    } = {\r\n        value: 0,\r\n        onChange: {\r\n            emit: ($event: string) => this.changed($event),\r\n        },\r\n        max: 100,\r\n    };\r\n\r\n    public changed($event: string): void {\r\n        const amount = parseInt($event, 10);\r\n        this.setState({\r\n            ...this.state,\r\n            amount,\r\n        });\r\n        this.onChange.emit(`${this.state.amount}${this.state.unit}`);\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.setState(useUnitValue(changes.value.currentValue));\r\n        }\r\n    }\r\n}\r\n",
             "properties": [
                 {
                     "name": "amount",
@@ -379,7 +379,7 @@
         },
         {
             "name": "ColorFieldComponent",
-            "id": "component-ColorFieldComponent-72073dd0a6dd4a3d2f428681e99648a4ce1de53a3351500fbe198309a499c73c3951384070c9e9d1b746848a297e59cefca23a55a03d8175fabafa8bd3916daf",
+            "id": "component-ColorFieldComponent-da1c3292d281776001987aaba2666df45a9c0a8e1f979414fecbae6c0a4ed5417f0ff883bb95b6485025ffcfcc226e654d0bd3a1c0318b8d358230248b2b754f",
             "file": "projects/ngx-shadow-picker/src/components/fields/color-field.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -446,7 +446,7 @@
                     "type": "literal type",
                     "optional": false,
                     "description": "",
-                    "line": 73,
+                    "line": 72,
                     "modifierKind": [
                         123
                     ]
@@ -492,7 +492,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 97,
+                    "line": 95,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -551,7 +551,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 92,
+                    "line": 90,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -582,7 +582,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 88,
+                    "line": 86,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -608,7 +608,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n    TemplateRef,\r\n} from '@angular/core';\r\nimport { debounce, IColorState, parseHexColor } from '../utils';\r\n\r\nconst defaultColorState: IColorState = {\r\n    alpha: 0,\r\n    color: '#000000',\r\n};\r\n\r\n@Component({\r\n    selector: 'color-field',\r\n    template: `<div class=\"sp-color-field\">\r\n        <label class=\"sp-label\">{{ title }}</label>\r\n        <input-field\r\n            style=\"flex-grow: 1; display:flex;\"\r\n            [template]=\"inputTpl\"\r\n            [value]=\"value\"\r\n            (onChange)=\"onChange.emit($event)\"\r\n        ></input-field>\r\n        <div class=\"sp-color-controller\">\r\n            <input type=\"color\" [ngModel]=\"state.color\" (ngModelChange)=\"updated($event)\" />\r\n\r\n            <div class=\"sp-slider-container\">\r\n                <ng-container *ngIf=\"sliderTpl\">\r\n                    <ng-container\r\n                        *ngTemplateOutlet=\"sliderTpl; context: sliderContext\"\r\n                    ></ng-container>\r\n                </ng-container>\r\n                \r\n                <input\r\n                    *ngIf=\"!sliderTpl\"\r\n                    class=\"sp-slider\"\r\n                    type=\"range\"\r\n                    [ngModel]=\"state.alpha\"\r\n                    (ngModelChange)=\"updatedAlpha($event)\"\r\n                    max=\"255\"\r\n                />\r\n            </div>\r\n        </div>\r\n    </div>`,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ColorFieldComponent implements OnChanges {\r\n    @Input() title?: string;\r\n    @Input() value?: string;\r\n    @Input() inputTpl?: TemplateRef<any>;\r\n    @Input() sliderTpl?: TemplateRef<any>;\r\n\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    public state: IColorState = { ...defaultColorState };\r\n    public updated = debounce(($event: string): void => {\r\n        this.onChange.emit(`${$event}${this.state.alpha.toString(16).padStart(2, '0')}`);\r\n    });\r\n\r\n    public setState(newState: IColorState) {\r\n        this.state = newState;\r\n        this.sliderContext = {\r\n            ...this.sliderContext,\r\n            value: this.state.alpha\r\n        }\r\n    }\r\n\r\n\r\n    public sliderContext: {\r\n        value?: number;\r\n        onChange: {\r\n            emit($event: string): void;\r\n        };\r\n        max: number,\r\n    } = {\r\n        value: 0,\r\n        onChange: {\r\n            emit: ($event: string) => this.updatedAlpha($event),\r\n        },\r\n        max: 255,\r\n    };\r\n\r\n\r\n    public updatedInput($event: string): void {\r\n        this.onChange.emit($event);\r\n    }\r\n\r\n    public updatedAlpha($event: string): void {\r\n        const hex = parseInt($event, 10).toString(16).padStart(2, '0');\r\n        this.onChange.emit(`${this.state.color}${hex}`);\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.setState(parseHexColor(changes.value.currentValue) || { ...defaultColorState })\r\n        }\r\n    }\r\n}\r\n",
+            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n    TemplateRef,\r\n} from '@angular/core';\r\nimport { debounce, IColorState, parseHexColor } from '../utils';\r\n\r\nconst defaultColorState: IColorState = {\r\n    alpha: 0,\r\n    color: '#000000',\r\n};\r\n\r\n@Component({\r\n    selector: 'color-field',\r\n    template: `<div class=\"sp-color-field\">\r\n        <label class=\"sp-label\">{{ title }}</label>\r\n        <input-field\r\n            style=\"flex-grow: 1; display:flex;\"\r\n            [template]=\"inputTpl\"\r\n            [value]=\"value\"\r\n            (onChange)=\"onChange.emit($event)\"\r\n        ></input-field>\r\n        <div class=\"sp-color-controller\">\r\n            <input type=\"color\" [ngModel]=\"state.color\" (ngModelChange)=\"updated($event)\" />\r\n\r\n            <div class=\"sp-slider-container\">\r\n                <ng-container *ngIf=\"sliderTpl\">\r\n                    <ng-container\r\n                        *ngTemplateOutlet=\"sliderTpl; context: sliderContext\"\r\n                    ></ng-container>\r\n                </ng-container>\r\n\r\n                <input\r\n                    *ngIf=\"!sliderTpl\"\r\n                    class=\"sp-slider\"\r\n                    type=\"range\"\r\n                    [ngModel]=\"state.alpha\"\r\n                    (ngModelChange)=\"updatedAlpha($event)\"\r\n                    max=\"255\"\r\n                />\r\n            </div>\r\n        </div>\r\n    </div>`,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ColorFieldComponent implements OnChanges {\r\n    @Input() title?: string;\r\n    @Input() value?: string;\r\n    @Input() inputTpl?: TemplateRef<any>;\r\n    @Input() sliderTpl?: TemplateRef<any>;\r\n\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    public state: IColorState = { ...defaultColorState };\r\n    public updated = debounce(($event: string): void => {\r\n        this.onChange.emit(`${$event}${this.state.alpha.toString(16).padStart(2, '0')}`);\r\n    });\r\n\r\n    public setState(newState: IColorState): void {\r\n        this.state = newState;\r\n        this.sliderContext = {\r\n            ...this.sliderContext,\r\n            value: this.state.alpha,\r\n        };\r\n    }\r\n\r\n    public sliderContext: {\r\n        value?: number;\r\n        onChange: {\r\n            emit($event: string): void;\r\n        };\r\n        max: number;\r\n    } = {\r\n        value: 0,\r\n        onChange: {\r\n            emit: ($event: string) => this.updatedAlpha($event),\r\n        },\r\n        max: 255,\r\n    };\r\n\r\n    public updatedInput($event: string): void {\r\n        this.onChange.emit($event);\r\n    }\r\n\r\n    public updatedAlpha($event: string): void {\r\n        const hex = parseInt($event, 10).toString(16).padStart(2, '0');\r\n        this.onChange.emit(`${this.state.color}${hex}`);\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.setState(parseHexColor(changes.value.currentValue) || { ...defaultColorState });\r\n        }\r\n    }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -1565,7 +1565,7 @@
         },
         {
             "name": "SliderFieldComponent",
-            "id": "component-SliderFieldComponent-816735efc601f9207f9aa33337b38ad33f0080401c00815f2bcccfcc076dc9c264fa8e4bd52a86e39fa6e7daeaa4d01ae305670283ffb3da5eb28ef44bd25cee",
+            "id": "component-SliderFieldComponent-0e278467ef17c153e7c4717c242f928c16e7b20c2014e553e6e2f5b5ac0c1773105b75f4a9ab0c8742cce99b1df882786d954e863843a3605f1e7a1c5cb30e45",
             "file": "projects/ngx-shadow-picker/src/components/fields/slider-field.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1639,7 +1639,7 @@
                 },
                 {
                     "name": "templateContext",
-                    "defaultValue": "{\r\n        value: 0,\r\n        onChange: {\r\n            emit: ($event: string) => this.changed($event),\r\n        },\r\n        max: 100\r\n    }",
+                    "defaultValue": "{\r\n        value: 0,\r\n        onChange: {\r\n            emit: ($event: string) => this.changed($event),\r\n        },\r\n        max: 100,\r\n    }",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "literal type",
@@ -1750,7 +1750,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n    TemplateRef,\r\n} from '@angular/core';\r\nimport { useUnitValue } from '../utils';\r\n\r\ninterface ISliderFieldState {\r\n    amount: number;\r\n    unit: string;\r\n}\r\n\r\n@Component({\r\n    selector: 'slider-field',\r\n    template: `\r\n        <div class=\"sp-slider-field\">\r\n            <label class=\"sp-label\">{{ title }}</label>\r\n            <input-field\r\n                style=\"flex-grow: 1; display:flex;\"\r\n                [value]=\"value\"\r\n                (onChange)=\"onChange.emit($event)\"\r\n                [template]=\"inputTpl\"\r\n            ></input-field>\r\n\r\n            <ng-container *ngIf=\"sliderTpl\">\r\n                <ng-container\r\n                    *ngTemplateOutlet=\"sliderTpl; context: templateContext\"\r\n                ></ng-container>\r\n            </ng-container>\r\n            <input\r\n                *ngIf=\"!sliderTpl\"\r\n                class=\"sp-slider\"\r\n                type=\"range\"\r\n                [ngModel]=\"state.amount\"\r\n                (ngModelChange)=\"changed($event)\"\r\n                max=\"100\"\r\n            />\r\n        </div>\r\n    `,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class SliderFieldComponent implements OnChanges {\r\n    @Input() title?: string;\r\n    @Input() value?: string;\r\n    @Input() inputTpl?: TemplateRef<any>;\r\n    @Input() sliderTpl?: TemplateRef<any>;\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    public setState(newState: ISliderFieldState): void {\r\n        this.state = newState;\r\n        this.templateContext = {\r\n            ...this.templateContext,\r\n            value: this.state.amount,\r\n        };\r\n    }\r\n\r\n    public state: ISliderFieldState = {\r\n        amount: 0,\r\n        unit: 'px',\r\n    };\r\n\r\n    public templateContext: {\r\n        value?: number;\r\n        onChange: {\r\n            emit($event: string): void;\r\n        };\r\n        max: number;\r\n    } = {\r\n        value: 0,\r\n        onChange: {\r\n            emit: ($event: string) => this.changed($event),\r\n        },\r\n        max: 100\r\n    };\r\n\r\n    public changed($event: string): void {\r\n        const amount = parseInt($event, 10);\r\n        this.setState({\r\n            ...this.state,\r\n            amount,\r\n        });\r\n        this.onChange.emit(`${this.state.amount}${this.state.unit}`);\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.setState(useUnitValue(changes.value.currentValue));\r\n        }\r\n    }\r\n}\r\n",
+            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n    TemplateRef,\r\n} from '@angular/core';\r\nimport { useUnitValue } from '../utils';\r\n\r\ninterface ISliderFieldState {\r\n    amount: number;\r\n    unit: string;\r\n}\r\n\r\n@Component({\r\n    selector: 'slider-field',\r\n    template: `\r\n        <div class=\"sp-slider-field\">\r\n            <label class=\"sp-label\">{{ title }}</label>\r\n            <input-field\r\n                style=\"flex-grow: 1; display:flex;\"\r\n                [value]=\"value\"\r\n                (onChange)=\"onChange.emit($event)\"\r\n                [template]=\"inputTpl\"\r\n            ></input-field>\r\n\r\n            <ng-container *ngIf=\"sliderTpl\">\r\n                <ng-container\r\n                    *ngTemplateOutlet=\"sliderTpl; context: templateContext\"\r\n                ></ng-container>\r\n            </ng-container>\r\n            <input\r\n                *ngIf=\"!sliderTpl\"\r\n                class=\"sp-slider\"\r\n                type=\"range\"\r\n                [ngModel]=\"state.amount\"\r\n                (ngModelChange)=\"changed($event)\"\r\n                max=\"100\"\r\n            />\r\n        </div>\r\n    `,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class SliderFieldComponent implements OnChanges {\r\n    @Input() title?: string;\r\n    @Input() value?: string;\r\n    @Input() inputTpl?: TemplateRef<any>;\r\n    @Input() sliderTpl?: TemplateRef<any>;\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    public setState(newState: ISliderFieldState): void {\r\n        this.state = newState;\r\n        this.templateContext = {\r\n            ...this.templateContext,\r\n            value: this.state.amount,\r\n        };\r\n    }\r\n\r\n    public state: ISliderFieldState = {\r\n        amount: 0,\r\n        unit: 'px',\r\n    };\r\n\r\n    public templateContext: {\r\n        value?: number;\r\n        onChange: {\r\n            emit($event: string): void;\r\n        };\r\n        max: number;\r\n    } = {\r\n        value: 0,\r\n        onChange: {\r\n            emit: ($event: string) => this.changed($event),\r\n        },\r\n        max: 100,\r\n    };\r\n\r\n    public changed($event: string): void {\r\n        const amount = parseInt($event, 10);\r\n        this.setState({\r\n            ...this.state,\r\n            amount,\r\n        });\r\n        this.onChange.emit(`${this.state.amount}${this.state.unit}`);\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.setState(useUnitValue(changes.value.currentValue));\r\n        }\r\n    }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -2301,7 +2301,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "2f8516b9-c7f0-43e7-9dba-80afad885f40",
+                        "destrucuredGroupId": "be69cfff-7efa-4145-977c-409e635a8d32",
                         "destructuredParameter": true
                     },
                     {
@@ -2309,7 +2309,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "2f8516b9-c7f0-43e7-9dba-80afad885f40",
+                        "destrucuredGroupId": "be69cfff-7efa-4145-977c-409e635a8d32",
                         "destructuredParameter": true
                     }
                 ],
@@ -2320,7 +2320,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "2f8516b9-c7f0-43e7-9dba-80afad885f40",
+                        "destrucuredGroupId": "be69cfff-7efa-4145-977c-409e635a8d32",
                         "destructuredParameter": true,
                         "tagName": {
                             "text": "param"
@@ -2331,7 +2331,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "2f8516b9-c7f0-43e7-9dba-80afad885f40",
+                        "destrucuredGroupId": "be69cfff-7efa-4145-977c-409e635a8d32",
                         "destructuredParameter": true,
                         "tagName": {
                             "text": "param"
@@ -2773,7 +2773,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "2f8516b9-c7f0-43e7-9dba-80afad885f40",
+                            "destrucuredGroupId": "be69cfff-7efa-4145-977c-409e635a8d32",
                             "destructuredParameter": true
                         },
                         {
@@ -2781,7 +2781,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "2f8516b9-c7f0-43e7-9dba-80afad885f40",
+                            "destrucuredGroupId": "be69cfff-7efa-4145-977c-409e635a8d32",
                             "destructuredParameter": true
                         }
                     ],
@@ -2792,7 +2792,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "2f8516b9-c7f0-43e7-9dba-80afad885f40",
+                            "destrucuredGroupId": "be69cfff-7efa-4145-977c-409e635a8d32",
                             "destructuredParameter": true,
                             "tagName": {
                                 "text": "param"
@@ -2803,7 +2803,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "2f8516b9-c7f0-43e7-9dba-80afad885f40",
+                            "destrucuredGroupId": "be69cfff-7efa-4145-977c-409e635a8d32",
                             "destructuredParameter": true,
                             "tagName": {
                                 "text": "param"
