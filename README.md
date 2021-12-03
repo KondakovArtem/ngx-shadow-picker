@@ -2,11 +2,11 @@
 
 # NgxShadowPicker
 
-A shadow picker inspired by the Chromium devtools.  This is a slight reimagining and a port of the component [react-shadow-picker](https://www.npmjs.com/package/react-shadow-picker)
+A shadow picker inspired by the Chromium devtools. This is a slight reimagining and a port of the component [react-shadow-picker](https://www.npmjs.com/package/react-shadow-picker)
 
 ## Development server
 
-Run `yarn storybook` for a dev server. 
+Run `yarn storybook` for a dev server.
 
 ![Demo](https://raw.githubusercontent.com/KondakovArtem/ngx-shadow-picker/master/src/assets/demo.png)
 
@@ -41,14 +41,11 @@ export class AppModule {}
 ```
 
 Add component to the template
+
 ```html
-  ...
-    <shadow-picker 
-      [showSample]="true" 
-      [value]="value" 
-      (onChange)="value = $event"
-    ></shadow-picker>
-  ...
+...
+<shadow-picker [showSample]="true" [value]="value" (onChange)="value = $event"></shadow-picker>
+...
 ```
 
 ## Styling
@@ -56,21 +53,66 @@ Add component to the template
 Add scss style in your project
 
 ```scss
-  @import '~ngx-shadow-picker/styles/shadow-picker';
+@import '~ngx-shadow-picker/styles/shadow-picker';
 ```
-
 
 ## Styling customization
 
 There are several scss variables that can be overridden
+
 ```scss
-  $shadow-picker-empty-bg-size: 10px !default;
-  $shadow-picker-background: #2a2a2a !default;
-  $shadow-picker-width: 256px !default;
-  $shadow-picker-font-size: 14px !default;
-  $shadow-picker-color: #bec6cf !default;
-  $shadow-picker-padding: 8px !default;
-  $shadow-picker-offsetgrid-size: 100px !default;
-  $shadow-picker-control-color: #4285f4 !default;
-  $shadow-picker-control-border-radius: 2px !default;
+$shadow-picker-empty-bg-size: 10px !default;
+$shadow-picker-background: #2a2a2a !default;
+$shadow-picker-width: 256px !default;
+$shadow-picker-font-size: 14px !default;
+$shadow-picker-color: #bec6cf !default;
+$shadow-picker-padding: 8px !default;
+$shadow-picker-offsetgrid-size: 100px !default;
+$shadow-picker-control-color: #4285f4 !default;
+$shadow-picker-control-border-radius: 2px !default;
+```
+
+## Customization controls
+
+It is possible to replace the standard controls
+`<ng-template #type>` for Select buttons
+`<ng-template #input>` for Input text controls
+`<ng-template> #slider` for slider controls
+
+```html
+<shadow-picker
+    [showSample]="showSample"
+    [value]="value"
+    (onChange)="onChange($event);"
+>
+    <ng-template #type let-value="value" let-onChange="onChange">
+        <p-selectButton
+            [options]="[
+                    {label: 'Inside', value: 'inside'},
+                    {label: 'Outside', value: 'outside'}
+                  ]"
+            [ngModel]="value"
+            (ngModelChange)="onChange.emit($event)"
+        ></p-selectButton>
+    </ng-template>
+
+    <ng-template #input let-value="value" let-onChange="onChange">
+        <input
+            style="width: 16px; flex: 1"
+            type="text"
+            [ngModel]="value"
+            (ngModelChange)="onChange.emit($event)"
+            pInputText
+        />
+    </ng-template>
+
+    <ng-template #slider let-value="value" let-onChange="onChange" let-max="max">
+        <p-slider
+            [ngStyle]="{flex: 1}"
+            [max]="max"
+            [ngModel]="value"
+            (ngModelChange)="onChange.emit($event)"
+        ></p-slider>
+    </ng-template>
+</shadow-picker>
 ```

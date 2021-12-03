@@ -69,11 +69,13 @@ export class SliderFieldComponent implements OnChanges {
         onChange: {
             emit($event: string): void;
         };
+        max: number;
     } = {
         value: 0,
         onChange: {
             emit: ($event: string) => this.changed($event),
         },
+        max: 100,
     };
 
     public changed($event: string): void {

@@ -27,6 +27,8 @@
         <color-field
             title="Color"
             [value]="state?.color || '#000000'"
+            [inputTpl]="inputTpl"
+            [sliderTpl]="sliderTpl"
             (onChange)="updateState('color', $event)"
             [attr.title]="state?.color || '#000000'"
         ></color-field>

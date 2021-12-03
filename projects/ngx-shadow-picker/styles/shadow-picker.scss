@@ -19,22 +19,26 @@ $shadow-picker-control-border-radius: 2px !default;
     font-size: $shadow-picker-font-size;
     font-family: sans-serif;
     color: $shadow-picker-color;
+
     .sp-field-container {
         padding: $shadow-picker-padding;
         display: flex;
         flex-direction: column;
         gap: $shadow-picker-padding;
     }
+
     .sp-type-field {
         flex: 1;
         display: flex;
         gap: $shadow-picker-padding;
     }
+
     .sp-group {
         display: flex;
         flex: 1;
         margin: 0;
     }
+
     .sp-button {
         border: 1px solid #555a;
         background: transparent;
@@ -45,9 +49,11 @@ $shadow-picker-control-border-radius: 2px !default;
         justify-content: center;
         box-sizing: border-box;
         margin: 0;
+
         &.active {
             background: $shadow-picker-control-color;
         }
+
         &.sp-button-out {
             border-radius: $shadow-picker-control-border-radius 0 0
                 $shadow-picker-control-border-radius;
@@ -63,21 +69,25 @@ $shadow-picker-control-border-radius: 2px !default;
         flex: 3;
         display: flex;
         gap: $shadow-picker-padding;
+
         .sp-inputs {
             display: flex;
             flex: 1;
             flex-direction: column;
             gap: $shadow-picker-padding;
+
             .sp-row {
                 display: flex;
                 align-items: center;
                 gap: $shadow-picker-padding;
             }
         }
+
         .sp-grid {
             flex: 0;
         }
     }
+
     .sp-label {
         justify-content: flex-end;
         width: 60px;
@@ -112,6 +122,7 @@ $shadow-picker-control-border-radius: 2px !default;
         height: 2px;
         background: #555a;
         outline: none;
+
         &::-webkit-slider-thumb {
             appearance: none;
             width: 12px;
@@ -149,18 +160,22 @@ $shadow-picker-control-border-radius: 2px !default;
         height: $shadow-picker-offsetgrid-size;
         border: 1px solid #5a5a5a;
         cursor: grab;
+
         &.dragging {
             cursor: grabbing;
         }
+
         .line {
             color: #555a;
         }
+
         .sp-grid-handle {
             color: $shadow-picker-control-color;
             pointer-events: none;
         }
+
         .sp-grid-line {
-            color: rgba(85, 85, 85, 0.667);
+            color: rgba(85, 85, 85, 66.7%);
         }
     }
 
@@ -169,6 +184,7 @@ $shadow-picker-control-border-radius: 2px !default;
         gap: $shadow-picker-padding;
         flex-direction: row;
         align-items: center;
+
         .sp-color-controller {
             min-width: calc(#{$shadow-picker-offsetgrid-size} + 4px);
             display: flex;
@@ -176,9 +192,16 @@ $shadow-picker-control-border-radius: 2px !default;
             gap: math.div($shadow-picker-padding, 2);
             flex: 0;
         }
-        .sp-slider {
+
+        .sp-slider-container {
             flex: 1;
             min-width: 0;
+            display: flex;
+
+            .sp-slider {
+                min-width: 0;
+                flex: 1;
+            }
         }
     }
 }

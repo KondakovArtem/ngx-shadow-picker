@@ -102,8 +102,8 @@ Object.assign(CustomControls, {
                 <input style="width: 16px; flex: 1" type="text" [ngModel]="value" (ngModelChange)="onChange.emit($event)" pInputText />
               </ng-template>
 
-              <ng-template #slider let-value="value" let-onChange="onChange" let-max="100">
-                <p-slider [ngStyle]="{minWidth: '100px'}" [ngModel]="value" (ngModelChange)="onChange.emit($event)"></p-slider>
+              <ng-template #slider let-value="value" let-onChange="onChange" let-max="max">
+                <p-slider [ngStyle]="{flex: 1}" [max]="max" [ngModel]="value" (ngModelChange)="onChange.emit($event)"></p-slider>
               </ng-template>
 
             </shadow-picker>
