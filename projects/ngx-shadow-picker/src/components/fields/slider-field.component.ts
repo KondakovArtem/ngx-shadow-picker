@@ -58,6 +58,8 @@ export class SliderFieldComponent implements OnChanges {
         this.templateContext = {
             ...this.templateContext,
             value: this.state.amount,
+            min: this.range[0],
+            max: this.range[1],
         };
     }
 
