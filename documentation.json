@@ -1299,7 +1299,7 @@
         },
         {
             "name": "ShadowPickerComponent",
-            "id": "component-ShadowPickerComponent-ba5bbff5c3f849f2aae8f0229ea21400565761bcc659184d465d41c51d9a1d1b71bc7dcc09f35201f95a6b199a0ad967f31634ad7066c45040243db84862bc99",
+            "id": "component-ShadowPickerComponent-5e5f526aebbe9ed957d1ecf19a21716273c9f1f808d7456cf7988da1751b822fe1826a0f298023167afd8dd26fd312f0aca929dc2b79426d2e764ddf219e9d14",
             "file": "projects/ngx-shadow-picker/src/components/shadow-picker.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1316,6 +1316,15 @@
             "viewProviders": [],
             "inputsClass": [
                 {
+                    "name": "blurRange",
+                    "defaultValue": "[0, 100]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 36,
+                    "type": "{}",
+                    "decorators": []
+                },
+                {
                     "name": "className",
                     "defaultValue": "''",
                     "deprecated": false,
@@ -1325,12 +1334,30 @@
                     "decorators": []
                 },
                 {
+                    "name": "offsetRange",
+                    "defaultValue": "[-20, 20]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 38,
+                    "type": "{}",
+                    "decorators": []
+                },
+                {
                     "name": "showSample",
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "line": 34,
                     "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "spreadRange",
+                    "defaultValue": "[0, 100]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 37,
+                    "type": "{}",
                     "decorators": []
                 },
                 {
@@ -1348,7 +1375,7 @@
                     "defaultValue": "new EventEmitter<string>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 36,
+                    "line": 39,
                     "type": "EventEmitter"
                 }
             ],
@@ -1360,7 +1387,7 @@
                     "type": "TemplateRef<any>",
                     "optional": false,
                     "description": "",
-                    "line": 39,
+                    "line": 42,
                     "decorators": [
                         {
                             "name": "ContentChild",
@@ -1375,7 +1402,7 @@
                     "type": "string",
                     "optional": true,
                     "description": "",
-                    "line": 43,
+                    "line": 46,
                     "modifierKind": [
                         123
                     ]
@@ -1387,7 +1414,7 @@
                     "type": "TemplateRef<any>",
                     "optional": false,
                     "description": "",
-                    "line": 40,
+                    "line": 43,
                     "decorators": [
                         {
                             "name": "ContentChild",
@@ -1402,7 +1429,7 @@
                     "type": "ShadowPickerParams",
                     "optional": true,
                     "description": "",
-                    "line": 42,
+                    "line": 45,
                     "modifierKind": [
                         123
                     ]
@@ -1414,7 +1441,7 @@
                     "type": "TemplateRef<any>",
                     "optional": false,
                     "description": "",
-                    "line": 38,
+                    "line": 41,
                     "decorators": [
                         {
                             "name": "ContentChild",
@@ -1437,7 +1464,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 61,
+                    "line": 64,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1472,7 +1499,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 45,
+                    "line": 48,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1519,7 +1546,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 51,
+                    "line": 54,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1554,7 +1581,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    ContentChild,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n    TemplateRef,\r\n} from '@angular/core';\r\n\r\nimport { ShadowOffset, ShadowPickerParams, ShadowPosition } from '../types';\r\nimport { buildShadowString, parseShadowString } from './utils';\r\n\r\nconst defaultParams: ShadowPickerParams = {\r\n    blur: '0',\r\n    color: '#000000',\r\n    offset: {\r\n        y: '0',\r\n        x: '0',\r\n    },\r\n    position: 'outside',\r\n    spread: '0',\r\n};\r\n\r\n@Component({\r\n    selector: 'shadow-picker',\r\n    templateUrl: './shadow-picker.component.html',\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ShadowPickerComponent implements OnChanges {\r\n    @Input() value?: string;\r\n    @Input() showSample = false;\r\n    @Input() className = '';\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    @ContentChild('type', { read: TemplateRef, static: true }) typeTpl!: TemplateRef<any>;\r\n    @ContentChild('input', { read: TemplateRef, static: true }) inputTpl!: TemplateRef<any>;\r\n    @ContentChild('slider', { read: TemplateRef, static: true }) sliderTpl!: TemplateRef<any>;\r\n\r\n    public state?: ShadowPickerParams;\r\n    public sample?: string;\r\n\r\n    private setNewState(state: ShadowPickerParams, emit = true): void {\r\n        this.state = state;\r\n        this.sample = buildShadowString(this.state);\r\n        if (emit) this.onChange.emit(this.sample);\r\n    }\r\n\r\n    public updateState(\r\n        column: keyof ShadowPickerParams,\r\n        value: string | ShadowOffset | ShadowPosition | undefined,\r\n    ): void {\r\n        this.setNewState({\r\n            ...this.state,\r\n            [column]: value,\r\n        });\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.setNewState(\r\n                parseShadowString(changes.value.currentValue) || { ...defaultParams },\r\n                false,\r\n            );\r\n        }\r\n    }\r\n}\r\n",
+            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    ContentChild,\r\n    EventEmitter,\r\n    Input,\r\n    OnChanges,\r\n    Output,\r\n    SimpleChanges,\r\n    TemplateRef,\r\n} from '@angular/core';\r\n\r\nimport { ShadowOffset, ShadowPickerParams, ShadowPosition } from '../types';\r\nimport { buildShadowString, parseShadowString } from './utils';\r\n\r\nconst defaultParams: ShadowPickerParams = {\r\n    blur: '0',\r\n    color: '#000000',\r\n    offset: {\r\n        y: '0',\r\n        x: '0',\r\n    },\r\n    position: 'outside',\r\n    spread: '0',\r\n};\r\n\r\n@Component({\r\n    selector: 'shadow-picker',\r\n    templateUrl: './shadow-picker.component.html',\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ShadowPickerComponent implements OnChanges {\r\n    @Input() value?: string;\r\n    @Input() showSample = false;\r\n    @Input() className = '';\r\n    @Input() blurRange = [0, 100];\r\n    @Input() spreadRange = [0, 100];\r\n    @Input() offsetRange = [-20, 20];\r\n    @Output() onChange = new EventEmitter<string>();\r\n\r\n    @ContentChild('type', { read: TemplateRef, static: true }) typeTpl!: TemplateRef<any>;\r\n    @ContentChild('input', { read: TemplateRef, static: true }) inputTpl!: TemplateRef<any>;\r\n    @ContentChild('slider', { read: TemplateRef, static: true }) sliderTpl!: TemplateRef<any>;\r\n\r\n    public state?: ShadowPickerParams;\r\n    public sample?: string;\r\n\r\n    private setNewState(state: ShadowPickerParams, emit = true): void {\r\n        this.state = state;\r\n        this.sample = buildShadowString(this.state);\r\n        if (emit) this.onChange.emit(this.sample);\r\n    }\r\n\r\n    public updateState(\r\n        column: keyof ShadowPickerParams,\r\n        value: string | ShadowOffset | ShadowPosition | undefined,\r\n    ): void {\r\n        this.setNewState({\r\n            ...this.state,\r\n            [column]: value,\r\n        });\r\n    }\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes.value) {\r\n            this.setNewState(\r\n                parseShadowString(changes.value.currentValue) || { ...defaultParams },\r\n                false,\r\n            );\r\n        }\r\n    }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -2301,7 +2328,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "be69cfff-7efa-4145-977c-409e635a8d32",
+                        "destrucuredGroupId": "8daf0e09-bf8b-4be1-abea-a0cb750c9632",
                         "destructuredParameter": true
                     },
                     {
@@ -2309,7 +2336,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "be69cfff-7efa-4145-977c-409e635a8d32",
+                        "destrucuredGroupId": "8daf0e09-bf8b-4be1-abea-a0cb750c9632",
                         "destructuredParameter": true
                     }
                 ],
@@ -2320,7 +2347,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "be69cfff-7efa-4145-977c-409e635a8d32",
+                        "destrucuredGroupId": "8daf0e09-bf8b-4be1-abea-a0cb750c9632",
                         "destructuredParameter": true,
                         "tagName": {
                             "text": "param"
@@ -2331,7 +2358,7 @@
                         "type": "",
                         "deprecated": false,
                         "deprecationMessage": "",
-                        "destrucuredGroupId": "be69cfff-7efa-4145-977c-409e635a8d32",
+                        "destrucuredGroupId": "8daf0e09-bf8b-4be1-abea-a0cb750c9632",
                         "destructuredParameter": true,
                         "tagName": {
                             "text": "param"
@@ -2773,7 +2800,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "be69cfff-7efa-4145-977c-409e635a8d32",
+                            "destrucuredGroupId": "8daf0e09-bf8b-4be1-abea-a0cb750c9632",
                             "destructuredParameter": true
                         },
                         {
@@ -2781,7 +2808,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "be69cfff-7efa-4145-977c-409e635a8d32",
+                            "destrucuredGroupId": "8daf0e09-bf8b-4be1-abea-a0cb750c9632",
                             "destructuredParameter": true
                         }
                     ],
@@ -2792,7 +2819,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "be69cfff-7efa-4145-977c-409e635a8d32",
+                            "destrucuredGroupId": "8daf0e09-bf8b-4be1-abea-a0cb750c9632",
                             "destructuredParameter": true,
                             "tagName": {
                                 "text": "param"
@@ -2803,7 +2830,7 @@
                             "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "destrucuredGroupId": "be69cfff-7efa-4145-977c-409e635a8d32",
+                            "destrucuredGroupId": "8daf0e09-bf8b-4be1-abea-a0cb750c9632",
                             "destructuredParameter": true,
                             "tagName": {
                                 "text": "param"
@@ -3061,7 +3088,7 @@
                 "linktype": "component",
                 "name": "ShadowPickerComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/13",
+                "coverageCount": "0/16",
                 "status": "low"
             },
             {

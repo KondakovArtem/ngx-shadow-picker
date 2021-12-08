@@ -25,6 +25,9 @@ Object.assign(Basic, {
     args: {
         value: '9px 6px 1px 1px #9188884b',
         showSample: true,
+        blurRange: [0, 100],
+        spreadRange: [0, 100],
+        offsetMax: 20,
     },
     argTypes: { onChange: { action: 'clicked' } },
     decorators: [

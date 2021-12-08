@@ -33,6 +33,9 @@ export class ShadowPickerComponent implements OnChanges {
     @Input() value?: string;
     @Input() showSample = false;
     @Input() className = '';
+    @Input() blurRange: [number, number] = [0, 100];
+    @Input() spreadRange: [number, number] = [0, 100];
+    @Input() offsetMax = 20;
     @Output() onChange = new EventEmitter<string>();
 
     @ContentChild('type', { read: TemplateRef, static: true }) typeTpl!: TemplateRef<any>;

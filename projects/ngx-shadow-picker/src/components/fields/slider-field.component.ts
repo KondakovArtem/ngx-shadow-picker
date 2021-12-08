@@ -38,7 +38,8 @@ interface ISliderFieldState {
                 type="range"
                 [ngModel]="state.amount"
                 (ngModelChange)="changed($event)"
-                max="100"
+                [attr.min]="range[0]"
+                [attr.max]="range[1]"
             />
         </div>
     `,
@@ -47,6 +48,7 @@ interface ISliderFieldState {
 export class SliderFieldComponent implements OnChanges {
     @Input() title?: string;
     @Input() value?: string;
+    @Input() range: [number, number] = [0, 100];
     @Input() inputTpl?: TemplateRef<any>;
     @Input() sliderTpl?: TemplateRef<any>;
     @Output() onChange = new EventEmitter<string>();
@@ -70,12 +72,14 @@ export class SliderFieldComponent implements OnChanges {
             emit($event: string): void;
         };
         max: number;
+        min: number;
     } = {
         value: 0,
         onChange: {
             emit: ($event: string) => this.changed($event),
         },
-        max: 100,
+        min: this.range[0],
+        max: this.range[1],
     };
 
     public changed($event: string): void {

@@ -38,7 +38,11 @@ import { useOffsetUnit } from '../utils';
                 </div>
             </div>
             <div class="sp-grid">
-                <offset-grid [offset]="offsetUnit" (onChange)="gridChange($event)"></offset-grid>
+                <offset-grid
+                    [offset]="offsetUnit"
+                    [max]="offsetMax"
+                    (onChange)="gridChange($event)"
+                ></offset-grid>
             </div>
         </div>
     `,
@@ -47,6 +51,7 @@ import { useOffsetUnit } from '../utils';
 export class OffsetFieldComponent implements OnChanges {
     @Input() value!: ShadowPickerParams['offset'];
     @Input() inputTpl?: TemplateRef<any>;
+    @Input() offsetMax = 20;
     @Output() onChange = new EventEmitter<ShadowPickerParams['offset']>();
 
     public offsetUnit: ShadowOffsetUnit = {
